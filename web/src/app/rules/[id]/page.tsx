@@ -9,6 +9,8 @@ import { BookmarkButton } from "@/components/library/bookmark-button";
 import { HighlightScope } from "@/components/library/highlight-scope";
 import { FadeIn } from "@/components/kd/motion";
 import { Page } from "@/components/kd/page-header";
+import { WorkingNote } from "@/components/kd/working-note";
+import { isExtraRule } from "@/lib/scope";
 import { askAboutRule, RuleCard } from "@/components/kd/rule-card";
 import { StatusBadge } from "@/components/kd/status";
 import { buttonVariants } from "@/components/ui/button";
@@ -52,7 +54,7 @@ async function RuleDetail({ params }: { params: PageProps<"/rules/[id]">["params
   const i = kd.rules.indexOf(rule);
   const nearby = kd.rules.slice(Math.max(0, i - 2), i + 3).filter((r) => r !== rule && r.doc === rule.doc);
 
-  return (
+  const page = (
     <>
       <nav aria-label="Breadcrumb" className="mb-4 flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
         <Link href="/rules" className="inline-flex items-center gap-1 hover:text-foreground">
@@ -197,6 +199,7 @@ async function RuleDetail({ params }: { params: PageProps<"/rules/[id]">["params
       </div>
     </>
   );
+  return isExtraRule(rule) ? <WorkingNote what="rule">{page}</WorkingNote> : page;
 }
 
 export default function RulePage({ params }: PageProps<"/rules/[id]">) {

@@ -4,6 +4,7 @@ import { GlossaryText } from "@/components/kd/glossary-text";
 import { StatusBadge } from "@/components/kd/status";
 import { BookmarkButton } from "@/components/library/bookmark-button";
 import { getDoc, getGroup, type Rule } from "@/lib/kd";
+import { isExtraRule } from "@/lib/scope";
 import { cn } from "@/lib/utils";
 
 export const askAboutRule = (id: string) =>
@@ -15,6 +16,7 @@ export function RuleCard({ rule, className }: { rule: Rule; className?: string }
   const group = getGroup(rule.group)!;
   return (
     <article
+      data-extra={isExtraRule(rule) || undefined}
       data-askable
       className={cn(
         "group/card relative flex flex-col gap-3 rounded-xl border bg-card p-4 transition-shadow hover:shadow-md sm:p-5",

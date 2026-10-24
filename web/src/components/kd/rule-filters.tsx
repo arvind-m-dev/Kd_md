@@ -3,19 +3,25 @@
 import { Search, X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
+import { useShowAll } from "@/components/shell/scope-toggle";
 import { cn } from "@/lib/utils";
 
 interface Option {
   value: string;
   label: string;
+  /** A working note (lib/scope.ts): listed only while working notes are shown. */
+  extra?: boolean;
 }
 
 /** Search box and filters for the Rules explorer. State lives in the URL, so filtered views can be shared. */
-export function RuleFilters({ groups, docs }: { groups: Option[]; docs: (Option & { group: string })[] }) {
+export function RuleFilters({ groups: allGroups, docs: allDocs }: { groups: Option[]; docs: (Option & { group: string })[] }) {
   const router = useRouter();
   const pathname = usePathname();
   const sp = useSearchParams();
   const [pending, startTransition] = useTransition();
+  const showAll = useShowAll();
+  const groups = allGroups.filter((g) => showAll || !g.extra);
+  const docs = allDocs.filter((d) => showAll || !d.extra);
   const [q, setQ] = useState(sp.get("q") ?? "");
   const group = sp.get("group") ?? "";
   const status = sp.get("status") ?? "";

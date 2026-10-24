@@ -61,7 +61,8 @@ const index = (() => {
   return { docs, avgdl, idf, br };
 })();
 
-export function search(query: string, k = 20, k1 = 1.4, b = 0.75): number[] {
+/** Ranked passage IDs. `keep` limits the search to some passages (e.g. no working notes, lib/scope.ts). */
+export function search(query: string, k = 20, keep?: (p: Passage) => boolean, k1 = 1.4, b = 0.75): number[] {
   const q = tokenize(query);
   const scores = new Map<number, number>();
   for (const t of new Set(q)) {
@@ -69,7 +70,7 @@ export function search(query: string, k = 20, k1 = 1.4, b = 0.75): number[] {
     if (!idf) continue;
     index.docs.forEach(({ tf, len }, pid) => {
       const f = tf.get(t);
-      if (f) scores.set(pid, (scores.get(pid) ?? 0) + (idf * f * (k1 + 1)) / (f + k1 * (1 - b + (b * len) / index.avgdl)));
+      if (f && (!keep || keep(passages[pid]))) scores.set(pid, (scores.get(pid) ?? 0) + (idf * f * (k1 + 1)) / (f + k1 * (1 - b + (b * len) / index.avgdl)));
     });
   }
   // exact phrase bonus
@@ -78,7 +79,10 @@ export function search(query: string, k = 20, k1 = 1.4, b = 0.75): number[] {
     for (const [pid, s] of scores) if (passages[pid].text.toLowerCase().includes(ql)) scores.set(pid, s * 1.5);
   }
   // direct BR-ID lookups go first
-  const pinned = q.filter((t) => t.startsWith("br-")).flatMap((t) => index.br.get(t) ?? []);
+  const pinned = q
+    .filter((t) => t.startsWith("br-"))
+    .flatMap((t) => index.br.get(t) ?? [])
+    .filter((pid) => !keep || keep(passages[pid]));
   const ranked = [...scores].sort((a, z) => z[1] - a[1]).slice(0, k * 2).map(([pid]) => pid);
   return [...new Set([...pinned, ...ranked])].slice(0, k);
 }

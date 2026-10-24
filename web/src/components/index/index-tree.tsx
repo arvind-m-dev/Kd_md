@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useDeferredValue, useMemo, useState } from "react";
 import { SpotlightCard, TopicIcon } from "@/components/kd/fx";
 import { BookmarkButton } from "@/components/library/bookmark-button";
+import { useShowAll } from "@/components/shell/scope-toggle";
 import { topicStyle } from "@/lib/topic-style";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +21,8 @@ export interface IndexDoc {
   url: string;
   type: string;
   ruleCount: number;
+  /** A working note (lib/scope.ts). */
+  extra: boolean;
   sections: IndexSection[];
 }
 export interface IndexGroup {
@@ -28,6 +31,7 @@ export interface IndexGroup {
   docCount: number;
   ruleCount: number;
   needsClarity: number;
+  extra: boolean;
   docs: IndexDoc[];
 }
 
@@ -121,7 +125,21 @@ function DocRow({ g, d, q, open, onToggle }: { g: IndexGroup; d: IndexDoc; q: st
 }
 
 /** The whole knowledge base as one tree: topic → document → section, with a filter. */
-export function IndexTree({ groups }: { groups: IndexGroup[] }) {
+export function IndexTree({ groups: allGroups }: { groups: IndexGroup[] }) {
+  const showAll = useShowAll();
+  // Working notes only while they are shown.
+  const groups = useMemo(
+    () =>
+      showAll
+        ? allGroups
+        : allGroups
+            .filter((g) => !g.extra)
+            .map((g) => {
+              const docs = g.docs.filter((d) => !d.extra);
+              return { ...g, docs, docCount: docs.length, ruleCount: docs.reduce((n, d) => n + d.ruleCount, 0) };
+            }),
+    [allGroups, showAll],
+  );
   const [query, setQuery] = useState("");
   const q = useDeferredValue(query.trim());
   const [openDocs, setOpenDocs] = useState<Set<string>>(new Set());

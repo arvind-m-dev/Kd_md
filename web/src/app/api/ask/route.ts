@@ -9,6 +9,7 @@
 import { getProvider, type ChatMessage } from "@/lib/ai/provider";
 import { getRule } from "@/lib/kd";
 import { conflictsChapter } from "@/lib/kd-md";
+import { isExtraPassage, showsAll } from "@/lib/scope";
 import { passages, passageView, search } from "@/lib/search";
 
 export const maxDuration = 300;
@@ -66,7 +67,11 @@ export async function POST(req: Request) {
     .map((r) => passages.findIndex((p) => p.lineStart <= r.line && r.line <= p.lineEnd))
     .filter((pid) => pid >= 0);
   const query = [question, history.at(-1)?.question ?? "", selection, ruleIds.join(" ")].join(" ");
-  const ids = [...new Set([...pinned, ...search(query, TOP_K)])].slice(0, TOP_K + pinned.length);
+  // Working notes (discussions, meeting notes, backlog, meta) only when the switch is on (lib/scope.ts).
+  // Rules the user asked about by ID are always kept.
+  const all = showsAll(req.headers.get("cookie"));
+  const found = search(query, TOP_K, all ? undefined : (p) => !isExtraPassage(p));
+  const ids = [...new Set([...pinned, ...found])].slice(0, TOP_K + pinned.length);
   const views = ids.map((pid, i) => passageView(pid, `P${i + 1}`));
 
   const blocks = views.map((p) => {

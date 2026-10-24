@@ -11,6 +11,7 @@ import { AuroraBackground } from "@/components/kd/fx";
 import { cn } from "@/lib/utils";
 import { CommandPaletteProvider, useOpenPalette } from "./command-palette";
 import { NAV, isActive } from "./nav";
+import { ScopeToggle, useShowAll } from "./scope-toggle";
 import { SelectionToolbar } from "./selection-toolbar";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -51,8 +52,15 @@ function SearchButton({ className }: { className?: string }) {
   );
 }
 
+/** The nav, without working-notes pages unless they are shown. */
+function useNav() {
+  const showAll = useShowAll();
+  return NAV.filter((n) => showAll || !n.extra);
+}
+
 /** Desktop: full sidebar with labels (lg+). Tablet: icon rail with tooltips (md). Phone: hidden. */
 function Sidebar({ pathname }: { pathname: string }) {
+  const nav = useNav();
   return (
     <aside className="sticky top-0 hidden h-dvh shrink-0 flex-col border-r bg-sidebar backdrop-blur-xl md:flex md:w-16 lg:w-64">
       <div className="flex h-16 items-center px-4 lg:px-5">
@@ -64,7 +72,7 @@ function Sidebar({ pathname }: { pathname: string }) {
         </span>
       </div>
       <nav aria-label="Main" className="flex flex-1 flex-col gap-1 px-2.5 py-2 lg:px-3">
-        {NAV.map((n) => {
+        {nav.map((n) => {
           const active = isActive(pathname, n.href);
           const link = (
             <Link
@@ -107,6 +115,12 @@ function Sidebar({ pathname }: { pathname: string }) {
       </nav>
       <div className="border-t p-2.5 lg:p-3">
         <span className="lg:hidden">
+          <ScopeToggle compact />
+        </span>
+        <span className="hidden lg:block">
+          <ScopeToggle />
+        </span>
+        <span className="lg:hidden">
           <ThemeToggle />
         </span>
         <span className="hidden lg:block">
@@ -120,8 +134,9 @@ function Sidebar({ pathname }: { pathname: string }) {
 /** Phone: four main tabs plus "More" (a bottom sheet with the rest). */
 function BottomNav({ pathname }: { pathname: string }) {
   const [more, setMore] = useState(false);
-  const primary = NAV.filter((n) => n.primary);
-  const rest = NAV.filter((n) => !n.primary);
+  const nav = useNav();
+  const primary = nav.filter((n) => n.primary);
+  const rest = nav.filter((n) => !n.primary);
   const moreActive = rest.some((n) => isActive(pathname, n.href));
   const tab = "flex flex-1 flex-col items-center justify-center gap-1 text-[11px] font-medium text-muted-foreground transition-colors";
   return (
@@ -168,6 +183,7 @@ function BottomNav({ pathname }: { pathname: string }) {
               </Link>
             ))}
             <div className="mt-2 border-t pt-2">
+              <ScopeToggle />
               <ThemeToggle withLabel />
             </div>
           </div>

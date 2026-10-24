@@ -8,6 +8,8 @@ import { BookmarkButton } from "@/components/library/bookmark-button";
 import { HighlightScope } from "@/components/library/highlight-scope";
 import { FadeIn, Stagger, StaggerItem } from "@/components/kd/motion";
 import { Page, PageHeader } from "@/components/kd/page-header";
+import { WorkingNote } from "@/components/kd/working-note";
+import { isExtraDoc, isExtraGroup } from "@/lib/scope";
 import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getGroup, kd } from "@/lib/kd";
@@ -27,12 +29,23 @@ async function GroupContent({ params }: { params: PageProps<"/read/[group]">["pa
   if (!g) notFound();
   const docs = kd.docs.filter((d) => d.group === g.id);
   const notes = groupNotesMarkdown(g.id) ?? "";
-  return (
+  // Counts without working notes, or with them, depending on the switch (globals.css).
+  const core = docs.filter((d) => !isExtraDoc(d.id, d.group));
+  const description =
+    core.length === docs.length ? (
+      `${g.docCount} current documents · ${g.ruleCount} rules · ${g.needsClarity} need clarity`
+    ) : (
+      <>
+        <span data-core-only>{`${core.length} current documents · ${core.reduce((n, d) => n + d.ruleCount, 0)} rules`}</span>
+        <span data-extra>{`${g.docCount} current documents · ${g.ruleCount} rules · ${g.needsClarity} need clarity`}</span>
+      </>
+    );
+  const page = (
     <Page>
       <Link href="/read" className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="size-3.5" /> All topics
       </Link>
-      <PageHeader title={g.title} description={`${g.docCount} current documents · ${g.ruleCount} rules · ${g.needsClarity} need clarity`}>
+      <PageHeader title={g.title} description={description}>
         <Link href={`/rules?group=${g.id}`} className={buttonVariants({ variant: "outline", size: "sm" })}>
           See the rules
         </Link>
@@ -40,7 +53,7 @@ async function GroupContent({ params }: { params: PageProps<"/read/[group]">["pa
       </PageHeader>
       <Stagger className="grid gap-3 sm:grid-cols-2">
         {docs.map((d) => (
-          <StaggerItem key={d.id} className="flex">
+          <StaggerItem key={d.id} className="flex" extra={isExtraDoc(d.id, d.group)}>
             <article className="relative flex w-full flex-col gap-2 rounded-xl border bg-card p-4 transition-shadow hover:shadow-md">
               <Link href={`/read/${g.id}/${d.id}`} className="font-medium leading-snug after:absolute after:inset-0 hover:text-primary">
                 {d.title}
@@ -57,7 +70,7 @@ async function GroupContent({ params }: { params: PageProps<"/read/[group]">["pa
         ))}
       </Stagger>
       {notes && (
-        <FadeIn delay={0.1}>
+        <FadeIn delay={0.1} extra>
           <details className="mt-8 rounded-xl border bg-card p-4 sm:p-6">
             <summary className="cursor-pointer font-semibold">Group notes, conventions and open questions</summary>
             <HighlightScope scope={`group:${g.id}`} title={`${g.title} — group notes`}>
@@ -68,6 +81,7 @@ async function GroupContent({ params }: { params: PageProps<"/read/[group]">["pa
       )}
     </Page>
   );
+  return isExtraGroup(g.id) ? <WorkingNote what="topic">{page}</WorkingNote> : page;
 }
 
 export default function GroupPage({ params }: PageProps<"/read/[group]">) {

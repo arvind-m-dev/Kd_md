@@ -4,6 +4,7 @@ import { GlossaryProvider } from "@/components/kd/glossary-text";
 import { Providers } from "@/components/providers";
 import { AppShell } from "@/components/shell/app-shell";
 import { glossaryAliases } from "@/lib/glossary-terms";
+import { SCOPE_SCRIPT } from "@/lib/scope";
 import "./globals.css";
 
 const body = Plus_Jakarta_Sans({ variable: "--font-body", subsets: ["latin"] });
@@ -28,6 +29,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" suppressHydrationWarning className={`${body.variable} ${display.variable} ${code.variable} ${book.variable} h-full antialiased`}>
+      <head>
+        {/* Working notes switch: apply the saved choice before paint (lib/scope.ts). */}
+        <script dangerouslySetInnerHTML={{ __html: SCOPE_SCRIPT }} />
+      </head>
       <body className="min-h-full">
         <Providers>
           <GlossaryProvider aliases={glossaryAliases}>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import Link from "next/link";
 import { Suspense } from "react";
 import { Stagger, StaggerItem } from "@/components/kd/motion";
@@ -8,6 +9,7 @@ import { RuleFilters } from "@/components/kd/rule-filters";
 import { Skeleton } from "@/components/ui/skeleton";
 import { kd } from "@/lib/kd";
 import { filterRules, readFilter } from "@/lib/rule-filter";
+import { isExtraDoc, isExtraGroup, isExtraRule, SCOPE_COOKIE } from "@/lib/scope";
 
 export const metadata: Metadata = { title: "Rules" };
 
@@ -16,7 +18,9 @@ const PAGE = 30;
 async function Results({ searchParams }: { searchParams: PageProps<"/rules">["searchParams"] }) {
   const sp = await searchParams;
   const filter = readFilter(sp);
-  const rules = filterRules(filter);
+  // Working notes stay out unless the switch is on (lib/scope.ts).
+  const all = (await cookies()).get(SCOPE_COOKIE)?.value === "all";
+  const rules = filterRules(filter).filter((r) => all || !isExtraRule(r));
   const limit = Math.max(Number(sp.limit) || PAGE, PAGE);
   const shown = rules.slice(0, limit);
   const more = new URLSearchParams(Object.entries(sp).filter((e): e is [string, string] => typeof e[1] === "string"));
@@ -71,8 +75,8 @@ function ResultsSkeleton() {
 }
 
 export default function RulesPage({ searchParams }: PageProps<"/rules">) {
-  const groups = kd.groups.map((g) => ({ value: g.id, label: `${g.id} — ${g.title}` }));
-  const docs = kd.docs.map((d) => ({ value: d.id, label: d.title, group: d.group }));
+  const groups = kd.groups.map((g) => ({ value: g.id, label: `${g.id} — ${g.title}`, extra: isExtraGroup(g.id) }));
+  const docs = kd.docs.map((d) => ({ value: d.id, label: d.title, group: d.group, extra: isExtraDoc(d.id, d.group) }));
   return (
     <Page wide>
       <PageHeader

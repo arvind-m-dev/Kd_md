@@ -4,6 +4,7 @@ import { ContinueReading } from "@/components/library/continue-reading";
 import { Page, PageHeader } from "@/components/kd/page-header";
 import { kd } from "@/lib/kd";
 import { docMarkdown, toc } from "@/lib/reader";
+import { isExtraDoc, isExtraGroup } from "@/lib/scope";
 
 export const metadata: Metadata = { title: "Index" };
 
@@ -14,6 +15,7 @@ const tree: IndexGroup[] = kd.groups.map((g) => ({
   docCount: g.docCount,
   ruleCount: g.ruleCount,
   needsClarity: g.needsClarity,
+  extra: isExtraGroup(g.id),
   docs: kd.docs
     .filter((d) => d.group === g.id)
     .map((d) => ({
@@ -23,17 +25,30 @@ const tree: IndexGroup[] = kd.groups.map((g) => ({
       url: d.url,
       type: d.type,
       ruleCount: d.ruleCount,
+      extra: isExtraDoc(d.id, d.group),
       sections: toc(docMarkdown(d.id) ?? "", 6),
     })),
 }));
 
 export default function ReadIndex() {
-  const sections = tree.reduce((n, g) => n + g.docs.reduce((m, d) => m + d.sections.length, 0), 0);
+  // Counts with and without working notes; the switch picks which one shows (globals.css).
+  const count = (all: boolean) => {
+    const groups = tree.filter((g) => all || !g.extra);
+    const docs = groups.flatMap((g) => g.docs).filter((d) => all || !d.extra);
+    const sections = docs.reduce((n, d) => n + d.sections.length, 0);
+    return `${groups.length} topics, ${docs.length} documents and ${sections.toLocaleString("en")} sections`;
+  };
   return (
     <Page wide>
       <PageHeader
         title="Index"
-        description={`Everything in one place: ${kd.groups.length} topics, ${kd.docs.length} documents and ${sections.toLocaleString("en")} sections. Filter to find a section, open a document to read it, then select any text to highlight, note or ask about it.`}
+        description={
+          <>
+            Everything in one place: <span data-core-only>{count(false)}</span>
+            <span data-extra>{count(true)}</span>. Filter to find a section, open a document to read it, then select any text
+            to highlight, note or ask about it.
+          </>
+        }
       />
       <ContinueReading className="mb-6" />
       <IndexTree groups={tree} />

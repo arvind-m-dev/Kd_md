@@ -343,6 +343,10 @@
 .kd-prose .kd-rule { list-style: none; margin-left: -1.3rem; padding: 0.6rem 0.75rem; border-radius: 0.6rem; scroll-margin-top: 5rem; }
 .kd-prose .kd-rule:target { background: var(--accent); outline: 2px solid var(--ring); }
 
+/* Working notes (lib/scope.ts): hidden unless <html data-scope="all">, set by the "Working notes" switch. */
+html:not([data-scope="all"]) [data-extra] { display: none !important; }
+html[data-scope="all"] [data-core-only] { display: none !important; }
+
 /* Highlights (library): neon highlighter colours. Text on them is always dark, so it stays readable;
    on dark themes they glow. */
 :root {

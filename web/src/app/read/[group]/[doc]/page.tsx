@@ -10,6 +10,8 @@ import { ReaderSettings } from "@/components/library/reader-settings";
 import { ReadingTracker } from "@/components/library/reading-tracker";
 import { FadeIn } from "@/components/kd/motion";
 import { Toc } from "@/components/kd/toc";
+import { WorkingNote } from "@/components/kd/working-note";
+import { isExtraDoc } from "@/lib/scope";
 import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getDoc, getGroup, kd } from "@/lib/kd";
@@ -37,7 +39,7 @@ async function DocContent({ params }: { params: PageProps<"/read/[group]/[doc]">
   const next = siblings[i + 1];
   const href = `/read/${groupId}/${doc.id}`;
 
-  return (
+  const page = (
     <div className="kd-reader mx-auto grid w-full max-w-7xl gap-10 px-4 py-6 sm:px-6 sm:py-8 lg:px-10 xl:grid-cols-[minmax(0,1fr)_16rem]">
       <ReadingTracker href={href} title={doc.title} subtitle={`${group.id} · ${group.title}`} />
       <article className="kd-reader-article mx-auto w-full min-w-0">
@@ -75,7 +77,7 @@ async function DocContent({ params }: { params: PageProps<"/read/[group]/[doc]">
         </HighlightScope>
         <nav className="mt-12 grid gap-3 border-t pt-6 sm:grid-cols-2" aria-label="Other documents in this topic">
           {prev ? (
-            <Link href={`/read/${groupId}/${prev.id}`} className="rounded-xl border p-4 hover:bg-accent">
+            <Link href={`/read/${groupId}/${prev.id}`} data-extra={isExtraDoc(prev.id, prev.group) || undefined} className="rounded-xl border p-4 hover:bg-accent">
               <span className="flex items-center gap-1 text-xs text-muted-foreground">
                 <ArrowLeft className="size-3" /> Previous
               </span>
@@ -85,7 +87,7 @@ async function DocContent({ params }: { params: PageProps<"/read/[group]/[doc]">
             <span />
           )}
           {next && (
-            <Link href={`/read/${groupId}/${next.id}`} className="rounded-xl border p-4 text-right hover:bg-accent">
+            <Link href={`/read/${groupId}/${next.id}`} data-extra={isExtraDoc(next.id, next.group) || undefined} className="rounded-xl border p-4 text-right hover:bg-accent">
               <span className="flex items-center justify-end gap-1 text-xs text-muted-foreground">
                 Next <ArrowRight className="size-3" />
               </span>
@@ -97,6 +99,7 @@ async function DocContent({ params }: { params: PageProps<"/read/[group]/[doc]">
       <Toc entries={entries} />
     </div>
   );
+  return isExtraDoc(doc.id, doc.group) ? <WorkingNote what="document">{page}</WorkingNote> : page;
 }
 
 export default function DocPage({ params }: PageProps<"/read/[group]/[doc]">) {

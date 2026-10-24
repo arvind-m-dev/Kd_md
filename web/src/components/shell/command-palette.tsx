@@ -15,15 +15,18 @@ import {
 import { StatusDot } from "@/components/kd/status";
 import { useLibrary } from "@/lib/library";
 import { NAV } from "./nav";
+import { useShowAll } from "./scope-toggle";
 
 interface RuleLite {
   id: string;
   text: string;
   status: "clear" | "needs-clarity";
+  /** A working note (lib/scope.ts). */
+  extra?: boolean;
 }
 interface Index {
   rules: RuleLite[];
-  groups: { id: string; title: string }[];
+  groups: { id: string; title: string; extra?: boolean }[];
 }
 
 const PaletteContext = createContext<() => void>(() => {});
@@ -38,6 +41,7 @@ export function CommandPaletteProvider({ children }: { children: React.ReactNode
   const [query, setQuery] = useState("");
   const [index, setIndex] = useState<Index | null>(null);
   const lib = useLibrary();
+  const showAll = useShowAll();
 
   const openPalette = useCallback(() => setOpen(true), []);
 
@@ -57,13 +61,16 @@ export function CommandPaletteProvider({ children }: { children: React.ReactNode
   }, [open, index]);
 
   const q = query.trim().toLowerCase();
-  const pages = NAV.filter((n) => !q || `${n.label} ${n.hint}`.toLowerCase().includes(q));
-  const groups = (index?.groups ?? []).filter((g) => !q || `${g.id} ${g.title}`.toLowerCase().includes(q)).slice(0, q ? 11 : 4);
+  const pages = NAV.filter((n) => (showAll || !n.extra) && (!q || `${n.label} ${n.hint}`.toLowerCase().includes(q)));
+  const groups = (index?.groups ?? [])
+    .filter((g) => (showAll || !g.extra) && (!q || `${g.id} ${g.title}`.toLowerCase().includes(q)))
+    .slice(0, q ? 11 : 4);
   const rules = (() => {
     if (!index || q.length < 2) return [];
     const words = q.split(/\s+/);
-    const byId = index.rules.filter((r) => r.id.toLowerCase().includes(q));
-    const byText = index.rules.filter((r) => !byId.includes(r) && words.every((w) => r.text.toLowerCase().includes(w)));
+    const pool = showAll ? index.rules : index.rules.filter((r) => !r.extra);
+    const byId = pool.filter((r) => r.id.toLowerCase().includes(q));
+    const byText = pool.filter((r) => !byId.includes(r) && words.every((w) => r.text.toLowerCase().includes(w)));
     return [...byId, ...byText].slice(0, 25);
   })();
 

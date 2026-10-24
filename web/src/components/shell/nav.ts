@@ -10,6 +10,7 @@ import {
   Scale,
   type LucideIcon,
 } from "lucide-react";
+import { EXTRA_PAGES } from "@/lib/scope";
 
 export interface NavItem {
   href: string;
@@ -18,6 +19,8 @@ export interface NavItem {
   icon: LucideIcon;
   /** Shown in the phone bottom bar; the rest sit under "More". */
   primary?: boolean;
+  /** A working-notes page (lib/scope.ts): listed only while working notes are shown. */
+  extra?: boolean;
 }
 
 export const NAV: NavItem[] = [
@@ -30,7 +33,7 @@ export const NAV: NavItem[] = [
   { href: "/glossary", label: "Glossary", hint: "What the terms mean", icon: BookA },
   { href: "/sources", label: "Sources", hint: "Every Google Drive document", icon: FileStack },
   { href: "/connect", label: "Connect AI", hint: "Use these rules from any AI tool", icon: Plug },
-];
+].map((n) => ({ ...n, extra: EXTRA_PAGES.has(n.href) }));
 
 export const isActive = (pathname: string, href: string) =>
   href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");

@@ -5,10 +5,14 @@ import { useEffect, useRef } from "react";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+/** `extra`: a working note (lib/scope.ts), hidden unless working notes are shown. */
+type ExtraProp = { extra?: boolean };
+
 /** Fades and lifts content in on first render. */
-export function FadeIn({ children, delay = 0, className }: { children: React.ReactNode; delay?: number; className?: string }) {
+export function FadeIn({ children, delay = 0, className, extra }: { children: React.ReactNode; delay?: number; className?: string } & ExtraProp) {
   return (
     <motion.div
+      data-extra={extra || undefined}
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, delay, ease: EASE }}
@@ -34,9 +38,10 @@ export function Stagger({ children, className, step = 0.04 }: { children: React.
   );
 }
 
-export function StaggerItem({ children, className }: { children: React.ReactNode; className?: string }) {
+export function StaggerItem({ children, className, extra }: { children: React.ReactNode; className?: string } & ExtraProp) {
   return (
     <motion.div
+      data-extra={extra || undefined}
       variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: EASE } } }}
       className={className}
     >

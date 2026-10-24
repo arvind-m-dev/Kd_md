@@ -17,7 +17,8 @@ import { ProgressRing, SpotlightCard, TopicIcon } from "@/components/kd/fx";
 import { CountUp, FadeIn, Stagger, StaggerItem } from "@/components/kd/motion";
 import { Page } from "@/components/kd/page-header";
 import { ContinueReading } from "@/components/library/continue-reading";
-import { kd } from "@/lib/kd";
+import { kd, type Group } from "@/lib/kd";
+import { isExtraDoc, isExtraGroup, isExtraRule } from "@/lib/scope";
 import { SUGGESTED_QUESTIONS } from "@/lib/suggestions";
 import { topicStyle } from "@/lib/topic-style";
 
@@ -37,14 +38,50 @@ function IconTile({ icon: Icon, hue }: { icon: LucideIcon; hue: number }) {
   );
 }
 
-const ACTIONS: { href: string; title: string; text: string; icon: LucideIcon; hue: number }[] = [
+/** Shows `core` unless working notes are on, then `all` (lib/scope.ts, globals.css). */
+function Scoped({ core, all }: { core: React.ReactNode; all: React.ReactNode }) {
+  return (
+    <>
+      <span data-core-only>{core}</span>
+      <span data-extra>{all}</span>
+    </>
+  );
+}
+
+/** Rule and document numbers, without working notes or with them. */
+function numbers(all: boolean, group?: Group) {
+  const docs = kd.docs.filter((d) => (!group || d.group === group.id) && (all || !isExtraDoc(d.id, d.group)));
+  const rules = kd.rules.filter((r) => (!group || r.group === group.id) && (all || !isExtraRule(r)));
+  const unclear = rules.filter((r) => r.status === "needs-clarity").length;
+  return { docs: docs.length, rules: rules.length, unclear, clearPct: Math.round(((rules.length - unclear) / Math.max(rules.length, 1)) * 100) };
+}
+
+const ACTIONS: { href: string; title: string; text: string; icon: LucideIcon; hue: number; extra?: boolean }[] = [
   { href: "/ask", title: "Ask AI", text: "Plain answers with sources", icon: Sparkles, hue: 268 },
   { href: "/read", title: "Index", text: "Every topic and section", icon: ListTree, hue: 200 },
   { href: "/library", title: "My library", text: "Highlights, notes, saved", icon: Bookmark, hue: 330 },
-  { href: "/conflicts", title: "Open questions", text: "What still needs a decision", icon: Scale, hue: 60 },
+  { href: "/conflicts", title: "Open questions", text: "What still needs a decision", icon: Scale, hue: 60, extra: true },
 ];
 
-function Stat({ label, value, note, href, icon, hue }: { label: string; value: number; note: string; href: string; icon: LucideIcon; hue: number }) {
+function Stat({
+  label,
+  value,
+  allValue = value,
+  note,
+  href,
+  icon,
+  hue,
+}: {
+  label: string;
+  value: number;
+  /** The number with working notes, when it differs. */
+  allValue?: number;
+  note: React.ReactNode;
+  href: string;
+  icon: LucideIcon;
+  hue: number;
+}) {
+  const count = (v: number) => <CountUp value={v} className="font-display text-3xl font-semibold tracking-tight tabular-nums sm:text-4xl" />;
   return (
     <Link href={href} className="group block h-full rounded-2xl focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none">
       <SpotlightCard hue={hue} className="flex h-full flex-col gap-3 p-4 group-hover:-translate-y-0.5 sm:p-5">
@@ -52,7 +89,7 @@ function Stat({ label, value, note, href, icon, hue }: { label: string; value: n
           {label}
           <IconTile icon={icon} hue={hue} />
         </span>
-        <CountUp value={value} className="font-display text-3xl font-semibold tracking-tight tabular-nums sm:text-4xl" />
+        {allValue === value ? count(value) : <Scoped core={count(value)} all={count(allValue)} />}
         <span className="flex items-center gap-1 text-xs text-muted-foreground group-hover:text-foreground">
           {note} <ArrowRight className="size-3 transition-transform group-hover:translate-x-0.5" />
         </span>
@@ -63,7 +100,8 @@ function Stat({ label, value, note, href, icon, hue }: { label: string; value: n
 
 export default function Dashboard() {
   const { stats, groups, decisions, changelog } = kd;
-  const clearPct = Math.round(((stats.rules - stats.needsClarity) / stats.rules) * 100);
+  const core = numbers(false);
+  const all = numbers(true);
   const openDecisions = decisions.filter((d) => d.open);
 
   return (
@@ -80,7 +118,8 @@ export default function Dashboard() {
             Every business rule, in plain words.
           </h1>
           <p className="mt-3 max-w-2xl text-pretty text-muted-foreground sm:text-lg">
-            {stats.rules.toLocaleString("en")} rules from {stats.docs} documents. Ask a question, explore the index, and highlight what
+            <Scoped core={core.rules.toLocaleString("en")} all={all.rules.toLocaleString("en")} /> rules from{" "}
+            <Scoped core={core.docs} all={all.docs} /> documents. Ask a question, explore the index, and highlight what
             matters. Every answer shows exactly where it comes from.
           </p>
           <AskBox className="mt-6 max-w-2xl" suggestions={SUGGESTED_QUESTIONS} />
@@ -88,9 +127,9 @@ export default function Dashboard() {
       </FadeIn>
 
       {/* Quick actions */}
-      <Stagger className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+      <Stagger className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:flex">
         {ACTIONS.map((a) => (
-          <StaggerItem key={a.href} className="h-full">
+          <StaggerItem key={a.href} className="h-full lg:flex-1" extra={a.extra}>
             <Link href={a.href} className="group block h-full rounded-2xl focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none">
               <SpotlightCard hue={a.hue} className="flex h-full items-center gap-3 p-4 group-hover:-translate-y-0.5">
                 <IconTile icon={a.icon} hue={a.hue} />
@@ -107,17 +146,33 @@ export default function Dashboard() {
       <ContinueReading className="mt-6" />
 
       {/* Headline numbers */}
-      <Stagger className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-        <StaggerItem className="h-full">
-          <Stat label="Rules" value={stats.rules} note="Browse all rules" href="/rules" icon={ListChecks} hue={268} />
+      <Stagger className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:flex">
+        <StaggerItem className="h-full lg:flex-1">
+          <Stat label="Rules" value={core.rules} allValue={all.rules} note="Browse all rules" href="/rules" icon={ListChecks} hue={268} />
         </StaggerItem>
-        <StaggerItem className="h-full">
-          <Stat label="Documents" value={stats.docs} note={`${stats.groups} topic groups`} href="/sources" icon={FileStack} hue={200} />
+        <StaggerItem className="h-full lg:flex-1">
+          <Stat
+            label="Documents"
+            value={core.docs}
+            allValue={all.docs}
+            note={<Scoped core={`${groups.filter((g) => !isExtraGroup(g.id)).length} topic groups`} all={`${stats.groups} topic groups`} />}
+            href="/read"
+            icon={FileStack}
+            hue={200}
+          />
         </StaggerItem>
-        <StaggerItem className="h-full">
-          <Stat label="Need clarity" value={stats.needsClarity} note={`${clearPct}% of rules are clear`} href="/rules?status=needs-clarity" icon={CircleAlert} hue={65} />
+        <StaggerItem className="h-full lg:flex-1">
+          <Stat
+            label="Need clarity"
+            value={core.unclear}
+            allValue={all.unclear}
+            note={<Scoped core={`${core.clearPct}% of rules are clear`} all={`${all.clearPct}% of rules are clear`} />}
+            href="/rules?status=needs-clarity"
+            icon={CircleAlert}
+            hue={65}
+          />
         </StaggerItem>
-        <StaggerItem className="h-full">
+        <StaggerItem className="h-full lg:flex-1" extra>
           <Stat label="Open decisions" value={stats.openDecisions} note={`${stats.openConflicts} open conflicts`} href="/conflicts" icon={Scale} hue={20} />
         </StaggerItem>
       </Stagger>
@@ -136,9 +191,19 @@ export default function Dashboard() {
         <Stagger className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {groups.map((g) => {
             const { hue, short } = topicStyle(g.id);
-            const pct = Math.round(((g.ruleCount - g.needsClarity) / Math.max(g.ruleCount, 1)) * 100);
+            const c = numbers(false, g);
+            const a = numbers(true, g);
+            const facts = (n: typeof c) => (
+              <span className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                <span>{n.docs} docs</span>
+                <span>{n.rules} rules</span>
+                {n.unclear > 0 && <span className="text-unclear-ink">{n.unclear} unclear</span>}
+              </span>
+            );
+            const ring = (n: typeof c) => <ProgressRing pct={n.clearPct} hue={hue} label={`${n.clearPct}%`} />;
+            const same = c.rules === a.rules && c.docs === a.docs;
             return (
-              <StaggerItem key={g.id} className="h-full">
+              <StaggerItem key={g.id} className="h-full" extra={isExtraGroup(g.id)}>
                 <Link href={`/read/${g.id}`} className="group block h-full rounded-2xl focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none">
                   <SpotlightCard hue={hue} className="flex h-full items-start gap-3.5 p-4 group-hover:-translate-y-0.5 sm:p-5">
                     <TopicIcon group={g.id} />
@@ -147,13 +212,9 @@ export default function Dashboard() {
                         {g.id} · {short}
                       </span>
                       <span className="mt-0.5 line-clamp-2 block leading-snug font-medium text-balance">{g.title}</span>
-                      <span className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
-                        <span>{g.docCount} docs</span>
-                        <span>{g.ruleCount} rules</span>
-                        {g.needsClarity > 0 && <span className="text-unclear-ink">{g.needsClarity} unclear</span>}
-                      </span>
+                      {same ? facts(a) : <Scoped core={facts(c)} all={facts(a)} />}
                     </span>
-                    <ProgressRing pct={pct} hue={hue} label={`${pct}%`} />
+                    {same ? ring(a) : <Scoped core={ring(c)} all={ring(a)} />}
                   </SpotlightCard>
                 </Link>
               </StaggerItem>
@@ -162,7 +223,8 @@ export default function Dashboard() {
         </Stagger>
       </section>
 
-      <div className="mt-10 grid gap-6 lg:grid-cols-5">
+      {/* Open decisions, updates and AI connectors are working notes (lib/scope.ts). */}
+      <div data-extra className="mt-10 grid gap-6 lg:grid-cols-5">
         {/* What still needs a decision */}
         <FadeIn delay={0.1} className="lg:col-span-3">
           <SpotlightCard hue={60} className="flex h-full flex-col p-5 sm:p-6">
