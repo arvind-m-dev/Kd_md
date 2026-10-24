@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keydemand KB Ask</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+<style>
+:root{
+  --bg:#f6f7f9; --panel:#fff; --ink:#1b1f24; --muted:#5f6b7a; --line:#e3e7ec;
+  --accent:#2457d6; --accent-ink:#fff; --hl:#fff4c2; --ok:#137a43; --ok-bg:#e3f5ea;
+  --warn:#8a5a00; --warn-bg:#fff1d6; --err:#a32020; --err-bg:#fde7e7; --code:#f1f3f6;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111418; --panel:#1a1e24; --ink:#e7eaee; --muted:#9aa5b1; --line:#2b313a;
+    --accent:#6e98ff; --accent-ink:#0b1020; --hl:#4a3f12; --ok:#6fd49b; --ok-bg:#16301f;
+    --warn:#f2c46b; --warn-bg:#3a2c0e; --err:#ff8f8f; --err-bg:#3a1515; --code:#232932;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111418; --panel:#1a1e24; --ink:#e7eaee; --muted:#9aa5b1; --line:#2b313a;
+  --accent:#6e98ff; --accent-ink:#0b1020; --hl:#4a3f12; --ok:#6fd49b; --ok-bg:#16301f;
+  --warn:#f2c46b; --warn-bg:#3a2c0e; --err:#ff8f8f; --err-bg:#3a1515; --code:#232932;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:24px 16px 64px}
+header h1{font-size:20px;margin:0 0 2px}
+header p{margin:0;color:var(--muted);font-size:13px}
+form{display:flex;gap:8px;margin:18px 0 10px;flex-wrap:wrap}
+textarea{flex:1 1 420px;min-height:52px;max-height:200px;resize:vertical;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);font:inherit}
+textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.btns{display:flex;gap:8px}
+button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:0 16px;height:52px;font:inherit;cursor:pointer}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+button:disabled{opacity:.6;cursor:wait}
+.hint{color:var(--muted);font-size:12.5px;margin-bottom:18px}
+.hint kbd{background:var(--code);border-radius:4px;padding:0 4px;font-size:12px}
+.examples{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{font-size:12.5px;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:3px 10px;cursor:pointer;height:auto}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+.status{display:inline-block;font-size:12.5px;font-weight:600;border-radius:999px;padding:2px 10px;margin-bottom:8px}
+.status.clear{background:var(--ok-bg);color:var(--ok)}
+.status.needs_clarity{background:var(--warn-bg);color:var(--warn)}
+.error{background:var(--err-bg);color:var(--err);border-color:transparent}
+.answer :is(p,ul,ol){margin:.5em 0}
+.answer table{border-collapse:collapse;font-size:13.5px;display:block;overflow-x:auto}
+.answer td,.answer th{border:1px solid var(--line);padding:4px 8px;vertical-align:top}
+.answer code{background:var(--code);border-radius:4px;padding:0 4px}
+a.cite{display:inline-block;font-size:11.5px;font-weight:600;text-decoration:none;background:var(--code);color:var(--accent);border-radius:5px;padding:0 5px;margin:0 1px;vertical-align:1px}
+h2.sec{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:22px 0 10px}
+.src{scroll-margin-top:12px}
+.src.flash{outline:2px solid var(--accent)}
+.src-head{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.src-label{font-weight:700;color:var(--accent)}
+.src-doc{font-weight:600}
+.src-doc a{color:inherit}
+.meta{color:var(--muted);font-size:12.5px;margin:4px 0 8px;word-break:break-word}
+.badge{font-size:11px;border:1px solid var(--line);border-radius:4px;padding:0 5px;color:var(--muted)}
+.passage{background:var(--code);border-radius:8px;padding:10px 12px;font-size:13.5px;overflow-x:auto}
+.passage.main{background:var(--hl)}
+.ctx{color:var(--muted);font-size:12.5px;margin:6px 0 2px}
+.passage :is(p,ul,ol){margin:.3em 0}
+.passage table{border-collapse:collapse;font-size:12.5px}
+.passage td,.passage th{border:1px solid var(--line);padding:3px 6px;vertical-align:top}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.actions button,.actions a{height:auto;padding:5px 10px;font-size:12.5px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink);text-decoration:none;cursor:pointer}
+details summary{cursor:pointer;color:var(--muted);font-size:12.5px;margin-top:8px}
+pre.lines{background:var(--code);border-radius:8px;padding:8px 0;font:12px/1.5 ui-monospace,Menlo,monospace;overflow-x:auto;margin:6px 0 0}
+pre.lines span{display:block;padding:0 10px;white-space:pre}
+pre.lines span.on{background:var(--hl)}
+pre.lines i{display:inline-block;width:52px;color:var(--muted);font-style:normal;user-select:none}
+.spinner{color:var(--muted)}
+footer{color:var(--muted);font-size:12px;margin-top:30px}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.tabs{display:flex;gap:6px;margin-top:16px;border-bottom:1px solid var(--line)}
+.tab{height:auto;padding:8px 14px;border:0;border-bottom:2px solid transparent;border-radius:0;background:none;color:var(--muted);font-weight:600}
+.tab.on{color:var(--ink);border-bottom-color:var(--accent)}
+a.dl{display:inline-block;padding:8px 14px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);text-decoration:none;font-size:14px;white-space:nowrap}
+.hidden{display:none}
+.stats{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:120px}
+.stat b{display:block;font-size:20px}
+.stat span{color:var(--muted);font-size:12.5px}
+.cov{border-left:4px solid var(--ok)}
+.cov h3{margin:0 0 6px;font-size:15px}
+.cov ul{margin:6px 0 0;padding-left:18px}
+details.grp{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 16px;margin-bottom:10px}
+details.grp>summary{font-weight:700;color:var(--ink);font-size:15px;margin:0}
+.doc{border-top:1px solid var(--line);padding:10px 0}
+.doc:first-of-type{border-top:0}
+.doc-h{display:flex;gap:8px;flex-wrap:wrap;align-items:baseline}
+.doc-h b{font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chips .chip{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.filter{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);font:inherit;margin-bottom:12px}
+#section{scroll-margin-top:12px}
+@media (max-width:600px){button{height:44px}.btns{width:100%}.btns button{flex:1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Keydemand V2 — Ask the business rules</h1>
+      <p id="info">Answers come only from the knowledge base, with links back to each source document.</p>
+    </div>
+    <a class="dl" href="/download" download>⬇ Download .md</a>
+  </header>
+  <nav class="tabs">
+    <button class="tab on" data-tab="ask-view" type="button">Ask</button>
+    <button class="tab" data-tab="topics-view" type="button">Topics covered</button>
+  </nav>
+
+  <section id="ask-view">
+
+  <form id="f">
+    <textarea id="q" placeholder="e.g. How many contact views does an Office Tenant get before the paywall?" autofocus></textarea>
+    <div class="btns">
+      <button class="primary" id="ask" type="submit">Ask</button>
+      <button id="search" type="button" title="Show matching passages without AI">Search</button>
+    </div>
+  </form>
+  <div class="hint"><kbd>Enter</kbd> to ask · <kbd>Shift</kbd>+<kbd>Enter</kbd> for a new line · Search shows the matching passages only, with no AI.
+    <div class="examples" id="ex"></div>
+  </div>
+
+  <div id="out"></div>
+  </section>
+
+  <section id="topics-view" class="hidden">
+    <div id="stats" class="stats"></div>
+    <div class="card cov" id="cov"></div>
+    <div id="section"></div>
+    <input class="filter" id="tf" placeholder="Filter topics, e.g. subscription, relevancy, Office Tenant…">
+    <div id="groups"></div>
+  </section>
+  <footer>Each source shows the document link, its section, the line range in KEYDEMAND_V2_BUSINESS_RULES.md, and the paragraphs before and after. Use “Copy search text” and Ctrl+F in the original document to find the exact spot.</footer>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const out = $("#out");
+const md = s => DOMPurify.sanitize(marked.parse(s || ""));
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+const EXAMPLES = [
+  "What happens when a brand doesn't respond to a contact request?",
+  "Subscription prices for agents by city tier",
+  "Which asset classes can a Brand Retail user explore?",
+  "What are the relevancy weights for Office?",
+  "What can a Super Admin do that a normal Admin can't?",
+  "BR-PG1-145",
+];
+$("#ex").innerHTML = EXAMPLES.map(e => `<button type="button" class="chip">${esc(e)}</button>`).join("");
+$("#ex").addEventListener("click", e => { if (e.target.classList.contains("chip")) { $("#q").value = e.target.textContent; run("ask"); }});
+
+fetch("/api/info").then(r => r.json()).then(i => {
+  $("#info").textContent = `${i.passages.toLocaleString()} passages from ${i.file} · answers by ${i.model}, only from the knowledge base, with links to each source document.`;
+}).catch(() => {});
+
+$("#q").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); run("ask"); }});
+$("#f").addEventListener("submit", e => { e.preventDefault(); run("ask"); });
+$("#search").addEventListener("click", () => run("search"));
+
+async function run(mode) {
+  const q = $("#q").value.trim();
+  if (!q) return;
+  $("#ask").disabled = $("#search").disabled = true;
+  out.innerHTML = `<div class="card spinner">${mode === "ask" ? "Reading the knowledge base and writing an answer… (usually 10–40 seconds)" : "Searching…"}</div>`;
+  try {
+    const r = mode === "ask"
+      ? await fetch("/api/ask", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({q})})
+      : await fetch("/api/search?q=" + encodeURIComponent(q));
+    const d = await r.json();
+    render(d, mode);
+  } catch (e) {
+    out.innerHTML = `<div class="card error">Couldn't reach the local server. Is it still running? (${esc(e.message)})</div>`;
+  } finally {
+    $("#ask").disabled = $("#search").disabled = false;
+  }
+}
+
+function render(d, mode) {
+  let h = "";
+  if (d.error) h += `<div class="card error">${esc(d.error)}</div>`;
+  if (d.answer !== undefined) {
+    const label = d.status === "needs_clarity" ? "⚠ Needs clarity" : "✓ Clear in the documents";
+    let ans = md(d.answer).replace(/\[(P\d+)\]/g, (m, p) => `<a class="cite" href="#src-${p}" data-p="${p}">${p}</a>`);
+    h += `<div class="card"><span class="status ${d.status}">${label}</span>${d.status_note ? ` <span class="meta">${esc(d.status_note)}</span>` : ""}
+      <div class="answer">${ans}</div>${d.truncated ? `<div class="meta">The answer was cut off. Try a narrower question.</div>` : ""}</div>`;
+  }
+  const list = d.citations || d.results || [];
+  if (list.length) {
+    h += `<h2 class="sec">${d.citations ? "Sources cited" : "Matching passages"} (${list.length})</h2>`;
+    h += list.map(source).join("");
+  } else if (d.answer !== undefined) {
+    h += `<div class="meta">No passages were cited.</div>`;
+  }
+  out.innerHTML = h;
+}
+
+function source(s) {
+  const where = [s.group, ...(s.path || [])].filter(Boolean).join(" › ");
+  const doc = s.doc_title
+    ? (s.doc_url ? `<a href="${esc(s.doc_url)}" target="_blank" rel="noopener">${esc(s.doc_title)}</a>` : esc(s.doc_title))
+    : "Knowledge base chapter";
+  return `<div class="card src" id="src-${s.label}">
+    <div class="src-head"><span class="src-label">${s.label}</span><span class="src-doc">${doc}</span>
+      ${s.doc_status ? `<span class="badge">${esc(s.doc_status)}</span>` : ""}</div>
+    <div class="meta">${esc(where)} · KB lines ${s.line_start}–${s.line_end}${s.br_ids.length ? " · " + s.br_ids.slice(0, 8).map(esc).join(", ") + (s.br_ids.length > 8 ? "…" : "") : ""}</div>
+    ${s.before ? `<div class="ctx">Before</div><div class="passage">${md(s.before)}</div>` : ""}
+    <div class="ctx">Passage</div><div class="passage main">${md(s.text)}</div>
+    ${s.after ? `<div class="ctx">After</div><div class="passage">${md(s.after)}</div>` : ""}
+    <div class="actions">
+      ${s.doc_url ? `<a href="${esc(s.doc_url)}" target="_blank" rel="noopener">Open source document ↗</a>` : ""}
+      ${s.search_phrase ? `<button type="button" data-copy="${esc(s.search_phrase)}">Copy search text</button>` : ""}
+      <button type="button" data-copy="${esc(`KEYDEMAND_V2_BUSINESS_RULES.md lines ${s.line_start}-${s.line_end}`)}">Copy KB line ref</button>
+    </div>
+    <details data-start="${s.line_start}" data-end="${s.line_end}"><summary>Show raw KB lines ${s.line_start}–${s.line_end}</summary></details>
+  </div>`;
+}
+
+out.addEventListener("click", async e => {
+  const c = e.target.closest("[data-copy]");
+  if (c) {
+    try { await navigator.clipboard.writeText(c.dataset.copy); const t = c.textContent; c.textContent = "Copied ✓"; setTimeout(() => c.textContent = t, 1200); } catch {}
+  }
+  const a = e.target.closest("a.cite");
+  if (a) {
+    const el = document.getElementById("src-" + a.dataset.p);
+    if (el) { e.preventDefault(); el.scrollIntoView({behavior: "smooth"}); el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1500); }
+  }
+});
+
+out.addEventListener("toggle", async e => {
+  const d = e.target;
+  if (d.tagName !== "DETAILS" || !d.open || d.dataset.loaded) return;
+  d.dataset.loaded = 1;
+  const r = await fetch(`/api/lines?start=${d.dataset.start}&end=${d.dataset.end}`).then(r => r.json());
+  const rows = r.lines.map((l, i) => {
+    const n = r.start + i, on = n >= r.hl_start && n <= r.hl_end;
+    return `<span class="${on ? "on" : ""}"><i>${n}</i>${esc(l)}</span>`;
+  }).join("");
+  d.insertAdjacentHTML("beforeend", `<pre class="lines">${rows}</pre>`);
+}, true);
+
+// ---- tabs ----
+document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => {
+  document.querySelectorAll(".tab").forEach(x => x.classList.toggle("on", x === t));
+  ["ask-view", "topics-view"].forEach(id => $("#" + id).classList.toggle("hidden", id !== t.dataset.tab));
+  if (t.dataset.tab === "topics-view") loadTopics();
+}));
+
+// ---- topics covered ----
+let TOPICS = null;
+async function loadTopics() {
+  if (TOPICS) return;
+  TOPICS = await fetch("/api/topics").then(r => r.json());
+  const s = TOPICS.summary;
+  $("#stats").innerHTML = [[s.groups, "topic groups"], [s.docs, "current documents"], [s.topics.toLocaleString(), "topics / sections"],
+    [s.rules.toLocaleString(), "business rules (BR IDs)"], [s.lines.toLocaleString(), "lines in the .md"]]
+    .map(([n, l]) => `<div class="stat"><b>${n}</b><span>${l}</span></div>`).join("");
+  $("#cov").innerHTML = `<h3>✓ Coverage: all ${s.docs} current documents in scope are in the knowledge base</h3>
+    <div class="meta">Each one was re-read from Drive and compared line by line with the .md. Remaining differences are formatting only (wide sheet rows split into tables, line breaks).</div>
+    <ul class="meta">
+      <li>Older versions are listed by name only. The latest version of each document is the one used.</li>
+      <li>Left out by choice: delivery plan, legal &amp; compliance, tracking &amp; marketing, test cases, client-discussion folders.</li>
+      <li>Not readable: the FAQ doc (Drive link broken), Figma, the SharePoint workbook, images. Questions on these are answered as “Needs clarity”.</li>
+    </ul>`;
+  renderGroups("");
+}
+
+function renderGroups(f) {
+  f = f.toLowerCase();
+  const match = t => !f || t.toLowerCase().includes(f);
+  const chip = (t, extra = "") => `<button type="button" class="chip" data-s="${t.line}" data-e="${t.end}" title="${esc(t.title)}">${esc(t.title)}${extra}</button>`;
+  const html = TOPICS.groups.filter(g => g.is_group || g.topics.length).map(g => {
+    const docs = g.docs.map(d => {
+      const tops = d.topics.filter(t => match(t.title) || match(d.title) || match(g.title));
+      if (f && !tops.length && !match(d.title)) return "";
+      return `<div class="doc"><div class="doc-h"><b>${d.doc_url ? `<a href="${esc(d.doc_url)}" target="_blank" rel="noopener">${esc(d.title)}</a>` : esc(d.title)}</b>
+        <span class="badge">${esc(d.status.split(" ")[0])}</span><span class="meta">${d.rules} rules · KB lines ${d.line}–${d.end}</span>
+        <button type="button" class="chip" data-s="${d.line}" data-e="${d.end}" title="${esc(d.title)}">Read whole document</button></div>
+        <div class="chips">${tops.map(t => chip(t)).join("")}</div></div>`;
+    }).join("");
+    const own = g.topics.filter(t => match(t.title) || match(g.title));
+    if (f && !docs && !own.length) return "";
+    const rules = g.docs.reduce((a, d) => a + d.rules, 0);
+    return `<details class="grp" ${f ? "open" : ""}><summary>${esc(g.title)}${g.is_group ? ` <span class="meta">· ${g.docs.length} docs · ${rules} rules</span>` : ""}</summary>
+      ${own.length ? `<div class="chips" style="margin:8px 0">${own.map(t => chip(t)).join("")}</div>` : ""}${docs}</details>`;
+  }).join("");
+  $("#groups").innerHTML = html || `<div class="meta">No topics match “${esc(f)}”. Try the Ask tab.</div>`;
+}
+$("#tf").addEventListener("input", e => renderGroups(e.target.value));
+
+$("#topics-view").addEventListener("click", async e => {
+  const c = e.target.closest("[data-s]");
+  if (!c) return;
+  const s = +c.dataset.s, end = +c.dataset.e;
+  const r = await fetch(`/api/lines?start=${s}&end=${end}&pad=0`).then(r => r.json());
+  const cut = end > r.end ? `<div class="meta">Showing lines ${r.start}–${r.end} of ${s}–${end}. Download the .md for the rest.</div>` : "";
+  $("#section").innerHTML = `<div class="card"><div class="src-head"><span class="src-doc">${esc(c.title || c.textContent)}</span>
+    <span class="meta">KB lines ${s}–${end}</span><button type="button" class="chip" id="closeSec">Close</button></div>
+    <div class="answer">${md(r.lines.join("\n"))}</div>${cut}</div>`;
+  $("#section").scrollIntoView({behavior: "smooth"});
+});
+$("#section").addEventListener("click", e => { if (e.target.id === "closeSec") $("#section").innerHTML = ""; });
+</script>
+</body>
+</html>

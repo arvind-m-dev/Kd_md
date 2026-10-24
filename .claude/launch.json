@@ -1,0 +1,7 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "kd-ask-kdmd", "runtimeExecutable": "uv", "runtimeArgs": ["run", "/Users/arvind/Documents/Work_projects/Kd_md/app/server.py"], "port": 8765 },
+    { "name": "kd-web", "runtimeExecutable": "npm", "runtimeArgs": ["--prefix", "/Users/arvind/Documents/Work_projects/Kd_md/web", "run", "dev", "--", "-p", "3010"], "port": 3010, "autoPort": false }
+  ]
+}
