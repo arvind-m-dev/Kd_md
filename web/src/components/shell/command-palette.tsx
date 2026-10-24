@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpenText, Hash, ListChecks, MessageCircleQuestion, Search } from "lucide-react";
+import { Bookmark, BookOpenText, Clock, Hash, Highlighter, ListChecks, MessageCircleQuestion, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import {
@@ -13,6 +13,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { StatusDot } from "@/components/kd/status";
+import { useLibrary } from "@/lib/library";
 import { NAV } from "./nav";
 
 interface RuleLite {
@@ -36,6 +37,7 @@ export function CommandPaletteProvider({ children }: { children: React.ReactNode
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [index, setIndex] = useState<Index | null>(null);
+  const lib = useLibrary();
 
   const openPalette = useCallback(() => setOpen(true), []);
 
@@ -65,6 +67,16 @@ export function CommandPaletteProvider({ children }: { children: React.ReactNode
     return [...byId, ...byText].slice(0, 25);
   })();
 
+  // Your own things first: bookmarks and highlights that match, or recent reading when nothing is typed.
+  const saved = q
+    ? [
+        ...lib.bookmarks.filter((b) => `${b.title} ${b.subtitle}`.toLowerCase().includes(q)).map((b) => ({ key: b.key, href: b.href, title: b.title, hint: b.subtitle, icon: Bookmark })),
+        ...lib.highlights
+          .filter((h) => `${h.exact} ${h.note}`.toLowerCase().includes(q))
+          .map((h) => ({ key: h.id, href: `${h.href}#hl-${h.id}`, title: h.exact.replace(/\s+/g, " ").slice(0, 90), hint: h.note || h.scopeTitle, icon: Highlighter })),
+      ].slice(0, 6)
+    : lib.recents.slice(0, 3).map((r) => ({ key: r.href, href: `${r.href}?resume`, title: r.title, hint: `${Math.round(r.progress * 100)}% read`, icon: Clock }));
+
   const go = (href: string) => {
     setOpen(false);
     setQuery("");
@@ -89,6 +101,17 @@ export function CommandPaletteProvider({ children }: { children: React.ReactNode
                   <Search />
                   <span className="truncate">Find rules matching “{query.trim()}”</span>
                 </CommandItem>
+              </CommandGroup>
+            )}
+            {saved.length > 0 && (
+              <CommandGroup heading={q ? "Your library" : "Continue reading"}>
+                {saved.map((x) => (
+                  <CommandItem key={x.key} value={`lib-${x.key}`} onSelect={() => go(x.href)}>
+                    <x.icon />
+                    <span className="truncate">{x.title}</span>
+                    <span className="truncate text-muted-foreground">{x.hint}</span>
+                  </CommandItem>
+                ))}
               </CommandGroup>
             )}
             {rules.length > 0 && (

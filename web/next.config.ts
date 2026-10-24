@@ -12,6 +12,8 @@ const nextConfig: NextConfig = {
     return [
       { source: "/md/:name(\\d{2}|conflicts|sources)\\.md", destination: "/api/md/group/:name" },
       { source: "/rules/:id(BR-[A-Za-z0-9]+-\\d+)\\.md", destination: "/api/md/rule/:id" },
+      // MCP server for AI tools (app/api/mcp).
+      { source: "/mcp", destination: "/api/mcp" },
     ];
   },
   partialPrefetching: true,

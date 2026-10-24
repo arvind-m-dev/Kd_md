@@ -1,6 +1,7 @@
 import {
-  BookOpenText,
   BookA,
+  Bookmark,
+  ListTree,
   FileStack,
   LayoutDashboard,
   ListChecks,
@@ -22,8 +23,9 @@ export interface NavItem {
 export const NAV: NavItem[] = [
   { href: "/", label: "Dashboard", hint: "Overview and numbers", icon: LayoutDashboard, primary: true },
   { href: "/ask", label: "Ask", hint: "Ask a question in plain words", icon: MessageCircleQuestion, primary: true },
-  { href: "/rules", label: "Rules", hint: "Browse and filter every rule", icon: ListChecks, primary: true },
-  { href: "/read", label: "Read", hint: "Read the source documents", icon: BookOpenText, primary: true },
+  { href: "/read", label: "Index", hint: "Every topic, document and section", icon: ListTree, primary: true },
+  { href: "/library", label: "Library", hint: "Your bookmarks, highlights and notes", icon: Bookmark, primary: true },
+  { href: "/rules", label: "Rules", hint: "Browse and filter every rule", icon: ListChecks },
   { href: "/conflicts", label: "Open questions", hint: "Decisions, conflicts, missing values", icon: Scale },
   { href: "/glossary", label: "Glossary", hint: "What the terms mean", icon: BookA },
   { href: "/sources", label: "Sources", hint: "Every Google Drive document", icon: FileStack },

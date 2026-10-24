@@ -21,7 +21,9 @@ const useWide = () => useSyncExternalStore(subscribe, () => window.matchMedia(mq
 export function SourcePanel({ passage, onClose }: { passage: PassageView | null; onClose: () => void }) {
   const wide = useWide();
   const p = passage;
-  const readHref = p?.doc && p.group ? `/read/${p.group}/${p.doc}` : p?.group ? `/read/${p.group}` : "/read";
+  const page = p?.doc && p.group ? `/read/${p.group}/${p.doc}` : p?.group ? `/read/${p.group}` : "/read";
+  // Opens the document scrolled to this passage, briefly highlighted.
+  const readHref = p?.searchPhrase && p.doc ? `${page}?${new URLSearchParams({ find: p.searchPhrase })}` : page;
   return (
     <Sheet open={!!p} onOpenChange={(o) => !o && onClose()}>
       <SheetContent
@@ -48,7 +50,7 @@ export function SourcePanel({ passage, onClose }: { passage: PassageView | null;
                   </a>
                 )}
                 <Link href={readHref} className={buttonVariants({ variant: "outline", size: "sm" })}>
-                  <FileText /> Read here
+                  <FileText /> Show in document
                 </Link>
                 {p.searchPhrase && <CopyButton text={p.searchPhrase} label="Copy text to find (Ctrl+F)" />}
               </div>

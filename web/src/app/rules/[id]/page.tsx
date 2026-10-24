@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { CopyButton } from "@/components/kd/copy-button";
 import { GlossaryText } from "@/components/kd/glossary-text";
+import { BookmarkButton } from "@/components/library/bookmark-button";
+import { HighlightScope } from "@/components/library/highlight-scope";
 import { FadeIn } from "@/components/kd/motion";
 import { Page } from "@/components/kd/page-header";
 import { askAboutRule, RuleCard } from "@/components/kd/rule-card";
@@ -63,15 +65,17 @@ async function RuleDetail({ params }: { params: PageProps<"/rules/[id]">["params
       </nav>
 
       <FadeIn>
-        <article data-askable className="rounded-2xl border bg-card p-5 sm:p-8">
+        <article className="rounded-2xl border bg-card p-5 sm:p-8">
           <div className="flex flex-wrap items-center gap-2">
             <h1 className="font-mono text-sm font-semibold">{rule.id}</h1>
             {rule.tag && <span className="rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">{rule.tag}</span>}
             <StatusBadge status={rule.status} className="ml-auto" />
           </div>
-          <p className="mt-4 text-lg leading-relaxed text-pretty sm:text-xl">
-            <GlossaryText text={rule.text} />
-          </p>
+          <HighlightScope scope={`rule:${rule.id}`} title={`${rule.id} — ${group.title}`}>
+            <p className="mt-4 text-lg leading-relaxed text-pretty sm:text-xl">
+              <GlossaryText text={rule.text} />
+            </p>
+          </HighlightScope>
           <div className="mt-6 flex flex-wrap gap-2">
             <Link href={askAboutRule(rule.id)} className={buttonVariants({ size: "sm" })}>
               <MessageCircleQuestion /> Ask about this rule
@@ -84,6 +88,9 @@ async function RuleDetail({ params }: { params: PageProps<"/rules/[id]">["params
                 <ExternalLink /> Open source document
               </a>
             )}
+            <BookmarkButton
+              item={{ key: `rule:${rule.id}`, kind: "rule", title: rule.id, subtitle: rule.text.slice(0, 140), href: `/rules/${rule.id}` }}
+            />
             <CopyButton url={`/rules/${rule.id}.md`} label="Copy as Markdown" />
             <a href={`/rules/${rule.id}.md`} className={buttonVariants({ variant: "ghost", size: "sm" })}>
               <FileText /> .md

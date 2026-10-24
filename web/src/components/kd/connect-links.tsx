@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink, Plug } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { useSyncExternalStore } from "react";
 import { CopyButton } from "@/components/kd/copy-button";
 import { Stagger, StaggerItem } from "@/components/kd/motion";
@@ -62,17 +62,6 @@ export function ConnectLinks({ groups }: { groups: { id: string; title: string }
               </div>
             </details>
           </div>
-        </section>
-      </StaggerItem>
-      <StaggerItem>
-        <section className="rounded-xl border border-dashed p-5">
-          <h2 className="flex items-center gap-2 font-semibold">
-            <Plug className="size-4 text-primary" /> 3. Connect as a tool (MCP)
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Coming next: an MCP connector so Claude, ChatGPT and Cursor can search rules, open a rule and check conflicts by
-            themselves.
-          </p>
         </section>
       </StaggerItem>
     </Stagger>

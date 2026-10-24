@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { isValidElement } from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { cn } from "@/lib/utils";
@@ -42,6 +43,12 @@ export function AnswerMarkdown({
           {children}
         </a>
       );
+    },
+    // The model's one-line summary ("**In short:** …") stands out so readers can stop there.
+    p: ({ children }) => {
+      const first = Array.isArray(children) ? children[0] : children;
+      const lead = isValidElement<{ children?: unknown }>(first) && first.type === "strong" ? String(first.props.children ?? "") : "";
+      return <p className={/^in short:?$/i.test(lead.trim()) ? "kd-tldr" : undefined}>{children}</p>;
     },
     table: ({ children }) => (
       <div className="kd-table">

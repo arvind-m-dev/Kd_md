@@ -7,21 +7,25 @@ import { Suspense, useState } from "react";
 import { Kbd } from "@/components/ui/kbd";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { AuroraBackground } from "@/components/kd/fx";
 import { cn } from "@/lib/utils";
 import { CommandPaletteProvider, useOpenPalette } from "./command-palette";
 import { NAV, isActive } from "./nav";
-import { SelectionAsk } from "./selection-ask";
+import { SelectionToolbar } from "./selection-toolbar";
 import { ThemeToggle } from "./theme-toggle";
 
 function Logo({ compact = false }: { compact?: boolean }) {
   return (
     <Link href="/" className="flex items-center gap-2.5 rounded-lg outline-none focus-visible:ring-3 focus-visible:ring-ring/50">
-      <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-primary text-sm font-bold tracking-tight text-primary-foreground">
+      <span
+        className="kd-shine grid size-9 shrink-0 place-items-center rounded-xl font-display text-sm font-bold tracking-tight text-white shadow-lg"
+        style={{ background: "linear-gradient(135deg, var(--primary), var(--glow-2))", boxShadow: "0 8px 22px -8px var(--primary)" }}
+      >
         KD
       </span>
       {!compact && (
         <span className="leading-tight">
-          <span className="block text-sm font-semibold">Keydemand Rules</span>
+          <span className="block font-display text-sm font-semibold">Keydemand Rules</span>
           <span className="block text-xs text-muted-foreground">V2 · Phase 1</span>
         </span>
       )}
@@ -36,7 +40,7 @@ function SearchButton({ className }: { className?: string }) {
       type="button"
       onClick={open}
       className={cn(
-        "flex h-9 items-center gap-2 rounded-lg border bg-background px-3 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
+        "flex h-10 items-center gap-2 rounded-xl border bg-card/70 px-3.5 text-sm shadow-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
         className,
       )}
     >
@@ -50,7 +54,7 @@ function SearchButton({ className }: { className?: string }) {
 /** Desktop: full sidebar with labels (lg+). Tablet: icon rail with tooltips (md). Phone: hidden. */
 function Sidebar({ pathname }: { pathname: string }) {
   return (
-    <aside className="sticky top-0 hidden h-dvh shrink-0 flex-col border-r bg-sidebar md:flex md:w-16 lg:w-60">
+    <aside className="sticky top-0 hidden h-dvh shrink-0 flex-col border-r bg-sidebar backdrop-blur-xl md:flex md:w-16 lg:w-64">
       <div className="flex h-16 items-center px-4 lg:px-5">
         <span className="lg:hidden">
           <Logo compact />
@@ -67,13 +71,26 @@ function Sidebar({ pathname }: { pathname: string }) {
               href={n.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "relative flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium text-sidebar-foreground/75 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                "relative flex h-11 items-center gap-3 rounded-xl px-2.5 text-sm font-medium text-sidebar-foreground/75 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
                 "justify-center lg:justify-start",
                 active && "bg-sidebar-accent text-sidebar-accent-foreground",
               )}
             >
-              {active && <span className="absolute inset-y-2 left-0 w-1 rounded-r-full bg-sidebar-primary" aria-hidden />}
-              <n.icon className="size-[18px] shrink-0" />
+              {active && (
+                <span
+                  className="absolute inset-y-2 left-0 w-1 rounded-r-full"
+                  style={{ background: "linear-gradient(var(--primary), var(--glow-2))" }}
+                  aria-hidden
+                />
+              )}
+              <span
+                className={cn(
+                  "grid size-7 shrink-0 place-items-center rounded-lg transition-colors",
+                  active ? "bg-primary text-primary-foreground shadow-md" : "bg-sidebar-accent/60 text-sidebar-foreground/70",
+                )}
+              >
+                <n.icon className="size-4" />
+              </span>
               <span className="hidden lg:inline">{n.label}</span>
               <span className="sr-only lg:hidden">{n.label}</span>
             </Link>
@@ -111,7 +128,7 @@ function BottomNav({ pathname }: { pathname: string }) {
     <>
       <nav
         aria-label="Main"
-        className="fixed inset-x-0 bottom-0 z-40 flex h-16 border-t bg-background/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md md:hidden"
+        className="kd-glass fixed inset-x-0 bottom-0 z-40 flex h-16 border-t pb-[env(safe-area-inset-bottom)] md:hidden"
       >
         {primary.map((n) => {
           const active = isActive(pathname, n.href);
@@ -175,6 +192,7 @@ function PathnameReader({ children }: { children: (pathname: string) => React.Re
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <CommandPaletteProvider>
+      <AuroraBackground />
       <a
         href="#main"
         className="sr-only z-50 rounded-md bg-primary px-3 py-2 text-primary-foreground focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
@@ -184,7 +202,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <div className="flex min-h-dvh">
         <WithPathname>{(p) => <Sidebar pathname={p} />}</WithPathname>
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b bg-background/85 px-4 backdrop-blur-md sm:px-6">
+          <header className="kd-glass sticky top-0 z-30 flex h-16 items-center gap-3 border-b px-4 sm:px-6">
             <span className="md:hidden">
               <Logo compact />
             </span>
@@ -199,7 +217,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       </div>
       <WithPathname>{(p) => <BottomNav pathname={p} />}</WithPathname>
-      <SelectionAsk />
+      <SelectionToolbar />
     </CommandPaletteProvider>
   );
 }

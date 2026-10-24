@@ -1,192 +1,223 @@
-import { ArrowRight, CircleAlert, CircleCheck, FileStack, ListChecks, Plug, Scale } from "lucide-react";
+import {
+  ArrowRight,
+  Bookmark,
+  CircleAlert,
+  FileStack,
+  ListChecks,
+  ListTree,
+  MessageCircleQuestion,
+  Plug,
+  Scale,
+  Sparkles,
+  type LucideIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { AskBox } from "@/components/kd/ask-box";
-import { CountUp, FadeIn, GrowBar, Stagger, StaggerItem } from "@/components/kd/motion";
+import { ProgressRing, SpotlightCard, TopicIcon } from "@/components/kd/fx";
+import { CountUp, FadeIn, Stagger, StaggerItem } from "@/components/kd/motion";
 import { Page } from "@/components/kd/page-header";
+import { ContinueReading } from "@/components/library/continue-reading";
 import { kd } from "@/lib/kd";
 import { SUGGESTED_QUESTIONS } from "@/lib/suggestions";
+import { topicStyle } from "@/lib/topic-style";
 
-
-function Tile({
-  label,
-  value,
-  note,
-  href,
-  icon: Icon,
-  tone = "default",
-}: {
-  label: string;
-  value: number;
-  note: string;
-  href: string;
-  icon: React.ComponentType<{ className?: string }>;
-  tone?: "default" | "unclear";
-}) {
+/** A glowing icon tile in a given hue. */
+function IconTile({ icon: Icon, hue }: { icon: LucideIcon; hue: number }) {
   return (
-    <Link
-      href={href}
-      className="group flex flex-col gap-3 rounded-xl border bg-card p-4 transition-all hover:-translate-y-0.5 hover:shadow-md focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none sm:p-5"
+    <span
+      aria-hidden
+      className="grid size-11 shrink-0 place-items-center rounded-xl text-white"
+      style={{
+        background: `linear-gradient(135deg, oklch(0.74 0.16 ${hue}), oklch(0.56 0.2 ${(hue + 35) % 360}))`,
+        boxShadow: `0 8px 22px -8px oklch(0.65 0.2 ${hue} / 0.7), inset 0 1px 0 oklch(1 0 0 / 0.35)`,
+      }}
     >
-      <span className="flex items-center justify-between text-sm text-muted-foreground">
-        {label}
-        <Icon className={tone === "unclear" ? "size-4 text-unclear" : "size-4 text-primary"} />
-      </span>
-      <CountUp value={value} className="text-3xl font-semibold tracking-tight tabular-nums sm:text-4xl" />
-      <span className="flex items-center gap-1 text-xs text-muted-foreground group-hover:text-foreground">
-        {note} <ArrowRight className="size-3 transition-transform group-hover:translate-x-0.5" />
-      </span>
+      <Icon className="size-5" strokeWidth={2.2} />
+    </span>
+  );
+}
+
+const ACTIONS: { href: string; title: string; text: string; icon: LucideIcon; hue: number }[] = [
+  { href: "/ask", title: "Ask AI", text: "Plain answers with sources", icon: Sparkles, hue: 268 },
+  { href: "/read", title: "Index", text: "Every topic and section", icon: ListTree, hue: 200 },
+  { href: "/library", title: "My library", text: "Highlights, notes, saved", icon: Bookmark, hue: 330 },
+  { href: "/conflicts", title: "Open questions", text: "What still needs a decision", icon: Scale, hue: 60 },
+];
+
+function Stat({ label, value, note, href, icon, hue }: { label: string; value: number; note: string; href: string; icon: LucideIcon; hue: number }) {
+  return (
+    <Link href={href} className="group block h-full rounded-2xl focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none">
+      <SpotlightCard hue={hue} className="flex h-full flex-col gap-3 p-4 group-hover:-translate-y-0.5 sm:p-5">
+        <span className="flex items-center justify-between gap-2 text-sm text-muted-foreground">
+          {label}
+          <IconTile icon={icon} hue={hue} />
+        </span>
+        <CountUp value={value} className="font-display text-3xl font-semibold tracking-tight tabular-nums sm:text-4xl" />
+        <span className="flex items-center gap-1 text-xs text-muted-foreground group-hover:text-foreground">
+          {note} <ArrowRight className="size-3 transition-transform group-hover:translate-x-0.5" />
+        </span>
+      </SpotlightCard>
     </Link>
   );
 }
 
 export default function Dashboard() {
   const { stats, groups, decisions, changelog } = kd;
-  const maxRules = Math.max(...groups.map((g) => g.ruleCount));
   const clearPct = Math.round(((stats.rules - stats.needsClarity) / stats.rules) * 100);
   const openDecisions = decisions.filter((d) => d.open);
 
   return (
     <Page wide>
       {/* Hero: ask straight away */}
-      <FadeIn className="relative overflow-hidden rounded-2xl border bg-gradient-to-br from-accent via-background to-background p-5 sm:p-8">
-        <div aria-hidden className="pointer-events-none absolute -top-24 -right-24 size-72 rounded-full bg-primary/10 blur-3xl" />
-        <p className="text-sm font-medium text-primary">Keydemand V2 · Phase 1</p>
-        <h1 className="mt-1 max-w-2xl text-2xl font-semibold tracking-tight text-balance sm:text-4xl">
-          Every business rule, in plain words.
-        </h1>
-        <p className="mt-2 max-w-2xl text-pretty text-muted-foreground">
-          {stats.rules.toLocaleString("en")} rules from {stats.docs} documents. Ask a question, or browse by topic. Every answer
-          shows where it comes from.
-        </p>
-        <AskBox className="mt-5 max-w-2xl" suggestions={SUGGESTED_QUESTIONS} />
+      <FadeIn>
+        <SpotlightCard className="p-6 sm:p-10">
+          <div aria-hidden className="pointer-events-none absolute -top-28 -right-20 size-80 rounded-full opacity-50 blur-3xl" style={{ background: "var(--glow-2)" }} />
+          <div aria-hidden className="pointer-events-none absolute -bottom-32 left-10 size-72 rounded-full opacity-40 blur-3xl" style={{ background: "var(--glow-1)" }} />
+          <p className="inline-flex items-center gap-2 rounded-full border bg-background/60 px-3 py-1 text-xs font-medium text-primary backdrop-blur">
+            <Sparkles className="size-3.5" /> Keydemand V2 · Phase 1
+          </p>
+          <h1 className="kd-gradient-text mt-4 max-w-3xl font-display text-3xl font-bold tracking-tight text-balance sm:text-5xl">
+            Every business rule, in plain words.
+          </h1>
+          <p className="mt-3 max-w-2xl text-pretty text-muted-foreground sm:text-lg">
+            {stats.rules.toLocaleString("en")} rules from {stats.docs} documents. Ask a question, explore the index, and highlight what
+            matters. Every answer shows exactly where it comes from.
+          </p>
+          <AskBox className="mt-6 max-w-2xl" suggestions={SUGGESTED_QUESTIONS} />
+        </SpotlightCard>
       </FadeIn>
+
+      {/* Quick actions */}
+      <Stagger className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        {ACTIONS.map((a) => (
+          <StaggerItem key={a.href} className="h-full">
+            <Link href={a.href} className="group block h-full rounded-2xl focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none">
+              <SpotlightCard hue={a.hue} className="flex h-full items-center gap-3 p-4 group-hover:-translate-y-0.5">
+                <IconTile icon={a.icon} hue={a.hue} />
+                <span className="min-w-0">
+                  <span className="block font-display font-semibold">{a.title}</span>
+                  <span className="block text-xs text-muted-foreground">{a.text}</span>
+                </span>
+              </SpotlightCard>
+            </Link>
+          </StaggerItem>
+        ))}
+      </Stagger>
+
+      <ContinueReading className="mt-6" />
 
       {/* Headline numbers */}
       <Stagger className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-        <StaggerItem>
-          <Tile label="Rules" value={stats.rules} note="Browse all rules" href="/rules" icon={ListChecks} />
+        <StaggerItem className="h-full">
+          <Stat label="Rules" value={stats.rules} note="Browse all rules" href="/rules" icon={ListChecks} hue={268} />
         </StaggerItem>
-        <StaggerItem>
-          <Tile label="Source documents" value={stats.docs} note={`${stats.groups} topic groups`} href="/sources" icon={FileStack} />
+        <StaggerItem className="h-full">
+          <Stat label="Documents" value={stats.docs} note={`${stats.groups} topic groups`} href="/sources" icon={FileStack} hue={200} />
         </StaggerItem>
-        <StaggerItem>
-          <Tile
-            label="Rules needing clarity"
-            value={stats.needsClarity}
-            note={`${clearPct}% of rules are clear`}
-            href="/rules?status=needs-clarity"
-            icon={CircleAlert}
-            tone="unclear"
-          />
+        <StaggerItem className="h-full">
+          <Stat label="Need clarity" value={stats.needsClarity} note={`${clearPct}% of rules are clear`} href="/rules?status=needs-clarity" icon={CircleAlert} hue={65} />
         </StaggerItem>
-        <StaggerItem>
-          <Tile
-            label="Open decisions"
-            value={stats.openDecisions}
-            note={`${stats.openConflicts} open conflicts`}
-            href="/conflicts"
-            icon={Scale}
-            tone="unclear"
-          />
+        <StaggerItem className="h-full">
+          <Stat label="Open decisions" value={stats.openDecisions} note={`${stats.openConflicts} open conflicts`} href="/conflicts" icon={Scale} hue={20} />
         </StaggerItem>
       </Stagger>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-5">
-        {/* Rules per group: one bar per group, split into clear and needs-clarity */}
-        <FadeIn delay={0.1} className="rounded-xl border bg-card p-4 sm:p-6 lg:col-span-3">
-          <div className="flex flex-wrap items-end justify-between gap-2">
-            <div>
-              <h2 className="font-semibold">Rules by topic</h2>
-              <p className="text-sm text-muted-foreground">Tap a topic to see its rules.</p>
-            </div>
-            <div className="flex gap-3 text-xs text-muted-foreground" aria-hidden>
-              <span className="flex items-center gap-1.5">
-                <CircleCheck className="size-3.5 text-primary" /> Clear
-              </span>
-              <span className="flex items-center gap-1.5">
-                <CircleAlert className="size-3.5 text-unclear" /> Needs clarity
-              </span>
-            </div>
+      {/* Topics as cards */}
+      <section className="mt-10">
+        <div className="mb-4 flex flex-wrap items-end justify-between gap-2">
+          <div>
+            <h2 className="font-display text-xl font-semibold">Explore by topic</h2>
+            <p className="text-sm text-muted-foreground">The ring shows how much of each topic is settled.</p>
           </div>
-          <ul className="mt-5 flex flex-col gap-1">
-            {groups.map((g, i) => {
-              const clear = g.ruleCount - g.needsClarity;
-              return (
-                <li key={g.id}>
-                  <Link
-                    href={`/rules?group=${g.id}`}
-                    title={`${g.title}: ${g.ruleCount} rules, ${clear} clear, ${g.needsClarity} need clarity`}
-                    className="group grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1.5 rounded-lg px-2 py-2 hover:bg-accent sm:grid-cols-[minmax(0,15rem)_1fr_auto]"
-                  >
-                    <span className="truncate text-sm">
-                      <span className="mr-1.5 font-mono text-xs text-muted-foreground">{g.id}</span>
-                      {g.title}
+          <Link href="/read" className="inline-flex items-center gap-1 text-sm font-medium text-primary">
+            Full index <ArrowRight className="size-3.5" />
+          </Link>
+        </div>
+        <Stagger className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          {groups.map((g) => {
+            const { hue, short } = topicStyle(g.id);
+            const pct = Math.round(((g.ruleCount - g.needsClarity) / Math.max(g.ruleCount, 1)) * 100);
+            return (
+              <StaggerItem key={g.id} className="h-full">
+                <Link href={`/read/${g.id}`} className="group block h-full rounded-2xl focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none">
+                  <SpotlightCard hue={hue} className="flex h-full items-start gap-3.5 p-4 group-hover:-translate-y-0.5 sm:p-5">
+                    <TopicIcon group={g.id} />
+                    <span className="min-w-0 flex-1">
+                      <span className="text-xs font-medium tracking-wide uppercase" style={{ color: `oklch(0.62 0.16 ${hue})` }}>
+                        {g.id} · {short}
+                      </span>
+                      <span className="mt-0.5 line-clamp-2 block leading-snug font-medium text-balance">{g.title}</span>
+                      <span className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                        <span>{g.docCount} docs</span>
+                        <span>{g.ruleCount} rules</span>
+                        {g.needsClarity > 0 && <span className="text-unclear-ink">{g.needsClarity} unclear</span>}
+                      </span>
                     </span>
-                    <span className="order-last col-span-2 flex h-2.5 gap-0.5 sm:order-none sm:col-span-1">
-                      <GrowBar pct={(clear / maxRules) * 100} delay={i * 0.04} className="h-full rounded-l-sm bg-primary/80 group-hover:bg-primary" />
-                      {g.needsClarity > 0 && (
-                        <GrowBar pct={(g.needsClarity / maxRules) * 100} delay={i * 0.04 + 0.2} className="h-full rounded-r-sm bg-unclear" />
-                      )}
-                    </span>
-                    <span className="text-right text-sm tabular-nums">
-                      {g.ruleCount}
-                      {g.needsClarity > 0 && <span className="ml-1.5 text-xs text-unclear-ink">({g.needsClarity})</span>}
-                    </span>
+                    <ProgressRing pct={pct} hue={hue} label={`${pct}%`} />
+                  </SpotlightCard>
+                </Link>
+              </StaggerItem>
+            );
+          })}
+        </Stagger>
+      </section>
+
+      <div className="mt-10 grid gap-6 lg:grid-cols-5">
+        {/* What still needs a decision */}
+        <FadeIn delay={0.1} className="lg:col-span-3">
+          <SpotlightCard hue={60} className="flex h-full flex-col p-5 sm:p-6">
+            <h2 className="flex items-center gap-3 font-display font-semibold">
+              <IconTile icon={Scale} hue={60} /> Waiting on a decision
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">Until these are decided, related answers say “needs clarity”.</p>
+            <ul className="mt-3 flex flex-col divide-y">
+              {openDecisions.slice(0, 6).map((d) => (
+                <li key={d.id}>
+                  <Link href={`/conflicts#${d.id}`} className="group flex items-center gap-3 py-3 hover:text-primary">
+                    <span className="shrink-0 rounded-md bg-unclear-soft px-1.5 py-0.5 font-mono text-xs text-unclear-ink">{d.id}</span>
+                    <span className="flex-1 text-sm leading-snug">{d.title}</span>
+                    <ArrowRight className="size-3.5 opacity-0 transition-opacity group-hover:opacity-100" />
                   </Link>
                 </li>
-              );
-            })}
-          </ul>
-        </FadeIn>
-
-        {/* What still needs a decision */}
-        <FadeIn delay={0.15} className="flex flex-col rounded-xl border bg-card p-4 sm:p-6 lg:col-span-2">
-          <h2 className="font-semibold">Waiting on a decision</h2>
-          <p className="text-sm text-muted-foreground">Until these are decided, related answers say “needs clarity”.</p>
-          <ul className="mt-4 flex flex-col divide-y">
-            {openDecisions.slice(0, 6).map((d) => (
-              <li key={d.id}>
-                <Link href={`/conflicts#${d.id}`} className="flex gap-3 py-3 hover:text-primary">
-                  <span className="mt-0.5 shrink-0 font-mono text-xs text-unclear-ink">{d.id}</span>
-                  <span className="text-sm leading-snug">{d.title}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <Link href="/conflicts" className="mt-auto inline-flex items-center gap-1 pt-3 text-sm font-medium text-primary">
-            All {stats.openDecisions} open decisions <ArrowRight className="size-3.5" />
-          </Link>
-        </FadeIn>
-      </div>
-
-      <div className="mt-6 grid gap-6 lg:grid-cols-5">
-        <FadeIn delay={0.2} className="rounded-xl border bg-card p-4 sm:p-6 lg:col-span-3">
-          <h2 className="font-semibold">Latest updates</h2>
-          <ul className="mt-3 flex flex-col gap-3">
-            {changelog
-              .slice(-3)
-              .reverse()
-              .map((c, i) => (
-                <li key={i} className="flex gap-3 text-sm">
-                  <span className="shrink-0 tabular-nums text-muted-foreground">{c.date}</span>
-                  <span className="line-clamp-3 text-pretty">{c.change.replace(/`/g, "")}</span>
-                </li>
               ))}
-          </ul>
+            </ul>
+            <Link href="/conflicts" className="mt-auto inline-flex items-center gap-1 pt-3 text-sm font-medium text-primary">
+              All {stats.openDecisions} open decisions <ArrowRight className="size-3.5" />
+            </Link>
+          </SpotlightCard>
         </FadeIn>
-        <FadeIn delay={0.25} className="flex flex-col justify-between gap-4 rounded-xl border bg-card p-4 sm:p-6 lg:col-span-2">
-          <div>
-            <h2 className="flex items-center gap-2 font-semibold">
-              <Plug className="size-4 text-primary" /> Use it from any AI
-            </h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Claude, ChatGPT and other tools can read these rules directly as Markdown.
-            </p>
-          </div>
-          <Link href="/connect" className="inline-flex items-center gap-1 text-sm font-medium text-primary">
-            Connect an AI tool <ArrowRight className="size-3.5" />
-          </Link>
-        </FadeIn>
+
+        <div className="flex flex-col gap-6 lg:col-span-2">
+          <FadeIn delay={0.15}>
+            <SpotlightCard className="p-5 sm:p-6">
+              <h2 className="font-display font-semibold">Latest updates</h2>
+              <ol className="relative mt-4 flex flex-col gap-4 border-l pl-5">
+                {changelog
+                  .slice(-3)
+                  .reverse()
+                  .map((c, i) => (
+                    <li key={i} className="relative text-sm">
+                      <span aria-hidden className="absolute top-1.5 -left-[25px] size-2.5 rounded-full bg-primary ring-4 ring-background" />
+                      <span className="block text-xs text-muted-foreground tabular-nums">{c.date}</span>
+                      <span className="line-clamp-3 text-pretty">{c.change.replace(/`/g, "")}</span>
+                    </li>
+                  ))}
+              </ol>
+            </SpotlightCard>
+          </FadeIn>
+          <FadeIn delay={0.2}>
+            <Link href="/connect" className="group block rounded-2xl focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none">
+              <SpotlightCard hue={175} className="flex items-center gap-4 p-5 group-hover:-translate-y-0.5">
+                <IconTile icon={Plug} hue={175} />
+                <span className="min-w-0 flex-1">
+                  <span className="block font-display font-semibold">Plug into any AI</span>
+                  <span className="block text-sm text-muted-foreground">Claude, ChatGPT, Cursor via MCP or Markdown.</span>
+                </span>
+                <MessageCircleQuestion className="size-5 text-muted-foreground transition-transform group-hover:scale-110" />
+              </SpotlightCard>
+            </Link>
+          </FadeIn>
+        </div>
       </div>
     </Page>
   );

@@ -1,11 +1,13 @@
 # Keydemand Rules (web)
 
-Next.js app for the Keydemand V2 Phase 1 business rules: UI for people, Markdown for AI tools.
+Next.js app for the Keydemand V2 Phase 1 business rules: UI for people, Markdown and an MCP server for AI tools.
+
+What people get: an **Index** of every topic, document and section; a **reader** with highlights in neon colours, notes, bookmarks and reading progress; **Ask** with one-line "In short" answers and cited sources that jump to the exact passage; a **Library** of everything saved; and six themes (Light, Dark, Aurora, Ocean, Sunset, Forest). See [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ## Run
 
 ```bash
-cp .env.example .env.local   # add ANTHROPIC_API_KEY for Ask
+cp .env.example .env.local   # pick the AI for Ask (Claude by default) and add its key
 npm install
 npm run dev                  # http://localhost:3000
 ```
@@ -24,3 +26,17 @@ npm run dev                  # http://localhost:3000
 | `GET /api/search?q=&k=` | BM25 passages with source details (no AI) |
 | `GET /api/lines?start=&end=&pad=` | Raw kd.md lines |
 | `POST /api/ask` | Streamed answer (NDJSON) with `[P#]` citations and Clear / Needs clarity status |
+| `POST /mcp` | MCP server (Streamable HTTP): 7 read-only tools — search, get/find rules, list topics, read a document, open questions, glossary |
+| `GET /api/ai` | Which AI answers Ask, and whether it is configured |
+
+## AI for Ask
+
+Set `KD_AI_PROVIDER` to `anthropic` (default), `openai`, `openrouter`, `groq`, `ollama` or `custom` (any OpenAI-compatible URL in `KD_AI_BASE_URL`), plus `KD_MODEL` and the key. See `.env.example`.
+
+## Connect an AI tool (MCP)
+
+```bash
+claude mcp add --transport http keydemand-rules http://localhost:3000/mcp
+```
+
+Cursor, VS Code, Claude.ai and ChatGPT setups are on the app's **Connect AI** page. Set `KD_MCP_TOKEN` to require a bearer token.

@@ -1,10 +1,12 @@
 // KD Markdown rendered for people: wide tables scroll, rule IDs link to their rule page,
 // and each rule line gets an anchor (#br-rel-001) so links can jump straight to it.
-import type { Element } from "hast";
+// With `section`, headings also get bookmark and copy-link buttons.
+import type { Element, ElementContent } from "hast";
 import Link from "next/link";
 import ReactMarkdown, { type Components } from "react-markdown";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
+import { SectionActions } from "@/components/library/section-actions";
 import { getRule } from "@/lib/kd";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +26,9 @@ function withoutNode<T extends { node?: unknown }>(props: T): Omit<T, "node"> {
   delete rest.node;
   return rest;
 }
+
+const nodeText = (n: ElementContent | Element): string =>
+  n.type === "text" ? n.value : n.type === "element" ? n.children.map(nodeText).join("") : "";
 
 const components: Components = {
   table: (props) => (
@@ -58,10 +63,35 @@ const components: Components = {
   },
 };
 
-export function Markdown({ children, className }: { children: string; className?: string }) {
+type HeadingTag = "h2" | "h3" | "h4" | "h5";
+
+function withSectionActions(section: { href: string; pageTitle: string }): Components {
+  const heading = (Tag: HeadingTag): Components[HeadingTag] =>
+    function Heading({ node, children, id, ...props }) {
+      if (!id || !node) return <Tag id={id} {...props}>{children}</Tag>;
+      return (
+        <Tag id={id} {...props} className="kd-heading">
+          <span>{children}</span>
+          <SectionActions href={section.href} slug={id} title={nodeText(node).trim()} pageTitle={section.pageTitle} />
+        </Tag>
+      );
+    };
+  return { ...components, h2: heading("h2"), h3: heading("h3"), h4: heading("h4"), h5: heading("h5") };
+}
+
+export function Markdown({
+  children,
+  className,
+  section,
+}: {
+  children: string;
+  className?: string;
+  /** The page this Markdown is on, to give headings bookmark / copy-link buttons. */
+  section?: { href: string; pageTitle: string };
+}) {
   return (
     <div className={cn("kd-prose", className)}>
-      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSlug]} components={components}>
+      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSlug]} components={section ? withSectionActions(section) : components}>
         {children}
       </ReactMarkdown>
     </div>

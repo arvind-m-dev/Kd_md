@@ -1,20 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { JetBrains_Mono, Literata, Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
 import { GlossaryProvider } from "@/components/kd/glossary-text";
 import { Providers } from "@/components/providers";
 import { AppShell } from "@/components/shell/app-shell";
 import { glossaryAliases } from "@/lib/glossary-terms";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const body = Plus_Jakarta_Sans({ variable: "--font-body", subsets: ["latin"] });
+const display = Space_Grotesk({ variable: "--font-display", subsets: ["latin"] });
+const code = JetBrains_Mono({ variable: "--font-code", subsets: ["latin"] });
+// Optional serif for long reading (reader "Text" menu).
+const book = Literata({ variable: "--font-book", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: { default: "Keydemand Rules", template: "%s · Keydemand Rules" },
@@ -31,7 +27,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang="en" suppressHydrationWarning className={`${body.variable} ${display.variable} ${code.variable} ${book.variable} h-full antialiased`}>
       <body className="min-h-full">
         <Providers>
           <GlossaryProvider aliases={glossaryAliases}>

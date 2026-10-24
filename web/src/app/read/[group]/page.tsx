@@ -4,6 +4,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Markdown } from "@/components/kd/markdown";
+import { BookmarkButton } from "@/components/library/bookmark-button";
+import { HighlightScope } from "@/components/library/highlight-scope";
 import { FadeIn, Stagger, StaggerItem } from "@/components/kd/motion";
 import { Page, PageHeader } from "@/components/kd/page-header";
 import { buttonVariants } from "@/components/ui/button";
@@ -34,6 +36,7 @@ async function GroupContent({ params }: { params: PageProps<"/read/[group]">["pa
         <Link href={`/rules?group=${g.id}`} className={buttonVariants({ variant: "outline", size: "sm" })}>
           See the rules
         </Link>
+        <BookmarkButton item={{ key: `group:${g.id}`, kind: "group", title: g.title, subtitle: `Topic ${g.id} · ${g.docCount} documents`, href: `/read/${g.id}` }} />
       </PageHeader>
       <Stagger className="grid gap-3 sm:grid-cols-2">
         {docs.map((d) => (
@@ -55,9 +58,11 @@ async function GroupContent({ params }: { params: PageProps<"/read/[group]">["pa
       </Stagger>
       {notes && (
         <FadeIn delay={0.1}>
-          <details className="mt-8 rounded-xl border bg-card p-4 sm:p-6" data-askable>
+          <details className="mt-8 rounded-xl border bg-card p-4 sm:p-6">
             <summary className="cursor-pointer font-semibold">Group notes, conventions and open questions</summary>
-            <Markdown className="mt-4">{notes}</Markdown>
+            <HighlightScope scope={`group:${g.id}`} title={`${g.title} — group notes`}>
+              <Markdown className="mt-4">{notes}</Markdown>
+            </HighlightScope>
           </details>
         </FadeIn>
       )}

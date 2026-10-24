@@ -6,7 +6,9 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CopyButton } from "@/components/kd/copy-button";
+import { iconFor } from "@/components/kd/ask-box";
 import { StatusBadge } from "@/components/kd/status";
+import { BookmarkButton } from "@/components/library/bookmark-button";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { AnswerMarkdown } from "./answer-markdown";
@@ -49,6 +51,33 @@ function turnMarkdown(t: Turn): string {
     ...cited.map((p) => `- [${p.label}] ${p.docTitle || p.groupTitle}${p.path.length ? ` › ${p.path.join(" › ")}` : ""} (kd.md lines ${p.lineStart}–${p.lineEnd})${p.docUrl ? ` ${p.docUrl}` : ""}`),
     "",
   ].join("\n");
+}
+
+/** A finished answer as a library bookmark, with its cited sources. */
+function answerBookmark(t: Turn) {
+  const cited = t.passages.filter((p) => t.cited.includes(p.label));
+  return {
+    key: `answer:${t.id}`,
+    kind: "answer" as const,
+    title: t.question,
+    subtitle: t.status === "clear" ? "Clear" : "Needs clarity",
+    href: `/ask?q=${encodeURIComponent(t.question)}`,
+    answer: {
+      question: t.question,
+      answer: visibleAnswer(t.answer).trim(),
+      status: t.status === "clear" ? ("clear" as const) : ("needs-clarity" as const),
+      note: t.note,
+      sources: cited.map((p) => {
+        const page = p.doc && p.group ? `/read/${p.group}/${p.doc}` : p.group ? `/read/${p.group}` : "/read";
+        return {
+          label: p.label,
+          title: p.docTitle || p.groupTitle,
+          where: p.path.length ? p.path.join(" › ") : `lines ${p.lineStart}–${p.lineEnd}`,
+          href: p.searchPhrase && p.doc ? `${page}?${new URLSearchParams({ find: p.searchPhrase })}` : page,
+        };
+      }),
+    },
+  };
 }
 
 function download(turns: Turn[]) {
@@ -142,6 +171,7 @@ function TurnView({ turn, onOpen }: { turn: Turn; onOpen: (p: PassageView) => vo
           <>
             <Sources turn={turn} onOpen={onOpen} />
             <div className="mt-3 flex flex-wrap gap-1 border-t pt-3">
+              <BookmarkButton variant="ghost" item={answerBookmark(turn)} />
               <CopyButton text={turnMarkdown(turn)} label="Copy answer" variant="ghost" />
             </div>
           </>
@@ -266,7 +296,10 @@ export function AskChat({ suggestions }: { suggestions: string[] }) {
     <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4 sm:px-6">
       <div className="flex items-center justify-between gap-2 py-4">
         <h1 className="flex items-center gap-2 text-lg font-semibold">
-          <Sparkles className="size-4 text-primary" /> Ask
+          <span className="grid size-7 place-items-center rounded-lg text-white" style={{ background: "linear-gradient(135deg, var(--primary), var(--glow-2))" }}>
+            <Sparkles className="size-4" />
+          </span>
+          <span className="font-display">Ask AI</span>
         </h1>
         {turns.length > 0 && (
           <div className="flex gap-1">
@@ -291,25 +324,36 @@ export function AskChat({ suggestions }: { suggestions: string[] }) {
       <div className="flex flex-1 flex-col gap-8 pb-6">
         {turns.length === 0 && (
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="my-auto py-10 text-center">
-            <div className="mx-auto grid size-12 place-items-center rounded-2xl bg-accent text-primary">
-              <Sparkles className="size-6" />
-            </div>
-            <h2 className="mt-4 text-2xl font-semibold tracking-tight text-balance">What would you like to know?</h2>
+            <motion.div
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="kd-shine mx-auto grid size-16 place-items-center rounded-3xl text-white shadow-xl"
+              style={{ background: "linear-gradient(135deg, var(--primary), var(--glow-2))", boxShadow: "0 16px 40px -12px var(--primary)" }}
+            >
+              <Sparkles className="size-8" />
+            </motion.div>
+            <h2 className="kd-gradient-text mt-5 font-display text-3xl font-bold tracking-tight text-balance">What would you like to know?</h2>
             <p className="mx-auto mt-2 max-w-md text-pretty text-muted-foreground">
               Answers come only from the Keydemand documents, with a link to each source. If the documents disagree or leave
               something open, the answer says “needs clarity”.
             </p>
             <div className="mx-auto mt-6 grid max-w-xl gap-2 sm:grid-cols-2">
-              {suggestions.map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  onClick={() => submit(s)}
-                  className="rounded-xl border bg-card p-3 text-left text-sm transition-colors hover:border-primary/40 hover:bg-accent/40"
-                >
-                  {s}
-                </button>
-              ))}
+              {suggestions.map((s) => {
+                const Icon = iconFor(s);
+                return (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => submit(s)}
+                    className="kd-spotlight flex items-start gap-3 rounded-2xl border bg-card/80 p-3.5 text-left text-sm backdrop-blur hover:-translate-y-0.5"
+                  >
+                    <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-accent text-primary">
+                      <Icon className="size-4" />
+                    </span>
+                    <span className="pt-1">{s}</span>
+                  </button>
+                );
+              })}
             </div>
           </motion.div>
         )}

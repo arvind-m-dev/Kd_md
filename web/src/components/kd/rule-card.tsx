@@ -2,6 +2,7 @@ import { ArrowUpRight, MessageCircleQuestion } from "lucide-react";
 import Link from "next/link";
 import { GlossaryText } from "@/components/kd/glossary-text";
 import { StatusBadge } from "@/components/kd/status";
+import { BookmarkButton } from "@/components/library/bookmark-button";
 import { getDoc, getGroup, type Rule } from "@/lib/kd";
 import { cn } from "@/lib/utils";
 
@@ -46,6 +47,12 @@ export function RuleCard({ rule, className }: { rule: Rule; className?: string }
           >
             <MessageCircleQuestion className="size-3.5" /> Ask
           </Link>
+          <BookmarkButton
+            compact
+            variant="ghost"
+            className="relative z-10"
+            item={{ key: `rule:${rule.id}`, kind: "rule", title: rule.id, subtitle: rule.text.slice(0, 140), href: `/rules/${rule.id}` }}
+          />
           <Link
             href={`/rules/${rule.id}`}
             aria-label={`Open ${rule.id}`}

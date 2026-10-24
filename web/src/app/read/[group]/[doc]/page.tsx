@@ -1,9 +1,13 @@
-import { ArrowLeft, ArrowRight, ExternalLink, ListChecks } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink, Highlighter, ListChecks } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Markdown } from "@/components/kd/markdown";
+import { BookmarkButton } from "@/components/library/bookmark-button";
+import { HighlightScope } from "@/components/library/highlight-scope";
+import { ReaderSettings } from "@/components/library/reader-settings";
+import { ReadingTracker } from "@/components/library/reading-tracker";
 import { FadeIn } from "@/components/kd/motion";
 import { Toc } from "@/components/kd/toc";
 import { buttonVariants } from "@/components/ui/button";
@@ -31,10 +35,12 @@ async function DocContent({ params }: { params: PageProps<"/read/[group]/[doc]">
   const i = siblings.indexOf(doc);
   const prev = siblings[i - 1];
   const next = siblings[i + 1];
+  const href = `/read/${groupId}/${doc.id}`;
 
   return (
-    <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-6 sm:px-6 sm:py-8 lg:px-10 xl:grid-cols-[minmax(0,1fr)_16rem]">
-      <article className="min-w-0">
+    <div className="kd-reader mx-auto grid w-full max-w-7xl gap-10 px-4 py-6 sm:px-6 sm:py-8 lg:px-10 xl:grid-cols-[minmax(0,1fr)_16rem]">
+      <ReadingTracker href={href} title={doc.title} subtitle={`${group.id} · ${group.title}`} />
+      <article className="kd-reader-article mx-auto w-full min-w-0">
         <Link href={`/read/${groupId}`} className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="size-3.5" /> {group.title}
         </Link>
@@ -54,12 +60,19 @@ async function DocContent({ params }: { params: PageProps<"/read/[group]/[doc]">
               <Link href={`/rules?doc=${doc.id}`} className={buttonVariants({ variant: "outline", size: "sm" })}>
                 <ListChecks /> Rules as cards
               </Link>
+              <BookmarkButton item={{ key: `doc:${doc.id}`, kind: "doc", title: doc.title, subtitle: `${group.id} · ${group.title}`, href }} />
+              <ReaderSettings />
             </div>
+            <p className="mt-4 flex items-center gap-1.5 text-xs text-muted-foreground">
+              <Highlighter className="size-3.5" /> Select any text to highlight it, add a note or ask about it.
+            </p>
           </header>
         </FadeIn>
-        <div data-askable>
-          <Markdown className="mt-8">{md}</Markdown>
-        </div>
+        <HighlightScope scope={`doc:${doc.id}`} title={doc.title}>
+          <Markdown className="mt-8" section={{ href, pageTitle: doc.title }}>
+            {md}
+          </Markdown>
+        </HighlightScope>
         <nav className="mt-12 grid gap-3 border-t pt-6 sm:grid-cols-2" aria-label="Other documents in this topic">
           {prev ? (
             <Link href={`/read/${groupId}/${prev.id}`} className="rounded-xl border p-4 hover:bg-accent">
