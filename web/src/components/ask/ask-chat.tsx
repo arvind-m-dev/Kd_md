@@ -235,9 +235,23 @@ export function AskChat({ suggestions }: { suggestions: string[] }) {
     if (!busy) save(turns);
   }, [turns, busy]);
 
+  // Follow the answer as it streams in, unless the reader has scrolled up to read something else.
+  const streamedLength = turns.at(-1)?.answer.length ?? 0;
+  const followRef = useRef(true);
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [turns.length, busy]);
+    const onScroll = () => {
+      followRef.current = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 160;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  useEffect(() => {
+    followRef.current = true;
+  }, [turns.length]);
+  useEffect(() => {
+    // Instant, not smooth: a smooth scroll fires scroll events part-way and would switch following off.
+    if (followRef.current) endRef.current?.scrollIntoView({ block: "end" });
+  }, [turns.length, streamedLength, busy]);
 
   const submit = (text = input) => {
     const q = text.trim();
