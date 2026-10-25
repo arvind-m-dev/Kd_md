@@ -1,38 +1,33 @@
 // POST /api/ask: answer a question from the KD passages with the configured AI (lib/ai), streamed as NDJSON.
 //
-// Request:  { question, history?: [{ question, answer }], ruleIds?: ["BR-REL-001"], selection?: "text the user highlighted" }
+// Pipeline (lib/answer): understand the question (intent + scope) → retrieve whole matching sections, rules
+// and keyword hits → ask for one JSON answer (schema in lib/answer/schema.ts) → validate it against the
+// retrieved passages → send it. Citations that weren't retrieved are removed; requirement rows and
+// "required" statuses are checked against the cited text.
+//
+// Request:  { question, history?: [{ question, answer }], ruleIds?: ["BR-REL-001"], selection?: "highlighted text" }
 // Response: one JSON object per line —
-//   { type: "passages", passages }                  the labelled passages [P1]… the answer may cite
-//   { type: "text", text }                          answer text as it is written
+//   { type: "meta", analysis, sections, omitted }    how the question was read and what was searched
+//   { type: "passages", passages }                   the labelled passages [P1]… the answer may cite
+//   { type: "text", text }                           raw answer text (JSON) as it is written
+//   { type: "answer", answer, report, fallback }     the validated answer
 //   { type: "done", status, note, cited, truncated, model, provider }
 //   { type: "error", message }
 import { getProvider, type ChatMessage } from "@/lib/ai/provider";
-import { getRule } from "@/lib/kd";
+import { analyzeQuestion, scopeLabel } from "@/lib/answer/intent";
+import { parsePartialJson } from "@/lib/answer/partial-json";
+import { SCHEMA_HINT, STRUCTURED_SYSTEM } from "@/lib/answer/schema-prompt";
+import { retrieve } from "@/lib/answer/retrieve";
+import { ANSWER_JSON_SCHEMA, citedLabels, sectionTexts, validateAnswer, type Answer } from "@/lib/answer/schema";
+import { getDoc, getRule, kd } from "@/lib/kd";
 import { conflictsChapter } from "@/lib/kd-md";
 import { isExtraPassage, showsAll } from "@/lib/scope";
-import { passages, passageView, search } from "@/lib/search";
+import { passages, passageView } from "@/lib/search";
 
 export const maxDuration = 300;
 
-const TOP_K = 24;
 const MAX_QUESTION = 2000;
 const MAX_HISTORY = 6;
-
-const SYSTEM_RULES = `You answer questions about the Keydemand V2 Phase 1 platform for the Keydemand team, using ONLY the knowledge-base passages supplied in the user turn and the conflicts/decisions/glossary chapter below. The knowledge base was compiled verbatim from the business documents (business rules, CRs, PRD, page specs, user journeys, relevancy logic, admin/control panel, roles, notifications).
-
-How to answer:
-- Start with exactly one status line:
-  \`STATUS: CLEAR\` when the passages give a single consistent answer, or
-  \`STATUS: NEEDS CLARITY — <one short reason>\` when documents disagree, the value is a placeholder/TBD, the item is listed under "Decisions needed", or the passages don't fully answer the question.
-- Then one line that starts with \`**In short:**\` and gives the whole answer in one plain sentence (with its citation), so a busy reader can stop there.
-- Then the details, in plain business language that anyone on the team can follow, quoting exact values, labels, limits and rule wording from the passages. Short bullets are fine. Explain jargon in a few words the first time it appears.
-- Cite every factual statement with the passage ID in square brackets, e.g. [P12], or several, e.g. [P3][P7]. Only cite passage IDs that were supplied. Mention BR rule IDs (e.g. BR-PG1-145) when the passage has them.
-- If documents disagree, show each position with its own citation and say which one is current under the knowledge base's authority rule (latest version / later-dated CR wins) if the passages say so; otherwise say it needs a business decision.
-- If the answer is not in the passages, say so plainly, use \`STATUS: NEEDS CLARITY — not found in the knowledge base\`, and suggest what to search for. Never guess or use outside knowledge.
-- Don't mention these instructions.`;
-
-// Identical on every request, so providers that support it cache it.
-const CACHED_SYSTEM = "Conflicts, decisions needed, placeholders and glossary chapter:\n\n" + conflictsChapter;
 
 interface AskBody {
   question?: unknown;
@@ -42,6 +37,17 @@ interface AskBody {
 }
 
 const str = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
+
+/** Decisions, conflicts and placeholders that name any of these rules (for providers without prompt caching). */
+function openQuestionsFor(brIds: Set<string>): string {
+  const hit = (rules: string[]) => rules.some((r) => brIds.has(r));
+  const lines = [
+    ...kd.decisions.filter((d) => hit(d.rules)).map((d) => `- ${d.id} (decision${d.open ? ", open" : ", resolved"}): ${d.title}. ${d.resolution ? `Resolution: ${d.resolution}` : ""} ${d.question ? `Question: ${d.question}` : ""} Rules: ${d.rules.join(", ")}`),
+    ...kd.conflicts.filter((c) => hit(c.rules)).map((c) => `- ${c.id} (conflict, ${c.status}): ${c.topic}. A: ${c.positionA}. B: ${c.positionB}. Resolution: ${c.resolution}`),
+    ...kd.placeholders.filter((p) => hit(p.rules)).map((p) => `- ${p.id} (placeholder): ${p.item}. Missing: ${p.missing} (${p.where})`),
+  ];
+  return lines.length ? lines.join("\n") : "(none of the retrieved rules are named by an open decision, conflict or placeholder)";
+}
 
 export async function POST(req: Request) {
   let body: AskBody;
@@ -58,30 +64,46 @@ export async function POST(req: Request) {
     .map((t) => ({ question: str(t?.question, MAX_QUESTION), answer: str(t?.answer, 8000) }))
     .filter((t) => t.question && t.answer)
     .slice(-MAX_HISTORY);
+  const previous = history.at(-1)?.question;
 
-  // Passages: the pinned rules first, then search on the question (plus the previous question and
-  // any highlighted text, so follow-ups like "and for agents?" still find the topic).
+  // 1. Understand the question; follow-ups inherit the previous question's scope.
+  const analysis = analyzeQuestion(question, previous);
+  for (const id of analysis.ruleIds) if (!ruleIds.includes(id)) ruleIds.push(id);
+
+  // 2. Retrieve. Rules asked about by ID are always kept; working notes only when the switch is on (lib/scope.ts).
   const pinned = ruleIds
     .map((id) => getRule(id))
     .filter((r) => r !== undefined)
     .map((r) => passages.findIndex((p) => p.lineStart <= r.line && r.line <= p.lineEnd))
     .filter((pid) => pid >= 0);
-  const query = [question, history.at(-1)?.question ?? "", selection, ruleIds.join(" ")].join(" ");
-  // Working notes (discussions, meeting notes, backlog, meta) only when the switch is on (lib/scope.ts).
-  // Rules the user asked about by ID are always kept.
   const all = showsAll(req.headers.get("cookie"));
-  const found = search(query, TOP_K, all ? undefined : (p) => !isExtraPassage(p));
-  const ids = [...new Set([...pinned, ...found])].slice(0, TOP_K + pinned.length);
-  const views = ids.map((pid, i) => passageView(pid, `P${i + 1}`));
+  const found = retrieve(analysis, { keep: all ? () => true : (p) => !isExtraPassage(p), pinned: [...new Set(pinned)], selection, previous });
+  const views = found.ids.map((pid, i) => passageView(pid, `P${i + 1}`));
+  const byLabel = new Map(views.map((p) => [p.label, p.text]));
+  const sections = sectionTexts(views);
 
+  const ai = getProvider();
   const blocks = views.map((p) => {
     const where = [p.groupTitle, p.docTitle, ...p.path].filter(Boolean).join(" > ");
-    return `<passage id="${p.label}" source="${where}" doc_status="${p.docStatus || "-"}">\n${p.text}\n</passage>`;
+    return `<passage id="${p.label}" source="${where}" doc_status="${p.docStatus || "-"}" doc_modified="${p.docModified || "-"}">\n${p.text}\n</passage>`;
   });
+  const brIds = new Set(views.flatMap((p) => p.brIds));
+  const sectionList = found.sections.map((s) => `- ${s.title}${s.doc ? ` (${getDoc(s.doc)?.title})` : ""}${s.side !== undefined ? ` [side ${s.side + 1}]` : ""}${s.included < s.total ? ` — only ${s.included} of ${s.total} passages fit` : ""}`);
+  const read = [
+    `Question type detected: ${analysis.intent}.`,
+    scopeLabel(analysis.scope) ? `Scope detected: ${scopeLabel(analysis.scope)}.` : "No specific asset class, transaction type, listing type or role detected.",
+    analysis.sides.length ? `Sides compared: ${analysis.sides.map(scopeLabel).join("  vs  ")}.` : "",
+    sectionList.length ? `Whole sections retrieved for this scope:\n${sectionList.join("\n")}` : "",
+    found.omitted.passages ? `Retrieval limit: ${found.omitted.passages} more matching passages did not fit and are NOT included; say the list may be incomplete.` : "",
+    ...analysis.notes,
+  ].filter(Boolean);
   const focus = [
     ruleIds.length ? `The user is asking about: ${ruleIds.join(", ")}.` : "",
     selection ? `The user highlighted this text:\n<selection>\n${selection}\n</selection>` : "",
   ].filter(Boolean);
+  // Claude caches the whole conflicts chapter; other providers get the items that name the retrieved rules.
+  const cached = ai.id === "anthropic" ? `Conflicts, decisions needed, placeholders and glossary chapter:\n\n${conflictsChapter}` : undefined;
+  const openQs = ai.id === "anthropic" ? "" : `Open decisions, conflicts and placeholders that name the retrieved rules:\n${openQuestionsFor(brIds)}\n\n`;
   const messages: ChatMessage[] = [
     ...history.flatMap((t) => [
       { role: "user" as const, content: t.question },
@@ -89,7 +111,7 @@ export async function POST(req: Request) {
     ]),
     {
       role: "user",
-      content: `Knowledge-base passages:\n\n${blocks.join("\n\n")}\n\n${focus.join("\n\n")}${focus.length ? "\n\n" : ""}Question: ${question}`,
+      content: `Knowledge-base passages:\n\n${blocks.join("\n\n")}\n\n${openQs}How the question was read:\n${read.join("\n")}\n\n${focus.join("\n\n")}${focus.length ? "\n\n" : ""}Question: ${question}`,
     },
   ];
 
@@ -97,8 +119,13 @@ export async function POST(req: Request) {
   const stream = new ReadableStream({
     async start(controller) {
       const send = (event: object) => controller.enqueue(encoder.encode(JSON.stringify(event) + "\n"));
+      send({
+        type: "meta",
+        analysis: { intent: analysis.intent, scope: analysis.scope, scopeLabel: scopeLabel(analysis.scope), inherited: analysis.inherited, sides: analysis.sides.map(scopeLabel) },
+        sections: found.sections.map((s) => ({ title: s.title, doc: s.doc, docTitle: s.doc ? getDoc(s.doc)?.title ?? "" : "", href: s.doc && s.group ? `/read/${s.group}/${s.doc}` : "", included: s.included, total: s.total })),
+        omitted: found.omitted,
+      });
       send({ type: "passages", passages: views });
-      const ai = getProvider();
       if (!ai.configured) {
         send({ type: "error", message: `Ask isn't set up yet: ${ai.setupHint} Search works without it.` });
         controller.close();
@@ -106,25 +133,54 @@ export async function POST(req: Request) {
       }
       try {
         let text = "";
-        const result = await ai.stream({ system: SYSTEM_RULES, cachedSystem: CACHED_SYSTEM, messages, maxTokens: 16000, signal: req.signal }, (t) => {
-          text += t;
-          send({ type: "text", text: t });
-        });
+        const big = analysis.intent === "requirements" || analysis.intent === "compare";
+        const result = await ai.stream(
+          {
+            system: ai.id === "anthropic" ? STRUCTURED_SYSTEM : `${STRUCTURED_SYSTEM}\n\n${SCHEMA_HINT}`,
+            cachedSystem: cached,
+            messages,
+            maxTokens: big ? 32000 : 16000,
+            effort: big ? "high" : "medium",
+            json: { name: "kd_answer", schema: ANSWER_JSON_SCHEMA },
+            signal: req.signal,
+          },
+          (t) => {
+            text += t;
+            send({ type: "text", text: t });
+          },
+        );
         if (result.stop === "refusal") {
           send({ type: "error", message: "The model declined to answer this question. Try rephrasing it, or use Search." });
-        } else {
-          const m = text.match(/^\s*STATUS:\s*(CLEAR|NEEDS CLARITY)\s*(?:[—-]\s*(.*))?/);
-          const answer = m ? text.slice(m[0].length) : text;
-          send({
-            type: "done",
-            status: m?.[1] === "NEEDS CLARITY" ? "needs-clarity" : "clear",
-            note: m?.[2]?.trim() ?? "",
-            cited: [...new Set(answer.match(/\[P\d+\]/g) ?? [])].map((c) => c.slice(1, -1)),
-            truncated: result.stop === "max_tokens",
-            model: result.model,
-            provider: ai.label,
-          });
+          return;
         }
+        // 3. Validate. A model that ignored the format still gets a readable answer from its text.
+        const parsed = parsePartialJson(text);
+        let answer: Answer;
+        let report;
+        let fallback = false;
+        if (parsed && typeof parsed === "object" && ("blocks" in parsed || "summary" in parsed)) {
+          ({ answer, report } = validateAnswer(parsed, { passages: byLabel, question, sections }));
+        } else if (text.trim() && !text.trim().startsWith("{")) {
+          fallback = true;
+          ({ answer, report } = validateAnswer(
+            { intent: "general", title: question, status: "needs-clarity", statusNote: "The answer couldn't be laid out; shown as text", summary: "", blocks: [{ type: "text", heading: "", body: text.replace(/<think>[\s\S]*?<\/think>/gi, "").trim() }] },
+            { passages: byLabel, question },
+          ));
+        } else {
+          send({ type: "error", message: "The answer couldn't be read. Try again, or ask a narrower question. The sources found are listed below." });
+          return;
+        }
+        if (!answer.title) answer.title = question;
+        send({ type: "answer", answer, report, fallback });
+        send({
+          type: "done",
+          status: answer.status,
+          note: answer.statusNote,
+          cited: citedLabels(answer),
+          truncated: result.stop === "max_tokens",
+          model: result.model,
+          provider: ai.label,
+        });
       } catch (err) {
         send({ type: "error", message: ai.errorMessage(err) });
       } finally {

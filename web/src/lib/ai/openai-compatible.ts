@@ -48,23 +48,37 @@ export function openAiCompatibleProvider(id: string): AiProvider {
         : `Set ${keyName} on the server.`,
 
     async stream(req, onText) {
-      const res = await fetch(`${baseUrl}/chat/completions`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(apiKey ? { Authorization: `Bearer ${apiKey}` } : {}),
-        },
-        body: JSON.stringify({
-          model,
-          stream: true,
-          max_tokens: req.maxTokens,
-          messages: [
-            { role: "system", content: [req.system, req.cachedSystem].filter(Boolean).join("\n\n") },
-            ...req.messages,
-          ],
-        }),
-        signal: req.signal,
-      });
+      const maxTokens = Number(process.env.KD_MAX_TOKENS) || req.maxTokens;
+      const send = (strict: boolean) =>
+        fetch(`${baseUrl}/chat/completions`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(apiKey ? { Authorization: `Bearer ${apiKey}` } : {}),
+            // OpenRouter shows these in its dashboard; other APIs ignore them.
+            ...(id === "openrouter" ? { "X-Title": "Keydemand Rules" } : {}),
+          },
+          body: JSON.stringify({
+            model,
+            stream: true,
+            ...(strict ? { max_tokens: maxTokens } : {}),
+            ...(strict && req.json ? { response_format: { type: "json_schema", json_schema: { name: req.json.name, strict: true, schema: req.json.schema } } } : {}),
+            messages: [
+              { role: "system", content: [req.system, req.cachedSystem].filter(Boolean).join("\n\n") },
+              ...req.messages,
+            ],
+          }),
+          signal: req.signal,
+        });
+      // Many models (free ones especially) reject response_format or a large max_tokens: retry once without.
+      let res = await send(true);
+      let enforcedJson = !!req.json;
+      if (res.status === 400 || res.status === 422 || (res.status === 404 && req.json)) {
+        const first = await res.text().catch(() => "");
+        res = await send(false);
+        enforcedJson = false;
+        if (!res.ok) throw new HttpError(res.status, ((await res.text().catch(() => "")) || first).slice(0, 300));
+      }
       if (!res.ok || !res.body) {
         const detail = await res.text().catch(() => "");
         throw new HttpError(res.status, detail.slice(0, 300));
@@ -95,7 +109,7 @@ export function openAiCompatibleProvider(id: string): AiProvider {
           }
         }
       }
-      return { stop: finish === "length" ? "max_tokens" : finish === "content_filter" ? "refusal" : "end", model: served };
+      return { stop: finish === "length" ? "max_tokens" : finish === "content_filter" ? "refusal" : "end", model: served, enforcedJson };
     },
 
     errorMessage(err) {

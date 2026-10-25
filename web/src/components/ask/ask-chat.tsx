@@ -4,12 +4,16 @@ import { ArrowUp, CircleAlert, Download, Loader2, Plus, Quote, Sparkles, Square,
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import { AnswerView } from "@/components/answer/answer-view";
 import { CopyButton } from "@/components/kd/copy-button";
 import { iconFor } from "@/components/kd/ask-box";
 import { StatusBadge } from "@/components/kd/status";
 import { BookmarkButton } from "@/components/library/bookmark-button";
 import { Button } from "@/components/ui/button";
+import { answerToMarkdown } from "@/lib/answer/markdown";
+import { parsePartialJson } from "@/lib/answer/partial-json";
+import { citedLabels, sectionTexts, validateAnswer, type Answer } from "@/lib/answer/schema";
 import { cn } from "@/lib/utils";
 import { AnswerMarkdown } from "./answer-markdown";
 import { SourcePanel } from "./source-panel";
@@ -37,7 +41,18 @@ const save = (turns: Turn[]) => {
 /** Answer text without the model's leading "STATUS: …" line (also while it is still streaming in). */
 const visibleAnswer = (raw: string) => raw.replace(/^\s*STATUS:[^\n]*(\n|$)/, "").replace(/^\s*S(T(A(T(U(S(:[^\n]*)?)?)?)?)?)?$/, "");
 
+const sourcesOf = (t: Turn) =>
+  t.passages
+    .filter((p) => t.cited.includes(p.label))
+    .map((p) => ({ label: p.label, citeLabel: p.citeLabel ?? `${p.docTitle || p.groupTitle}${p.path.length ? ` › ${p.path.join(" › ")}` : ""}`, href: p.href ?? p.docUrl }));
+
+/** The answer text to show, copy and send back as history: structured answers as Markdown. */
+const answerText = (t: Turn, brief = false) => (t.structured ? answerToMarkdown(t.structured, { brief, sources: brief ? undefined : sourcesOf(t) }) : visibleAnswer(t.answer));
+
 function turnMarkdown(t: Turn): string {
+  if (t.structured) return `## ${t.question}
+
+${answerText(t)}`;
   const cited = t.passages.filter((p) => t.cited.includes(p.label));
   return [
     `## ${t.question}`,
@@ -64,7 +79,7 @@ function answerBookmark(t: Turn) {
     href: `/ask?q=${encodeURIComponent(t.question)}`,
     answer: {
       question: t.question,
-      answer: visibleAnswer(t.answer).trim(),
+      answer: answerText(t).trim(),
       status: t.status === "clear" ? ("clear" as const) : ("needs-clarity" as const),
       note: t.note,
       sources: cited.map((p) => {
@@ -73,7 +88,7 @@ function answerBookmark(t: Turn) {
           label: p.label,
           title: p.docTitle || p.groupTitle,
           where: p.path.length ? p.path.join(" › ") : `lines ${p.lineStart}–${p.lineEnd}`,
-          href: p.searchPhrase && p.doc ? `${page}?${new URLSearchParams({ find: p.searchPhrase })}` : page,
+          href: p.href ?? (p.searchPhrase && p.doc ? `${page}?${new URLSearchParams({ find: p.searchPhrase })}` : page),
         };
       }),
     },
@@ -116,8 +131,23 @@ function Sources({ turn, onOpen }: { turn: Turn; onOpen: (p: PassageView) => voi
   );
 }
 
-function TurnView({ turn, onOpen }: { turn: Turn; onOpen: (p: PassageView) => void }) {
-  const answer = visibleAnswer(turn.answer);
+/** While a structured answer streams: whatever of the JSON has arrived, made safe by the same validation. */
+function useLiveAnswer(turn: Turn): Answer | null {
+  const raw = useDeferredValue(turn.answer);
+  const streaming = turn.status === "streaming";
+  return useMemo(() => {
+    if (turn.structured) return turn.structured;
+    if (!streaming || !raw.trimStart().startsWith("{")) return null;
+    const parsed = parsePartialJson(raw);
+    if (!parsed || typeof parsed !== "object") return null;
+    return validateAnswer(parsed, { passages: new Map(turn.passages.map((p) => [p.label, p.text])), sections: sectionTexts(turn.passages) }).answer;
+  }, [turn.structured, streaming, raw, turn.passages]);
+}
+
+function TurnView({ turn, onOpen, onAsk }: { turn: Turn; onOpen: (p: PassageView) => void; onAsk: (q: string) => void }) {
+  const live = useLiveAnswer(turn);
+  // Old answers (and models that ignore the format mid-stream) are Markdown text.
+  const answer = live || turn.answer.trimStart().startsWith("{") ? "" : visibleAnswer(turn.answer);
   const byLabel = (label: string) => {
     const p = turn.passages.find((x) => x.label === label);
     if (p) onOpen(p);
@@ -138,21 +168,36 @@ function TurnView({ turn, onOpen }: { turn: Turn; onOpen: (p: PassageView) => vo
           {turn.status === "streaming" ? (
             <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
               <Loader2 className="size-3.5 animate-spin" />
-              {answer ? "Writing the answer…" : `Reading ${turn.passages.length || "the"} passages…`}
+              {answer || live ? "Writing the answer…" : turn.meta?.sections.length ? `Reading ${turn.meta.sections.length} sections (${turn.passages.length} passages)…` : `Reading ${turn.passages.length || "the"} passages…`}
             </span>
           ) : turn.status === "error" ? (
             <span className="inline-flex items-center gap-1.5 text-xs font-medium text-destructive">
               <CircleAlert className="size-3.5" /> Couldn’t answer
             </span>
           ) : (
-            <>
-              <StatusBadge status={turn.status} />
-              {turn.note && <span className="text-xs text-muted-foreground">{turn.note}</span>}
-            </>
+            !turn.structured && (
+              <>
+                <StatusBadge status={turn.status} />
+                {turn.note && <span className="text-xs text-muted-foreground">{turn.note}</span>}
+              </>
+            )
           )}
         </div>
+        {live && (
+          <AnswerView
+            answer={live}
+            meta={turn.meta}
+            passages={turn.passages}
+            onOpen={onOpen}
+            onAsk={onAsk}
+            anchor={`a-${turn.id.slice(0, 8)}`}
+            streaming={turn.status === "streaming"}
+            report={turn.report}
+            fallback={turn.fallback}
+          />
+        )}
         {answer && <AnswerMarkdown text={answer} onCite={byLabel} />}
-        {turn.status === "streaming" && !answer && (
+        {turn.status === "streaming" && !answer && !live && (
           <div className="flex flex-col gap-2" aria-hidden>
             {[90, 75, 82].map((w, i) => (
               <motion.span
@@ -169,10 +214,11 @@ function TurnView({ turn, onOpen }: { turn: Turn; onOpen: (p: PassageView) => vo
         {turn.truncated && <p className="mt-2 text-xs text-muted-foreground">The answer was cut short. Ask a narrower question for the rest.</p>}
         {turn.status !== "streaming" && turn.status !== "error" && (
           <>
-            <Sources turn={turn} onOpen={onOpen} />
-            <div className="mt-3 flex flex-wrap gap-1 border-t pt-3">
+            {!turn.structured && <Sources turn={turn} onOpen={onOpen} />}
+            <div className="mt-3 flex flex-wrap items-center gap-1 border-t pt-3">
               <BookmarkButton variant="ghost" item={answerBookmark(turn)} />
               <CopyButton text={turnMarkdown(turn)} label="Copy answer" variant="ghost" />
+              {turn.model && <span className="ml-auto text-[11px] text-muted-foreground">Answered by {turn.model}</span>}
             </div>
           </>
         )}
@@ -206,7 +252,7 @@ export function AskChat({ suggestions }: { suggestions: string[] }) {
       const history = previous
         .filter((t) => t.status === "clear" || t.status === "needs-clarity")
         .slice(-MAX_HISTORY)
-        .map((t) => ({ question: t.question, answer: visibleAnswer(t.answer) }));
+        .map((t) => ({ question: t.question, answer: answerText(t, true) }));
       const ctrl = new AbortController();
       abortRef.current = ctrl;
       try {
@@ -230,9 +276,11 @@ export function AskChat({ suggestions }: { suggestions: string[] }) {
           buf = lines.pop() ?? "";
           for (const line of lines.filter(Boolean)) {
             const e = JSON.parse(line);
-            if (e.type === "passages") patch(id, () => ({ passages: e.passages }));
+            if (e.type === "meta") patch(id, () => ({ meta: { analysis: e.analysis, sections: e.sections, omitted: e.omitted } }));
+            else if (e.type === "passages") patch(id, () => ({ passages: e.passages }));
             else if (e.type === "text") patch(id, (t) => ({ answer: t.answer + e.text }));
-            else if (e.type === "done") patch(id, () => ({ status: e.status, note: e.note, cited: e.cited, truncated: e.truncated }));
+            else if (e.type === "answer") patch(id, () => ({ structured: e.answer, report: e.report, fallback: e.fallback, cited: citedLabels(e.answer) }));
+            else if (e.type === "done") patch(id, () => ({ status: e.status, note: e.note, cited: e.cited, truncated: e.truncated, model: e.model }));
             else if (e.type === "error") patch(id, () => ({ status: "error", error: e.message }));
           }
         }
@@ -293,7 +341,7 @@ export function AskChat({ suggestions }: { suggestions: string[] }) {
   const hasContext = context.ruleIds.length > 0 || !!context.selection;
 
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4 sm:px-6">
+    <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-4 sm:px-6">
       <div className="flex items-center justify-between gap-2 py-4">
         <h1 className="flex items-center gap-2 text-lg font-semibold">
           <span className="grid size-7 place-items-center rounded-lg text-white" style={{ background: "linear-gradient(135deg, var(--primary), var(--glow-2))" }}>
@@ -358,7 +406,7 @@ export function AskChat({ suggestions }: { suggestions: string[] }) {
           </motion.div>
         )}
         {turns.map((t) => (
-          <TurnView key={t.id} turn={t} onOpen={setPanel} />
+          <TurnView key={t.id} turn={t} onOpen={setPanel} onAsk={submit} />
         ))}
         <div ref={endRef} />
       </div>

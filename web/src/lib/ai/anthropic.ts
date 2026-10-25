@@ -26,7 +26,10 @@ export function anthropicProvider(): AiProvider {
           max_tokens: req.maxTokens,
           system,
           messages: req.messages,
-          output_config: { effort: "medium" },
+          output_config: {
+            effort: req.effort ?? "medium",
+            ...(req.json ? { format: { type: "json_schema" as const, schema: req.json.schema } } : {}),
+          },
           betas: ["server-side-fallback-2026-07-01"],
           fallbacks: "default",
         },
@@ -39,6 +42,7 @@ export function anthropicProvider(): AiProvider {
       return {
         stop: msg.stop_reason === "refusal" ? "refusal" : msg.stop_reason === "max_tokens" ? "max_tokens" : "end",
         model: msg.model,
+        enforcedJson: !!req.json,
       };
     },
 
