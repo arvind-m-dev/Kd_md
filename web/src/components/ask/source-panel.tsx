@@ -22,8 +22,8 @@ export function SourcePanel({ passage, onClose }: { passage: PassageView | null;
   const wide = useWide();
   const p = passage;
   const page = p?.doc && p.group ? `/read/${p.group}/${p.doc}` : p?.group ? `/read/${p.group}` : "/read";
-  // Opens the document scrolled to this passage, briefly highlighted.
-  const readHref = p?.searchPhrase && p.doc ? `${page}?${new URLSearchParams({ find: p.searchPhrase })}` : page;
+  // Opens the document at the heading above this passage, with the passage briefly highlighted.
+  const readHref = p?.href ?? (p?.searchPhrase && p.doc ? `${page}?${new URLSearchParams({ find: p.searchPhrase })}` : page);
   return (
     <Sheet open={!!p} onOpenChange={(o) => !o && onClose()}>
       <SheetContent
@@ -35,8 +35,9 @@ export function SourcePanel({ passage, onClose }: { passage: PassageView | null;
             <SheetHeader className="border-b">
               <span className="w-fit rounded-md bg-primary px-1.5 py-0.5 font-mono text-xs font-semibold text-primary-foreground">{p.label}</span>
               <SheetTitle className="text-base leading-snug">{p.docTitle || p.groupTitle}</SheetTitle>
+              {p.section && p.section !== p.docTitle && <p className="text-sm font-medium text-foreground/80">{p.section}</p>}
               <SheetDescription>
-                {[p.docStatus && p.docStatus.toLowerCase(), p.groupTitle, ...p.path].filter(Boolean).join(" › ")}
+                {[p.docStatus && p.docStatus.toLowerCase(), p.docModified && `updated ${p.docModified}`, p.groupTitle, ...p.path].filter(Boolean).join(" › ")}
                 <span className="block">
                   Lines {p.lineStart.toLocaleString("en")}–{p.lineEnd.toLocaleString("en")} of kd.md
                 </span>

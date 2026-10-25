@@ -24,11 +24,17 @@ export interface StreamRequest {
   messages: ChatMessage[];
   maxTokens: number;
   signal?: AbortSignal;
+  /** Ask for one JSON object matching this schema (structured outputs where the provider supports it). */
+  json?: { name: string; schema: Record<string, unknown> };
+  /** Reasoning effort, where the provider supports it. */
+  effort?: "low" | "medium" | "high";
 }
 
 export interface StreamResult {
   stop: "end" | "max_tokens" | "refusal";
   model: string;
+  /** False when a JSON schema was asked for but the provider couldn't enforce it (output must be parsed tolerantly). */
+  enforcedJson?: boolean;
 }
 
 export interface AiProvider {

@@ -2,6 +2,7 @@
 import "server-only";
 import rawPassages from "@/generated/passages.json";
 import { getDoc, getGroup } from "@/lib/kd";
+import { anchorAt } from "@/lib/reader";
 
 export interface Passage {
   id: number;
@@ -87,10 +88,21 @@ export function search(query: string, k = 20, keep?: (p: Passage) => boolean, k1
   return [...new Set([...pinned, ...ranked])].slice(0, k);
 }
 
-// A short plain-text phrase to Ctrl+F in the original document.
+// A short plain-text phrase to Ctrl+F in the original document, and to find the passage on the reader page:
+// written as it renders (no markdown markers, list numbers, escapes or tags).
 function searchPhrase(text: string): string {
   for (const line of text.split("\n")) {
-    let s = line.replace(/\*\*|__|`|\[|\]\([^)]*\)|^[#>\-\s|*]+|🟩/g, "").trim();
+    let s = line
+      .replace(/<\/?[a-z][a-z0-9]*(\s[^>]*)?\/?>/gi, " ")
+      .replace(/<([^<>\s]+@[^<>\s]+|https?:[^<>\s]+)>/g, "$1")
+      .replace(/\\([\\`*_{}[\]()#+\-.!|])/g, "$1")
+      .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+      .replace(/\*\*|__|`|🟩|~~/g, "")
+      .replace(/(^|\s)[*_](?=\S)|(?<=\S)[*_](?=\s|$|[.,;:])/g, "$1")
+      .replace(/^[#>\-\s|*+]+/, "")
+      .replace(/^\d+[.)]\s+/, "")
+      .replace(/^\[[ xX]\]\s*/, "")
+      .trim();
     s = s.replace(/\s*\|\s*/g, " ").replace(/^BR-[A-Z0-9]+-\d+\s*[—-]\s*/, "");
     if (s.split(/\s+/).length >= 4 && !/^[-:\s]*$/.test(s)) return s.split(/\s+/).slice(0, 10).join(" ");
   }
@@ -106,6 +118,28 @@ export interface PassageView extends Passage {
   before: string;
   after: string;
   searchPhrase: string;
+  /** Last-modified date of the source document (YYYY-MM-DD), for version precedence. */
+  docModified: string;
+  /** The heading the passage sits under, for people. */
+  section: string;
+  /** Short readable citation, e.g. "Product Requirements … › Uploading Office Property Lease (Agent)". */
+  citeLabel: string;
+  /** Where the passage is in the app: its document, scrolled to the heading above it, passage flashed. */
+  href: string;
+}
+
+/** Links a passage to the place it can be read in the app. Only links to anchors that exist. */
+function passageHref(p: Passage, phrase: string): string {
+  const find = phrase ? `?${new URLSearchParams({ find: phrase })}` : "";
+  if (p.doc && p.group) {
+    const a = anchorAt(p.doc, p.lineStart);
+    return `/read/${p.group}/${p.doc}${find}${a ? `#${a.slug}` : ""}`;
+  }
+  if (p.group) return `/read/${p.group}${find}`;
+  // The conflicts / decisions chapter: link to the item on the Open questions page.
+  const item = p.text.match(/\*\*([DCP]-\d{2})\b/);
+  if (item) return `/conflicts#${item[1]}`;
+  return `/kd.md`;
 }
 
 /** A passage with its source details and the passages either side (same doc only). */
@@ -115,6 +149,9 @@ export function passageView(pid: number, label: string): PassageView {
   const same = (o?: Passage) => o && o.doc === p.doc && o.group === p.group;
   const prev = passages[pid - 1];
   const next = passages[pid + 1];
+  // The reader drops a document's own title line, so don't pick the phrase from it.
+  const phrase = searchPhrase(doc && p.lineStart === doc.line ? p.text.split("\n").slice(1).join("\n") : p.text);
+  const section = p.path.at(-1) ?? doc?.title ?? p.chapter;
   return {
     ...p,
     label,
@@ -124,6 +161,10 @@ export function passageView(pid: number, label: string): PassageView {
     docUrl: doc?.url ?? "",
     before: same(prev) ? prev.text : "",
     after: same(next) ? next.text : "",
-    searchPhrase: searchPhrase(p.text),
+    searchPhrase: phrase,
+    docModified: doc?.modified?.slice(0, 10) ?? "",
+    section,
+    citeLabel: [doc?.title ?? (p.group ? getGroup(p.group)!.title : p.chapter), section !== doc?.title ? section : ""].filter(Boolean).join(" › "),
+    href: passageHref(p, phrase),
   };
 }

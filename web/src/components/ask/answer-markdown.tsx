@@ -16,24 +16,30 @@ function linkify(md: string) {
 export function AnswerMarkdown({
   text,
   onCite,
+  citeText,
   className,
 }: {
   text: string;
   onCite?: (label: string) => void;
+  /** A readable name for a citation chip (document / section); the passage ID stays secondary. */
+  citeText?: (label: string) => string | undefined;
   className?: string;
 }) {
   const components: Components = {
     a: ({ href = "", children }) => {
       if (href.startsWith("#cite-")) {
         const label = href.slice(6);
+        const name = citeText?.(label);
         return (
           <button
             type="button"
             onClick={() => onCite?.(label)}
-            className="mx-0.5 inline-flex h-5 items-center rounded-md bg-primary/12 px-1.5 align-[1px] font-mono text-[11px] font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
-            aria-label={`Source ${label}`}
+            title={name ? `${name} (${label})` : undefined}
+            className="mx-0.5 inline-flex h-5 max-w-[min(14rem,100%)] items-center gap-1 rounded-md bg-primary/12 px-1.5 align-[1px] text-[11px] font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+            aria-label={name ? `Source: ${name} (${label})` : `Source ${label}`}
           >
-            {label}
+            {name && <span className="truncate font-sans font-medium">{name}</span>}
+            <span className={cn("shrink-0 whitespace-nowrap font-mono", name && "opacity-70")}>{label}</span>
           </button>
         );
       }

@@ -33,6 +33,15 @@ npm run dev                  # http://localhost:3000
 
 Set `KD_AI_PROVIDER` to `anthropic` (default), `openai`, `openrouter`, `groq`, `ollama` or `custom` (any OpenAI-compatible URL in `KD_AI_BASE_URL`), plus `KD_MODEL` and the key. See `.env.example`.
 
+Ask returns structured answers: tables for requirements, timelines for workflows, comparison tables and field cards. Every row and claim is checked against the retrieved sources before it is shown (see ARCHITECTURE.md, "How Ask answers"). On smaller or free models, lower `KD_CONTEXT_CHARS` if requests are too large, or set `KD_MAX_TOKENS` if the model rejects the default output size.
+
+## Tests
+
+```bash
+npm test                          # unit tests on the real knowledge base (Vitest)
+npm run build && npm run test:e2e # browser test of Ask with a stand-in model (needs Playwright + Chromium)
+```
+
 ## Connect an AI tool (MCP)
 
 ```bash

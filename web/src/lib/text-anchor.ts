@@ -16,19 +16,23 @@ function textNodes(root: Element) {
   return { nodes, text: nodes.map((n) => n.node.data).join("") };
 }
 
-/** The text with whitespace removed, and for each kept character its offset in the original. */
+/**
+ * The text with whitespace removed (and the markdown characters * _ \ that may or may not survive
+ * rendering), and for each kept character its offset in the original.
+ */
+const IGNORED = /[\s*_\\]/;
 function squeeze(text: string) {
   let out = "";
   const map: number[] = [];
   for (let i = 0; i < text.length; i++) {
-    if (/\s/.test(text[i])) continue;
+    if (IGNORED.test(text[i])) continue;
     out += text[i];
     map.push(i);
   }
   return { out, map };
 }
 
-const squeezed = (s: string) => s.replace(/\s+/g, "");
+const squeezed = (s: string) => s.replace(/[\s*_\\]+/g, "");
 
 /** Where a selection sits in `root`'s text, with context either side; null if it is outside `root`. */
 export function quoteFromRange(root: Element, range: Range) {
@@ -108,7 +112,9 @@ export function unwrapAll(root: Element, selector: string) {
 
 /** Scrolls to a passage in `root` and flashes it for a few seconds. Returns false if it isn't there. */
 export function flashText(root: Element, phrase: string): boolean {
-  const hit = findQuote(root, phrase);
+  // A table row can render a little differently from its source line: fall back to its first words.
+  const words = phrase.split(/\s+/);
+  const hit = [words.length, 6, 4].filter((n, i) => i === 0 || n < words.length).map((n) => findQuote(root, words.slice(0, n).join(" "))).find(Boolean);
   if (!hit) return false;
   const marks = wrapRange(root, hit.start, hit.end, () => Object.assign(document.createElement("mark"), { className: "kd-flash" }));
   if (!marks.length) return false;
