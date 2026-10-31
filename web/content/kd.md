@@ -73,7 +73,7 @@ Rule numbers can have gaps. Rules from superseded documents were removed, but th
 - [04 — Product Requirements, Stories & Epics](#04--product-requirements-stories--epics) — 5 current docs, 214 rules
 - [05 — Master Sheet Fields (Story-wise)](#05--master-sheet-fields-story-wise) — 2 current docs, 264 rules
 - [06 — Input Fields, Cards, Bulk Upload & Listing Management](#06--input-fields-cards-bulk-upload--listing-management) — 6 current docs, 175 rules
-- [07 — Relevancy / Matching Logic](#07--relevancy--matching-logic) — 3 current docs, 46 rules
+- [07 — Relevancy / Matching Logic](#07--relevancy--matching-logic) — 4 current docs, 73 rules
 - [08 — Landing, Enterprise & Agent Pages + User Journeys](#08--landing-enterprise--agent-pages--user-journeys) — 5 current docs, 284 rules
 - [09 — Occupier Home/Specific Pages (Brand Retail, Brand F&B, Office Tenant, Managed Space Tenant)](#09--occupier-homespecific-pages-brand-retail-brand-fb-office-tenant-managed-space-tenant) — 4 current docs, 233 rules
 - [10 — Keydemand Team (internal RM/Team) Pages & Dashboard](#10--keydemand-team-internal-rmteam-pages--dashboard) — 2 current docs, 163 rules
@@ -314,7 +314,7 @@ Scope: core business-rule groups G02–G12, authoritative documents only.
 | C-41 | Inventory on user deactivation | 3-month hibernation, then permanent removal (G05 US-007) | Paused/hidden; data preserved (G05 other sections; G09 shared rules) | Preserved (majority) | Needs decision |
 | C-42 | KD member deletion | Soft-delete, inventory retained (G05 BR-MS-049) | Handover to another KD user first (G10 BR-KDT-006; G11 BR-ADM-016/017) | Handover (V2.0) | Resolved-by-rule |
 | C-43 | KD relevancy scope | Brands and Tenants only (G02 BR-CR-130/266; G10 BR-KDT-132) | Also agents and KD members (G10 BR-KDT-041; G12 BR-ROL-071) | Unresolved (D-19) | Needs decision |
-| C-44 | Relevancy fields | Asset Class, Carpet Area, Location, Transaction only (G05 BR-MS-173) | Weighted fields incl. ceiling height, floor, possession, fit-outs (G07 BR-REL-001/003/006/009) | G07 xlsx (relevancy spec, 14 Oct) | Resolved-by-rule |
+| C-44 | Relevancy fields | Asset Class, Carpet Area, Location, Transaction only (G05 BR-MS-173) | Weighted fields incl. ceiling height, floor, possession, fit-outs (G07 BR-REL-001/003/006/009) | G07 xlsx (relevancy spec, 14 Oct), with field-level scoring in the G07 Business Approval sheet (29 Oct; BR-REL-135–161) | Resolved-by-rule |
 | C-45 | Relevancy % display | Properties: % shown in KD drill-downs (G10 BR-KDT-097/158; G02 BR-CR-312) | Projects: no % (G05 BR-MS-148/173; G06 BR-FLD-167; G08 BR-PG1-247) | Consistent: % for property matches only | Resolved-by-rule |
 | C-46 | Media limits | Images <2 MB, video <5 MB (G04 BR-REQ-013; G06 BR-FLD-036) | 5 MB / 15 MB (G05 BR-MS-125); 5 MB ≥300 ppi / 20 MB (G06 persona; G08 BR-PG1-226) | Unresolved (D-16) | Needs decision |
 | C-47 | PDF limit | <2 MB (G04 BR-REQ-034; G06 BR-FLD-065) | <5 MB (Keydemand block, same BRs; floorplans G06 BR-FLD-085) | Unresolved | Needs decision |
@@ -359,7 +359,7 @@ Scope: core business-rule groups G02–G12, authoritative documents only.
 | P-08 | Notification daily cap value | G04 BR-REQ-111; G12 BR-NTF-011 | Number |
 | P-09 | Daily digest send time and channel | G12 open question | Time, channel, recipients |
 | P-10 | Enterprise Solution Lead SLA ("45 min left") | G11 open question | SLA definition |
-| P-11 | Relevancy display threshold | G07 open question | Minimum % |
+| P-11 | Relevancy display threshold | G07 open question; G07 Business Approval sheet: Retail ↔ F&B cross-match cutoff not finalized, 50% temporary (BR-REL-142) | Minimum % |
 | P-12 | Property (non-project) size tolerance | G07 open question | ± % |
 | P-13 | Similar-properties criteria | G07 open question | Definition |
 | P-14 | Project relevancy weights | G07 open question (Project tab) | Weight columns empty |
@@ -441,7 +441,7 @@ Scope: core business-rule groups G02–G12, authoritative documents only.
 
 ## Source register
 
-Every document in scope, including superseded ones (listed by name only). 2082 business rules from current documents.
+Every document in scope, including superseded ones (listed by name only). 2109 business rules from current documents.
 
 | Group | # | Title | Type | Drive ID | Owner | Modified | Status |
 |---|---|---|---|---|---|---|---|
@@ -478,6 +478,7 @@ Every document in scope, including superseded ones (listed by name only). 2082 b
 | G07 | 2 | Properties and projects relavancy/similar matches | Google Sheet, 2 tabs | `1QNT9o_tREQro2OFa9uhx58ZDlJpGhKHpRWExI_FYIIU` | arvind.m@futuristglobal.com | 2026-10-10 | AUTHORITATIVE |
 | G07 | 3 | Images for Demand -Relevancy and Enterprise End Use as discussed in Client call today(8th October) | Google Doc | `1To607MwaovFvLD7jj2spXYhhRPv_AsdaidcHvm8tof4` | pradeepa.pv@futuristglobal.com | 2026-10-14 | AUTHORITATIVE |
 | G07 | 4 | Keydemand Relevancy — Business Guide - DO NOT TAKE. .docx | Word (.docx) | `1cM4ZE069Xb12FWrItTipiSOp6oKrPKfB` | pradeepa.pv@futuristglobal.com | 2026-10-06 | NON-AUTHORITATIVE (title says "DO NOT TAKE"; body says "DO NOT USE THIS DOCUMENT") |
+| G07 | 5 | KeyDemand V2 Relevance Logic – Business Approval | Google Sheet, 4 tabs | `1pO37bzXWSkpT_-poaFu1XI73e1319ZWWzejLAt02Ur8` | sithara.j@futuristglobal.com | 2026-10-29 | AUTHORITATIVE (field-level V2 match scoring for Office, Retail, F&B, Managed Space; newer than Relevancy Logics.xlsx; added 2026-11-01) |
 | G08 | 1 | Version 1.0 - Landing Page Main- Unregistered User Flow, Enterprise Solutions Page, About Us | Google Doc | `1QTO_ZrDd_Z3Z-UdeJDuqYQjkUSHjUiPDeJoMpv2cnCc` | pradeepa.pv@futuristglobal.com | 2026-10-15 | AUTHORITATIVE |
 | G08 | 2 | Landing Page Main- Unregistered User Flow, Enterprise Solutions Page, About Us | Google Doc | `1gW6_NYr5I-GjGBtZE19K97o2bUorBqmlCmfWIyYGvRM` | pradeepa.pv@futuristglobal.com | 2026-08-05 | HISTORY (superseded by Version 1.0 - Landing Page Main- Unregistered User Flow, Enterprise Solutions Page, About Us) |
 | G08 | 3 | Version 1.0 Enterprise - Brand(F&B, Retail), Tenant, Managed Space Occupier | Google Doc | `1AYt0SdmjORmTxSEIoZMczSxEQ05r2HUVELQGbCjD8LA` | pradeepa.pv@futuristglobal.com | 2026-10-06 | AUTHORITATIVE |
@@ -14419,6 +14420,7 @@ Business Rules
 | 2 | Properties and projects relavancy/similar matches | Google Sheet, 2 tabs | `1QNT9o_tREQro2OFa9uhx58ZDlJpGhKHpRWExI_FYIIU` | arvind.m@futuristglobal.com | 2026-10-10 | AUTHORITATIVE |
 | 3 | Images for Demand -Relevancy and Enterprise End Use as discussed in Client call today(8th October) | Google Doc | `1To607MwaovFvLD7jj2spXYhhRPv_AsdaidcHvm8tof4` | pradeepa.pv@futuristglobal.com | 2026-10-14 | AUTHORITATIVE |
 | 4 | Keydemand Relevancy — Business Guide - DO NOT TAKE. .docx | Word (.docx) | `1cM4ZE069Xb12FWrItTipiSOp6oKrPKfB` | pradeepa.pv@futuristglobal.com | 2026-10-06 | NON-AUTHORITATIVE (title says "DO NOT TAKE"; body says "DO NOT USE THIS DOCUMENT") |
+| 5 | KeyDemand V2 Relevance Logic – Business Approval | Google Sheet, 4 tabs | `1pO37bzXWSkpT_-poaFu1XI73e1319ZWWzejLAt02Ur8` | sithara.j@futuristglobal.com | 2026-10-29 | AUTHORITATIVE (field-level V2 match scoring for Office, Retail, F&B, Managed Space; newer than Relevancy Logics.xlsx; added 2026-11-01) |
 
 ---
 ### Relevancy Logics.xlsx  [AUTHORITATIVE]
@@ -14727,19 +14729,4787 @@ Use the following images to show for Demand Card Relevancy
 - How an end-use image is chosen from the folder (by end-use selection?) is not stated.
 
 ---
+### KeyDemand V2 Relevance Logic – Business Approval  [AUTHORITATIVE]
+**Source:** Google Sheet · ID `1pO37bzXWSkpT_-poaFu1XI73e1319ZWWzejLAt02Ur8` · owner sithara.j@futuristglobal.com · created 2026-10-05, modified 2026-10-29 · tabs read: Office_V2_Relevance_Logic, Retail_V2_Relevance_Logic, F&B_V2_Relevance_Logic, Managed_Space_V2_Relevance_Logic (4 of 4) · comments: none · read coverage: 100% of cell text (xlsx export) · added 2026-11-01
+
+**Status note:** This is the field-level V2 relevance spec (demand ↔ property/supply) for Office, Retail, F&B and Managed Space. For each field it records the Approved V1 logic, the latest V2 business decision, the Sep 22, 2026 technical/backend confirmations (Sathish) and the Oct 27, 2026 business confirmation (Himanshu). It keeps the same field lists and block weights as *Relevancy Logics.xlsx* (2026-10-14) and adds the per-field scoring, so it is treated as AUTHORITATIVE and newer. Where the two disagree, see *Conflicts across docs in this group*. Project relevancy is out of scope here ("Demand–Project Relevance scope"); *Relevancy Logics.xlsx* still governs projects.
+
+Notes on transcription: one `#####` block per sheet row. The table gives the Demand field, M/O, Weight, Effective Weight and Supply Field cells. The Comments, Match Score Interpretation, Examples and Latest Decision columns follow word for word. "(merged above)" marks a Weight cell merged with the first row's. Two unlabelled trailing columns on the Other Interested Location rows hold wrapper pseudo-code and are shown as text blocks.
+
+#### Content
+
+##### Tab 1 — Office_V2_Relevance_Logic
+**Title (R1):** OFFICE DEMAND & SUPPLY RELEVANCY
+
+###### Asset Class
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Asset Class | M | Latest live sheet: 80% total for mandatory fields | Latest live sheet: 80% / 5 = 16% | Asset Class |
+
+**Comments:**
+
+Approved V1: Asset Class will automatically match from the backend and should correspond to the Demand Asset Class; match score is 1 or 0.  
+
+Latest V2 Confirmation: Office continues to use strict exact Asset Class matching. Office cross-matching with Retail, F&B, or Managed Space / Managed Office is not intended. Retail ↔ F&B cross-Asset-Class matching is a confirmed V2 exception and does not apply to Office.  
+
+Technical / Backend Confirmation – Sep 22, 2026: The Office Asset Class continues to use the standardized V2 backend value office. The confirmed Retail ↔ F&B cross-match is a separate V2 exception and does not apply to Office. No additional backend dependency/change was identified for the Office Asset Class logic.  
+
+**Match Score Interpretation:**
+
+Approved V1:  
+
+Office Demand + Office Supply → Match Score = 1  
+Office Demand + Non-Office Supply → Match Score = 0  
+
+Latest V2 Confirmation:  
+
+Office retains strict Asset Class matching:  
+
+- Office Demand + Office Supply → 1
+- Office Demand + Retail Supply → 0
+- Office Demand + F&B Supply → 0
+- Office Demand + Managed Space Supply → 0
+
+**Examples:**
+
+Approved V1 – Strict Exact Match  
+
+Example 1:  
+Demand: Office  
+Supply: Office  
+→ Match Score = 1  
+
+Example 2:  
+Demand: Office  
+Supply: Retail  
+→ Match Score = 0  
+
+Example 3:  
+Demand: Office  
+Supply: F&B  
+→ Match Score = 0  
+
+Example 4:  
+Demand: Office  
+Supply: Managed Space / Managed Office  
+→ Match Score = 0  
+
+Latest V2 Decision / Discussion  
+
+Example 5:  
+Demand: Office  
+Supply: Office  
+→ Match Score = 1  
+
+Example 6:  
+Demand: Office  
+Supply: Retail  
+→ Match Score = 0  
+
+Example 7:  
+Demand: Office  
+Supply: F&B  
+→ Match Score = 0  
+
+Example 8:  
+Demand: Office  
+Supply: Managed Space / Managed Office  
+→ Match Score = 0  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision: Office Asset Class remains an exact-match criterion. Cross-matching with Retail, F&B, or Managed Space / Managed Office is not intended. The confirmed Retail ↔ F&B cross-match is a separate V2 exception and does not apply to Office.  
+
+Technical / Backend Confirmation – Sep 22, 2026: The standardized V2 backend Asset Class value for Office is office. No additional backend dependency/change was identified for the Office Asset Class logic.  
+
+Pending Clarification: None for Office Asset Class.  
+
+Weight: Latest live-sheet configuration confirmed — 80% total Mandatory weight across 5 Mandatory fields, giving 16% effective weight per Mandatory field.  
+
+###### Transaction Type
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Transaction Type | M | (merged above) | Latest live sheet: 80% / 5 = 16% | Transaction Type |
+
+**Comments:**
+
+Approved V1 : Transaction Type should correspond between Demand and Supply and is evaluated using a 1 or 0 match score.  
+
+Latest V2 Decision: Demand Buy + Supply Sale represents the same purchase transaction and should be treated as a valid/full match. Demand Lease + Supply Lease is also a valid/full match. Other incompatible Demand–Supply Transaction Type combinations should not match.  
+
+Technical / Backend Confirmation – Sep 22, 2026: The current V2 backend continues to use Buy for purchase transactions, including on the Supply side. Sale is the business/UI terminology for the corresponding purchase transaction. No backend field change or Buy ↔ Sale wrapper conversion is required solely because of this terminology difference.  
+
+**Match Score Interpretation:**
+
+Approved V1:  
+Exact Transaction Type match = 1; mismatch = 0.  
+
+Latest V2 Business Rule:  
+1 → Purchase transaction on Demand corresponds to purchase transaction on Supply  
+1 → Demand Lease corresponds to Supply Lease  
+0 → Purchase transaction on Demand with Supply Lease  
+0 → Demand Lease with purchase transaction on Supply  
+
+Current intended PR representation:  
+Demand Buy ↔ Supply Sale = 1  
+
+Technical / Backend Confirmation – Sep 22, 2026:  
+The V2 backend uses Buy for purchase transactions on both Demand and Supply. Therefore, the relevance implementation will use the existing backend Transaction Type representation directly. No Buy ↔ Sale wrapper conversion is required solely to reconcile the business/UI terminology.  
+
+**Examples:**
+
+Approved V1 – Strict Exact Match  
+
+Example 1:  
+Demand: Lease  
+Supply: Lease  
+→ Match Score = 1  
+
+Example 2:  
+Demand: Lease  
+Supply: Sale  
+→ Match Score = 0  
+
+Latest V2 – Business Transaction Equivalence  
+
+Example 3:  
+Demand: Buy  
+Supply: Sale  
+→ Match Score = 1  
+
+Example 4:  
+Demand: Lease  
+Supply: Lease  
+→ Match Score = 1  
+
+Example 5:  
+Demand: Buy  
+Supply: Lease  
+→ Match Score = 0  
+
+Example 6:  
+Demand: Lease  
+Supply: Sale  
+→ Match Score = 0  
+
+Technical Note – Sep 22, 2026: The examples above represent the confirmed business/UI Transaction Type equivalence. In the current V2 backend, purchase transactions continue to use Buy, including on the Supply side. The relevance implementation will use the existing backend representation directly; no Buy ↔ Sale wrapper conversion is required solely for terminology.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision: Demand Buy + Supply Sale = 1; Demand Lease + Supply Lease = 1; incompatible combinations = 0.  
+
+Technical / Backend Confirmation – Sep 22, 2026: The current V2 backend continues to use Buy for purchase transactions, including on the Supply side. Sale is business/UI terminology for the corresponding purchase transaction. The relevance implementation will use the existing backend representation directly; no Buy ↔ Sale wrapper conversion is required solely because of this terminology difference.  
+
+Pending Clarification: None for Office Transaction Type.  
+
+Weight: Latest live-sheet configuration confirmed — 80% total Mandatory weight across 5 Mandatory fields, giving 16% effective weight per Mandatory field.  
+
+###### City
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| City | M | (merged above) | Latest live sheet: 80% / 5 = 16%. | City |
+
+**Comments:**
+
+Approved V1: Demand City should match the Supply City and is evaluated using a 1 or 0 match score.  
+Latest V2 Decision: City continues to use exact matching based on the actual Demand and Supply City. PAN_INDIA is subscription-related only and should not be treated as a City value for relevance matching. Relevance matching should use the actual City.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that relevance matching should use the actual City associated with the Demand and Supply. PAN_INDIA is a subscription-level option and should not be treated as a City value for relevance matching. The PAN_INDIA / India values observed in previously reviewed V2 records were identified as early/test data and are not the intended current representation for City relevance.  
+
+**Match Score Interpretation:**
+
+Approved V1 / Latest V2:  
+1 → Demand City exactly matches Supply City  
+0 → Demand City does not match Supply City  
+
+PAN_INDIA → Not applicable as a relevance City value  
+
+**Examples:**
+
+Approved V1 / Latest V2 – Exact City Match  
+
+Example 1:  
+Demand: Bangalore  
+Supply: Bangalore  
+→ Match Score = 1  
+
+Example 2:  
+Demand: Bangalore  
+Supply: Hyderabad  
+→ Match Score = 0  
+
+Example 3:  
+Demand: Mumbai  
+Supply: Navi Mumbai  
+→ Match Score = 0  
+
+V2 PAN_INDIA Handling  
+
+Example 4:  
+Demand City: PAN_INDIA  
+→ Do not use as a City value for relevance matching; actual Demand City should be used..  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision: City continues to use exact matching based on the actual Demand and Supply City: same City = 1, different City = 0. PAN_INDIA is subscription-related only and should not be used as a City value for relevance matching.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that relevance matching should use the actual City associated with the Demand and Supply. The PAN_INDIA / India values observed in previously reviewed V2 records were identified as early/test data and are not the intended current representation for City relevance.  
+
+Pending Clarification: None for Office City.  
+
+Weight: Latest live-sheet configuration confirmed — 80% total Mandatory weight across 5 Mandatory fields, giving 16% effective weight per Mandatory field.  
+
+###### Location + Other Interested Location
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Location + Other Interested Location | M | (merged above) | Latest live sheet: 80% / 5 = 16%. | Location |
+
+**Comments:**
+
+Approved V1: Location matching follows a hierarchical/broader-locality approach. An exact Location match receives a full Match Score of 1. Where the Demand specifies a more specific location (e.g., a road/micro-location) and the Supply matches the approved broader locality containing that location, it receives a partial Match Score of 0.5. Where the Supply Location falls within the Demand's broader requested locality, it receives a full Match Score of 1. Unrelated locations receive a Match Score of 0.  
+
+Example: Demand = DP Road, Kothrud and Supply = Kothrud → 0.5; Demand = Kothrud and Supply = DP Road, Kothrud → 1.  
+
+Latest V2 Decision: Location matching will use Micro-location, Area, City, and distance/radius-based logic. Same Micro-location and different Micro-location within the same Area both receive a full Match Score of 1. For different Areas within the same City, the Match Score will decrease based on distance up to 5 km. Different City receives 0 and should not be considered/shown as a Location match.  
+
+The same Location Match Score logic applies to both Primary Location and Other Interested Location. Other Interested Location is merged into Location and does not have a separate relevance impact.  
+
+Latest Business Confirmation – Sep 18, 2026: Supply Location is evaluated against the Demand Primary Location and each Other Interested Location using the same Location Match Score logic. The highest Match Score obtained across Primary Location and all Other Interested Locations is used as the single final Location Match Score. Primary Location and Other Interested Locations have equal priority.  
+
+Technical / Backend Clarification – Sep 22, 2026: Sathish clarified that the current V2 backend does not maintain Area as a separate Location level as represented in the business logic. From the backend perspective, Location/Locality is the main location and Micro-location is the sub-location. Primary Location and Other Interested Locations remain separate backend fields and can be retrieved separately by the relevance layer/MongoDB wrapper for application of the confirmed max-score aggregation.  
+
+Sathish also confirmed that distance calculation is technically possible using Google/location services, but advised against performing real-time distance/API calculation for every Demand–Supply comparison at this stage because of the additional processing/dependency.  
+
+**Match Score Interpretation:**
+
+Approved V1:  
+
+1 → Supply Location exactly matches the Demand Location, or the Supply is at a more specific location within the Demand's broader requested locality.  
+
+0.5 → Demand specifies a more specific location, while the Supply matches the approved broader locality containing that Demand Location.  
+
+0 → Supply Location does not match or fall within an approved geographic relationship with the Demand Location.  
+
+Latest V2:  
+
+Business clarification: Area = Location/Locality.  
+
+Geographic hierarchy: City → Location/Locality → Micro-location.  
+
+Same Micro-location → 1  
+
+Different Micro-location but same  Location/Locality → 1  
+
+Different  Location/Locality but same City → distance-based Match Score:  
+
+≤ 1 km → 0.8  
+
+1 km to ≤ 2 km → 0.7  
+
+2 km to ≤ 3 km → 0.6  
+
+3 km to ≤ 4 km → 0.5  
+
+4 km to ≤ 5 km → 0.3  
+
+> 5 km → 0  
+
+Different City → 0; Supply should not match/showcase.  
+
+The same Location Match Score Interpretation applies to both Primary Location and Other Interested Location.  
+
+**Examples:**
+
+Approved V1 Examples:  
+
+Example 1 – Exact match  
+Demand: Kothrud, Pune  
+Supply: Kothrud, Pune  
+Match Score = 1  
+
+Example 2 – Demand more specific, Supply broader  
+Demand: DP Road, Kothrud, Pune  
+Supply: Kothrud, Pune  
+Match Score = 0.5  
+
+Example 3 – Demand broader, Supply more specific  
+Demand: Kothrud, Pune  
+Supply: DP Road, Kothrud, Pune  
+Match Score = 1  
+
+Example 4 – Unrelated Location  
+Demand: DP Road, Kothrud, Pune  
+Supply: Baner, Pune  
+Match Score = 0  
+
+Latest V2 Examples  
+
+Example 1: Same Micro-location  
+Demand: Kothrud, Pune  
+Supply: Kothrud, Pune  
+→ Match Score = 1  
+
+Example 2: Different Micro-location, Same Area  
+Demand Micro-location: DP Road, Kothrud, Pune  
+Supply Micro-location: Karve Road, Kothrud, Pune  
+Area: Kothrud  
+→ Match Score = 1  
+
+Example 3: Different Area, Same City  
+Demand Location: Kothrud, Pune  
+Supply Location: Baner, Pune  
+→ Different Areas within the same City  
+→ Match Score = distance-based score (0.8 / 0.7 / 0.6 / 0.5 / 0.3 depending on distance up to 5 km)  
+
+Example 4: Different City  
+Demand Location: Kothrud, Pune  
+Supply Location: Andheri, Mumbai  
+→ Match Score = 0  
+
+Example 5: Different Area, Same City – More than 5 km  
+
+Demand Location: Area A, Pune  
+Supply Location: Area B, Pune  
+Distance: > 5 km  
+
+→ Match Score = 0  
+
+Example 6: Primary + Other Interested Location  
+
+Demand Primary Location: Kothrud, Pune  
+Demand Other Interested Location: Baner, Pune  
+Supply Location: Baner, Pune  
+
+Against Primary Location (Kothrud):  
+Supply is in a different Area within the same City.  
+→ Match Score = distance-based score depending on distance  
+
+Against Other Interested Location (Baner):  
+Supply matches the Other Interested Location.  
+→ Match Score = 1  
+
+The same V2 Location Match Score logic applies to both Primary Location and Other Interested Location.  
+
+Primary Location match → 0.5  
+Other Interested Location 1 match → 1  
+Other Interested Location 2 match → 0.7  
+
+Final Location Match Score → 1  
+
+The highest Match Score across Primary Location and all Other Interested Locations is used as the single final Location Match Score.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Business Decision: V2 Location matching uses the confirmed Micro-location, Area, City and distance/radius-based business logic:  
+
+Same Micro-location → 1  
+Different Micro-location but same Area → 1  
+Different Area within same City → distance-based Match Score  
+≤ 1 km → 0.8  
+1 km to ≤ 2 km → 0.7  
+2 km to ≤ 3 km → 0.6  
+3 km to ≤ 4 km → 0.5  
+4 km to ≤ 5 km → 0.3  
+
+5 km → 0  
+Different City → 0  
+
+Supply Location is evaluated against Demand Primary Location and each Other Interested Location using the same Location logic. The highest Match Score is used as the single final Location Match Score. Primary Location and Other Interested Locations have equal priority; OIL has no separate relevance weight.  
+
+Technical / Backend Clarification – Sep 22, 2026: Sathish clarified that the backend does not maintain Area as a separate Location level. Location/Locality represents the main location and Micro-location the sub-location. Primary Location and Other Interested Locations remain separate backend fields and can be retrieved separately by the relevance layer/MongoDB wrapper for application of the confirmed max-score aggregation.  
+
+Distance calculation is technically possible using Google/location services; however, Sathish recommended avoiding real-time distance/API calculation for every Demand–Supply comparison at this stage because of the additional processing/dependency.  
+
+Confirmed Business Decision – Himanshu Oct 27  
+
+Area refers to Location/Locality.  
+
+Confirmed hierarchy:  
+City → Location/Locality → Micro-location.  
+
+Example:  
+Bengaluru → Indiranagar → 100 Feet Road.  
+
+Weight: Latest live-sheet configuration confirmed — 80% total Mandatory weight across 5 Mandatory fields, giving 16% effective weight for Location + Other Interested Location.  
+
+###### Carpet Area (sq. ft.)
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Carpet Area (sq. ft.) | M | (merged above) | Latest live sheet: 80% / 5 = 16% | Carpet Area (sq. ft.) |
+
+**Comments:**
+
+Approved V1:  
+1 → Supply Carpet Area lies within the demanded Carpet Area range.  
+0.8 → Supply Carpet Area lies within ±10% variance of the demanded range, applied to both the lower and upper bounds.  
+0 → Supply Carpet Area falls outside the ±10% variance.  
+
+Later V2 Discussion: The tolerance was proposed to change to -10% on the lower side and +20% on the upper side of the demanded Carpet Area range, with the variance applied to both the bottom and high range values.  
+
+Latest V2 Decision: This fixed-tolerance approach has now been replaced by the Demand-area-based variance-band logic. The applicable lower and upper variance percentages depend on the Demand Carpet Area band. Supply Carpet Area within the applicable variance limits receives Match Score = 1; outside the limits receives Match Score = 0. The same approach applies to Office, Retail, and F&B.  
+
+Representation / Revalidation Status: The latest PR defines Demand Carpet Area as a single numeric value. The freshly restored V2 Dev DB was revalidated across Office, Retail, and F&B and currently provides both carpetArea and carpetAreaRange on the Demand side. Whenever populated, carpetArea = carpetAreaRange.min = carpetAreaRange.max. Supply consistently uses single numeric carpetArea.  
+
+The earlier data-level min–max ambiguity is therefore not present in the refreshed Dev DB.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that, since the currently available Demand-side carpetArea, carpetAreaRange.min, and carpetAreaRange.max values are equivalent in the reviewed V2 data, carpetArea can be used as the primary Demand Carpet Area input for V2 relevance.  
+
+Fallback handling should be retained if the primary carpetArea value is unavailable. An available Carpet Area representation such as carpetAreaRange.min may be considered as a fallback; however, the exact fallback field/order was not explicitly finalized and will be confirmed based on the final migrated V2 data.  
+
+**Match Score Interpretation:**
+
+Approved V1:  
+1 → Supply Carpet Area lies within the demanded Carpet Area range.  
+0.8 → Supply Carpet Area lies within ±10% variance of the demanded range, applied to both lower and upper bounds.  
+0 → Supply Carpet Area falls outside the ±10% variance.  
+
+Latest V2:  
+The applicable lower and upper variance limits are determined by the Demand Carpet Area band:  
+
+Confirmed V2 Carpet Area Variance Bands:  
+
+≤ 500 sq. ft.: Lower 10% | Upper 50%  
+501–1,000: Lower 10% | Upper 25%  
+1,001–2,000: Lower 10% | Upper 20%  
+2,001–4,000: Lower 10% | Upper 20%  
+4,001–6,000: Lower 10% | Upper 15%  
+6,001–10,000: Lower 5% | Upper 15%  
+10,001–15,000: Lower 5% | Upper 10%  
+15,001–25,000: Lower 10% | Upper 15%  
+≥ 25,001: Lower 15% | Upper 20%  
+
+1 → Supply Carpet Area falls within the applicable lower and upper variance limits.  
+0 → Supply Carpet Area falls outside the applicable lower and upper variance limits.  
+
+So 0.8 is no longer part of the latest V2 Carpet Area Match Score logic.  
+
+Technical / Representation Status: Dev DB revalidation is complete. Demand currently provides both carpetArea and carpetAreaRange, with carpetArea = carpetAreaRange.min = carpetAreaRange.max in all reviewed populated records; Supply uses single numeric carpetArea.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Demand carpetArea can be used as the primary Carpet Area input for V2 relevance and Stage-1 labelled-data generation. Fallback handling will be retained if the primary value is unavailable; the exact fallback field/order will be finalized after review of the migrated V2 data.  
+
+**Examples:**
+
+Approved V1 Examples  
+
+Example 1 – Within Demand requirement  
+
+Demand: 1,000 sq. ft.  
+Supply: 1,000 sq. ft.  
+→ Match Score = 1  
+
+Example 2 – Within ±10% tolerance  
+
+Demand: 1,000 sq. ft.  
+Supply: 950 sq. ft.  
+→ Match Score = 0.8  
+
+Example 3 – Within ±10% tolerance  
+
+Demand: 1,000 sq. ft.  
+Supply: 1,100 sq. ft.  
+→ Match Score = 0.8  
+
+Example 4 – Outside tolerance  
+
+Demand: 1,000 sq. ft.  
+Supply: 850 sq. ft.  
+→ Match Score = 0  
+
+Example 5 – Outside tolerance  
+
+Demand: 1,000 sq. ft.  
+Supply: 1,200 sq. ft.  
+→ Match Score = 0  
+
+Note: Range-Based Demand Handling  
+
+Demand: 1,000–1,200 sq. ft.  
+
+Supply: 1,100 sq. ft. → Match Score = 1  
+Supply: 950 sq. ft. → Match Score = 0.8  
+Supply: 1,300 sq. ft. → Match Score = 0.8  
+Supply: 850 sq. ft. → Match Score = 0  
+
+Latest V2 – Confirmed Examples  
+
+Example 1 – Demand = 5,000 sq. ft.  
+
+Applicable variance: Lower 10%, Upper 15%  
+Acceptable Supply range: 4,500–5,750 sq. ft.  
+
+Supply: 4,500 sq. ft. → Match Score = 1  
+Supply: 5,750 sq. ft. → Match Score = 1  
+Supply: 4,400 sq. ft. → Match Score = 0  
+Supply: 5,800 sq. ft. → Match Score = 0  
+
+Example 2 – Demand = 10,000 sq. ft.  
+
+Applicable variance: Lower 5%, Upper 15%  
+Acceptable Supply range: 9,500–11,500 sq. ft.  
+
+Supply: 9,500 sq. ft. → Match Score = 1  
+Supply: 11,500 sq. ft. → Match Score = 1  
+Supply: 9,400 sq. ft. → Match Score = 0  
+Supply: 11,600 sq. ft. → Match Score = 0  
+
+V2 Representation / Revalidation Status:  
+The refreshed V2 Dev DB contains both carpetArea and carpetAreaRange on Demand. In all reviewed populated records:  
+
+carpetArea = carpetAreaRange.min = carpetAreaRange.max  
+
+Supply consistently uses single numeric carpetArea.  
+
+Technical Confirmation – Sep 22, 2026: Demand carpetArea can be used as the primary V2 relevance and Stage-1 Carpet Area input. If unavailable, fallback handling should be applied; the exact fallback field/order remains to be finalized after migrated-data review.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision: V2 Carpet Area uses the confirmed Demand-area-based variance bands across Office, Retail, and F&B. The applicable lower and upper variance percentages are determined by the Demand Carpet Area band. Supply Carpet Area within the applicable limits → Match Score = 1; outside the limits → Match Score = 0. The V1 partial Match Score of 0.8 is not used in the latest V2 logic.  
+
+Supply Carpet Area is a single numeric value. Project Carpet Area range handling belongs to the separate Demand–Project Relevance scope.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that Demand carpetArea can be used as the primary Demand Carpet Area input for V2 relevance. In the reviewed refreshed Dev DB, populated carpetArea, carpetAreaRange.min, and carpetAreaRange.max values are equivalent, while Supply uses a single numeric carpetArea.  
+
+Pending: If primary Demand carpetArea is unavailable, fallback handling should be retained. An available representation such as carpetAreaRange.min may be considered; however, the exact fallback field/order will be finalized after reviewing the migrated V2 data.  
+
+Weight: Latest live-sheet configuration confirmed — 80% total Mandatory weight across 5 Mandatory fields, giving 16% effective weight for Carpet Area.  
+
+###### Possession
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Possession | O | Latest live sheet: 20% total for optional fields | Latest Office live sheet: 5% | Possession |
+
+**Comments:**
+
+Approved V1 :  
+
+Possession used an urgency-based comparison between the Demand's required possession timeline and the Supply's availability timeline. Supply available at the required time or earlier received a full match, while progressively later availability received a lower Match Score.  
+
+Latest V2 Decision:  
+The same urgency-based approach continues using five standardized Possession buckets: Immediate → Within 3 months → Within 6 months → Within 9 months → After 9 months. Supply available at the same time or earlier than required receives a full match; later availability is scored according to how many buckets later it falls.  
+
+V2 Representation: Business terminology is standardized as Possession on both Demand and Supply. The reviewed V2 backend currently represents Possession using propertyAvailableFrom on both sides.  
+
+Latest Business Confirmation: For Office, Possession is an Optional relevance field with 5% weight. Possession remains a compulsory input when creating Demand and Supply, so missing Possession is not expected in the intended business flow. “Optional” refers to its relevance classification, not whether the user is required to provide the input.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that Possession is the standardized business/UI terminology, while the existing V2 backend field propertyAvailableFrom can continue to be used on both Demand and Supply. No backend field rename or additional MongoDB wrapper change is required solely for this terminology standardization.  
+
+**Match Score Interpretation:**
+
+Approved V1:  
+
+1 → Supply is available at the same time as or earlier than the Demand Possession requirement.  
+0.8 → Supply is available one Possession bucket later than the Demand requirement.  
+0.5 → Supply is available two Possession buckets later than the Demand requirement.  
+0 → Supply is available more than two Possession buckets later than the Demand requirement.  
+
+Latest V2:  
+
+The Approved V1 urgency-based Match Score Interpretation is retained and confirmed using the five V2 Possession buckets:  
+
+Immediate → Within 3 months → Within 6 months → Within 9 months → After 9 months  
+
+1 → Supply available at the same time or earlier than Demand requirement  
+0.8 → Supply available one bucket later  
+0.5 → Supply available two buckets later  
+0 → Supply available more than two buckets later  
+
+**Examples:**
+
+Approved V1 / Confirmed V2 Examples:  
+
+Example 1:  
+Demand: Immediate  
+Supply: Immediate  
+→ Match Score = 1  
+
+Example 2:  
+Demand: Within 3 months  
+Supply: Immediate  
+→ Match Score = 1  
+
+Example 3:  
+Demand: Immediate  
+Supply: Within 3 months  
+→ Match Score = 0.8  
+
+Example 4:  
+Demand: Immediate  
+Supply: Within 6 months  
+→ Match Score = 0.5  
+
+Example 5:  
+Demand: Immediate  
+Supply: Within 9 months  
+→ Match Score = 0  
+
+Example 6 – Latest business-confirmed scenario:  
+Demand: Within 9 months  
+Supply: Immediate / Within 3 months / Within 6 months / Within 9 months  
+→ Match Score = 1  
+
+Demand: Within 9 months  
+Supply: After 9 months  
+→ Match Score = 0.8  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision:  
+The five Possession buckets remain:  
+Immediate → Within 3 months → Within 6 months → Within 9 months → After 9 months.  
+
+Supply available in the same bucket or earlier than the Demand requirement → 1  
+One bucket later → 0.8  
+Two buckets later → 0.5  
+More than two buckets later → 0  
+
+For Office, Possession is confirmed as an Optional relevance field with 5% weight. Possession remains a compulsory input when creating Demand and Supply; therefore, missing values are not expected in the intended business flow. Optional refers to the relevance classification, not the data-entry requirement.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that Possession is the business/UI terminology, while the existing V2 backend field propertyAvailableFrom can continue to be used on both Demand and Supply. No backend field rename or additional MongoDB wrapper change is required solely for the terminology standardization.  
+
+Pending Clarification: None for Office Possession.  
+
+Weight: Latest Office live-sheet configuration confirmed — 5%.  
+
+###### Fitouts
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Fitouts | O | (merged above) | Latest live sheet: Fitouts = 15% | Fitouts Status |
+
+**Comments:**
+
+Latest V2 Decision: Office Fitouts will use only Furnished, Unfurnished, and Developer/Landlord to do Fitout. The detailed V1 furnishing categories will not be carried forward.  
+
+Missing / Not Provided: If Demand Fitouts is missing/not provided, Fitouts is excluded from the relevance calculation. Office Supply Fitouts is expected to be a compulsory input; therefore, a missing Supply Fitouts value is not expected in the normal flow.  
+
+Technical / Backend Clarification – Sep 22, 2026: The reviewed V2 data contains categorical fitOutStatus and Boolean fitoutsRequired / fitoutsAvailable fields. fitOutStatus is populated in the reviewed data, while the Boolean fields are largely unpopulated. Sathish reiterated that Fitouts is an Optional relevance field.  
+
+**Match Score Interpretation:**
+
+Approved V1:  
+Matching was based on the detailed Office furnishing categories.  
+
+Latest V2:  
+
+1 → Demand Furnished + Supply Furnished  
+0 → Demand Furnished + Supply Unfurnished  
+1 → Demand Furnished + Supply Developer/Landlord to do Fitout  
+
+0 → Demand Unfurnished + Supply Furnished  
+1 → Demand Unfurnished + Supply Unfurnished  
+1 → Demand Unfurnished + Supply Developer/Landlord to do Fitout  
+
+Missing / Not Provided:  
+
+If Demand Fitouts is missing/not provided → exclude Fitouts from the relevance calculation.  
+
+For Office, Supply Fitouts is expected to be compulsory, so a missing Supply Fitouts value is not expected in the normal flow. No separate Match Score treatment for this abnormal case has been business-confirmed.  
+
+**Examples:**
+
+Approved V1 Examples: Retained in Office_V1_Approved.  
+
+Confirmed V2  Examples:  
+
+Example 1:  
+Demand: Furnished  
+Supply: Furnished  
+→ Match Score = 1  
+
+Example 2:  
+Demand: Furnished  
+Supply: Unfurnished  
+→ Match Score = 0  
+
+Example 3:  
+Demand: Furnished  
+Supply: Developer/Landlord to do Fitout  
+→ Match Score = 1  
+
+Example 4:  
+Demand: Unfurnished  
+Supply: Furnished  
+→ Match Score = 0  
+
+Example 5:  
+Demand: Unfurnished  
+Supply: Unfurnished  
+→ Match Score = 1  
+
+Example 6:  
+Demand: Unfurnished  
+Supply: Developer/Landlord to do Fitout  
+→ Match Score = 1  
+
+Example 7 – Demand Fitouts Not Provided  
+Demand: Fitouts not provided  
+→ Exclude Fitouts from the relevance calculation  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision: Future V2 Office Fitouts logic will use only Furnished, Unfurnished, and Developer/Landlord to do Fitout. The detailed V1 Fitouts categories will not be carried forward.  
+
+Confirmed Match Score:  
+Demand Furnished + Supply Furnished → 1  
+Demand Furnished + Supply Unfurnished → 0  
+Demand Furnished + Supply Developer/Landlord to do Fitout → 1  
+Demand Unfurnished + Supply Furnished → 0  
+Demand Unfurnished + Supply Unfurnished → 1  
+Demand Unfurnished + Supply Developer/Landlord to do Fitout → 1  
+
+Missing / Not Provided: If Demand Fitouts is missing/not provided, exclude Fitouts from the relevance calculation. For Office, Supply Fitouts is expected to be compulsory, so a missing Supply Fitouts value is not expected in the normal flow.  
+
+Technical / Backend Clarification – Sep 22, 2026: The reviewed V2 data contains categorical fitOutStatus and Boolean fitoutsRequired / fitoutsAvailable fields. fitOutStatus is populated in the reviewed data, while the Boolean fields are largely unpopulated. Sathish reiterated that Fitouts is an Optional relevance field.  
+
+Weight: Latest Office live sheet confirms Fitouts = 15% as an Optional relevance field.  
+
+###### Other interested location
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Other interested location | N/A – Merged into Location | No separate weight – merged with Location | No separate effective weight – contributes through Location | Location |
+
+**Comments:**
+
+Approved V1: Other Interested Location was not part of the approved V1 Office relevance engine.  
+
+Earlier V2 Proposal: Other Interested Location was introduced as an additional Demand-location preference and was initially considered for separate relevance treatment, including a proposed 0.9 Match Score.  
+
+Latest V2 Decision: Other Interested Location is merged with Primary Location for relevance evaluation and will not have a separate weight or separate Match Score. The earlier 0.9 treatment is superseded. A Supply matched through an Other Interested Location will be evaluated using the same Location hierarchy/distance-based logic as a Primary Location match.  
+
+Latest Business Confirmation – Sep 18, 2026: Supply Location is evaluated against the Demand Primary Location and each Other Interested Location using the same finalized Location Match Score logic. The highest resulting Match Score is used as the single final Location Match Score. Primary Location and Other Interested Locations have equal priority.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that Primary Location and Other Interested Locations remain separate in the V2 backend. Primary Location is stored separately from otherInterestedLocations[]. For relevance implementation, the wrapper can retrieve the Primary Location and all Other Interested Locations separately so that the same finalized Location Match Score logic can be applied to each.  
+
+Location Dependency: Any change to the Location hierarchy/fields or distance-based component will follow the final decision under the Location field. No separate technical clarification remains for Other Interested Location.  
+
+**Match Score Interpretation:**
+
+Latest V2 Decision:  
+Primary Location and Other Interested Locations use the same Location Match Score logic.  
+
+The Supply Location is evaluated against:  
+
+- Primary Location, and
+- each Other Interested Location.
+
+The highest Match Score obtained is used as the single final Location Match Score.  
+
+Primary Location and Other Interested Locations have equal priority.  
+
+The earlier separate 0.9 OIL Match Score is removed.  
+
+**Examples:**
+
+Earlier V2 Proposal – Superseded:  
+Primary Location = Kothrud  
+Other Interested Location = Baner  
+Supply Location = Baner  
+OIL Match Score → 0.9 (earlier proposal)  
+
+Latest V2: The separate 0.9 OIL treatment is removed. Supply Location = Baner is evaluated against OIL = Baner using the same V2 Location Match Score logic as Primary Location → 1.  
+
+Primary + OIL Consolidation:  
+Primary Location Match Score → 0.5  
+OIL Match Score → 1.0  
+Final Location Match Score → 1.0  
+
+Multiple OILs:  
+Primary Location → 0.5  
+OIL 1 → 0.7  
+OIL 2 → 1.0  
+Final Location Match Score → 1.0  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision:  
+Other Interested Location is merged with Primary Location for relevance evaluation and no longer has a separate relevance weight, separate Match Score, or separate ML feature. The earlier separate 0.9 OIL Match Score is superseded.  
+
+Supply Location is evaluated against the Demand Primary Location and each Other Interested Location using the same finalized Location Match Score logic. The highest resulting Match Score is used as the single final Location Match Score. Primary Location and Other Interested Locations have equal priority.  
+
+Example:  
+Primary Location Match Score → 0.5  
+OIL 1 Match Score → 1  
+OIL 2 Match Score → 0.7  
+Final Location Match Score → 1  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that Primary Location and Other Interested Locations remain separate in the V2 backend. Primary Location is stored separately from otherInterestedLocations[]. The wrapper can retrieve both separately for relevance processing.  
+
+Location Dependency: No separate technical clarification remains for Other Interested Location. The same applicable Location scoring logic will be used for Primary Location and each OIL, and any subsequent change will follow the final decision under the Location field regarding the Location hierarchy/fields and distance-based component.  
+
+**Implementation reference 1 (unlabelled column):**
+
+    Confirmed Current Wrapper / Relevance-Engine Implementation – Sep 22, 2026:
+    
+    V2 keeps Primary Location and Other Interested Locations separately:
+    
+    Example V2 Demand
+    
+    demand = {
+        "locality": "Andheri",
+        "otherInterestedLocations": ["Bandra", "Powai"]
+    }
+    
+    MongoDB Wrapper
+    primary_location = demand.get("locality")
+    oil_locations = demand.get("otherInterestedLocations") or []
+    demand_locations = []
+    if primary_location:
+        demand_locations.append(primary_location)
+    demand_locations.extend(oil_locations)
+    
+    Result:
+    demand_locations = ["Andheri", "Bandra", "Powai"]
+    The wrapper therefore converts the separate inputs into one consistent collection for relevance processing:
+    Primary Location + OILs
+    ↓
+    ["Andheri", "Bandra", "Powai"]
+    The relevance engine evaluates the Supply Location against the Primary Location and each Other Interested Location using the same applicable Location scoring logic:
+    scores = []
+    for demand_location in demand_locations:
+        score = location_match(
+            demand_location,
+            supply_location
+        )
+        scores.append(score)
+    final_location_score = max(scores)
+    
+    Example:
+    scores = [0.5, 0.7, 1.0]
+    final_location_score = max(scores)
+    # final_location_score = 1.0
+    
+    Conceptually:
+    Wrapper → [Primary, OIL1, OIL2]
+    Relevance Engine → score each using the same applicable Location logic → max() → one final Location Match Score
+    
+    Note: Primary Location and Other Interested Locations have equal priority for relevance evaluation. The final scoring applied to each follows the finalized applicable Location logic. The distance-based component remains dependent on the pending Location decision.
+
+**Implementation reference 2 (unlabelled column):**
+
+    Future / Alternative Backend Reference – Not Current V2 Implementation:
+    
+    The current V2 backend keeps Primary Location and Other Interested Locations separately. The following is retained only as a reference in case the backend representation changes to a unified Location list in the future.
+    
+    If V2 were to provide Primary Location and Other Interested Locations as one unified list, for example:
+    demand = {
+        "locations": ["Andheri", "Bandra", "Powai"]
+    }
+    then the wrapper would not need to separately retrieve Primary Location and otherInterestedLocations[] and combine them.
+    
+    MongoDB Wrapper
+    demand_locations = demand.get("locations") or []
+    
+    Result:
+    demand_locations = ["Andheri", "Bandra", "Powai"]
+    The relevance engine could still use the same conceptual approach:
+    scores = []
+    for demand_location in demand_locations:
+        score = location_match(
+            demand_location,
+            supply_location
+        )
+        scores.append(score)
+    final_location_score = max(scores)
+    
+    Conceptually:
+    V2 Backend → [Primary, OIL1, OIL2]
+    Wrapper → [Primary, OIL1, OIL2]
+    Relevance Engine → score each using the same applicable Location logic → max() → one final Location Match Score
+
+**Relevance Scoring Framework & Eligibility Rules:**
+
+All fields explicitly specified in the demand are considered in relevance scoring.  
+
+For each such field, a match score is assigned according to the approved field-level business logic.  
+
+- Exact matches receive full score.
+- Partial matches receive reduced score where business logic allows.
+- Non-matches receive zero score.
+
+The final relevance score is computed as a weighted and normalized combination of the match scores across all demand-specified fields.  
+
+
+##### Tab 2 — Retail_V2_Relevance_Logic
+**Title (R1):** RETAIL DEMAND & SUPPLY RELEVANCY
+
+###### Asset Class
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Asset Class | M | Latest live sheet: 80% total for mandatory fields | Latest live sheet: 80% / 7 ≈ 11.43% | Asset Class |
+
+**Comments:**
+
+Approved V1: Asset Class uses strict exact matching. Demand and Supply must have the same Asset Class; same Asset Class receives full match and a different Asset Class receives no match.  
+
+Latest V2 Decision: Retail ↔ F&B cross-Asset-Class matching is permitted in both directions. Retail Demand → F&B Supply and F&B Demand → Retail Supply receive Asset Class Match Score = 1. Office and Managed Space remain outside this Retail ↔ F&B cross-match exception.  
+
+Latest Business Confirmation – Sep 18, 2026: For Retail ↔ F&B cross-matching, relevance will be calculated using the confirmed common Mandatory relevance fields plus Store Type: Asset Class, Transaction Type, City, Location + Other Interested Location, Carpet Area, Floor, Ceiling Height, and Store Type. Asset-class-specific Optional relevance fields are excluded. Each applicable field will use its finalized V2 Match Score logic, including partial Match Scores where applicable; all fields are not required to have Match Score = 1.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Retail and F&B remain separate V2 backend Asset Classes (retail and f-and-b). No additional backend dependency/change was identified by Sathish for supporting the confirmed Retail ↔ F&B cross-match.  
+
+**Match Score Interpretation:**
+
+Approved V1:  
+Asset Class uses strict exact matching:  
+
+- Demand Asset Class = Supply Asset Class → 1
+- Demand Asset Class ≠ Supply Asset Class → 0
+
+Latest V2 Decision – Retail ↔ F&B Exception:  
+V2 retains same-Asset-Class matching and introduces a confirmed Retail ↔ F&B cross-match exception:  
+
+- Retail Demand + Retail Supply → 1
+- Retail Demand + F&B Supply → 1
+- F&B Demand + F&B Supply → 1
+- F&B Demand + Retail Supply → 1
+
+Retail ↔ F&B cross-matching does not extend to Office or Managed Space.  
+Therefore:  
+
+- Retail Demand + Office Supply → 0
+- Retail Demand + Managed Space Supply → 0
+- F&B Demand + Office Supply → 0
+- F&B Demand + Managed Space Supply → 0
+
+Cross-Match Relevance:  
+For a Retail ↔ F&B pair, Asset Class receives Match Score 1. The pair is then evaluated using the confirmed common Mandatory relevance fields plus Store Type, with each applicable field using its finalized V2 Match Score logic. Asset-class-specific Optional relevance fields are excluded from the cross-match calculation.  
+
+**Examples:**
+
+Approved V1 – Strict Exact Match  
+
+Example 1:  
+Demand: Retail  
+Supply: Retail  
+→ Match Score = 1  
+
+Example 2:  
+Demand: Retail  
+Supply: F&B  
+→ Match Score = 0  
+
+Example 3:  
+Demand: Retail  
+Supply: Office  
+→ Match Score = 0  
+
+Example 4:  
+Demand: Retail  
+Supply: Managed Space / Managed Office  
+→ Match Score = 0  
+
+Latest V2 Decision / Discussion – Retail ↔ F&B Cross-Match  
+
+Example 5:  
+Demand: Retail  
+Supply: Retail  
+→ Match Score = 1  
+
+Example 6:  
+Demand: Retail  
+Supply: F&B  
+→ Cross-match allowed  
+→ Asset Class Match Score = 1  
+
+Example 7:  
+Demand: F&B  
+Supply: Retail  
+→ Cross-match allowed  
+→ Asset Class Match Score = 1  
+
+Example 8:  
+Demand: Retail  
+Supply: Office  
+→ Match Score = 0  
+
+Example 9:  
+Demand: Retail  
+Supply: Managed Space / Managed Office  
+→ Match Score = 0  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision: Retail ↔ F&B cross-matching is allowed in both directions, with Asset Class Match Latest Decision: Retail ↔ F&B cross-matching is allowed in both directions, with Asset Class Match Score = 1 for Retail Demand ↔ F&B Supply and F&B Demand ↔ Retail Supply.  
+
+For Retail ↔ F&B cross-matching, relevance will be calculated using the common Mandatory relevance fields plus Store Type: Asset Class, Transaction Type, City, Location + OIL, Carpet Area, Floor, Ceiling Height, and Store Type. Asset-class-specific Optional relevance fields are excluded. Each applicable field uses its respective finalized V2 Match Score logic, including partial Match Scores where applicable.  
+
+Latest Live-Sheet Weight Update: Mandatory-field total weight changed from 75% to 80%. With 7 Mandatory Retail fields, effective Asset Class weight changes from 75% / 7 ≈ 10.71% to 80% / 7 ≈ 11.43%.  
+
+Technical / Backend Confirmation – Sep 22, 2026: The V2 backend continues to retain Retail and F&B as separate Asset Classes (retail and f-and-b). No additional backend dependency/change was identified by Sathish for supporting the confirmed Retail ↔ F&B cross-match.  
+
+Business Decision – Downstream Display Cutoff: Business has not yet finalized the Retail ↔ F&B cross-match display cutoff. Sathish confirmed that a separate configurable cutoff can be maintained once the final percentage is provided. The 50% mentioned during the Sep 22 discussion is temporary and is not the final business-approved cutoff.  
+
+###### Transaction type
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Transaction type | M | (merged above) | Latest live sheet: 80% / 7 ≈ 11.43% | Transcation type |
+
+**Comments:**
+
+Approved V1: Transaction Type should correspond between Demand and Supply and is evaluated using a 1 or 0 Match Score.  
+
+Latest V2 Decision: Demand Buy + Supply Sale represents the same purchase transaction and should be treated as a valid/full match. Demand Lease + Supply Lease is also a valid/full match. Other incompatible Demand–Supply Transaction Type combinations should not match.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that the current V2 backend representation for purchase transactions will continue to use Buy, including on the Supply side. Sale may be used as the business/UI terminology, but Buy and Sale represent the same purchase transaction context. No backend field change or Buy ↔ Sale wrapper conversion is required solely because of this terminology difference.  
+
+**Match Score Interpretation:**
+
+Approved V1:  
+Exact Transaction Type match = 1; mismatch = 0.  
+
+Latest V2 Business Rule:  
+1 → Purchase transaction on Demand corresponds to purchase transaction on Supply  
+1 → Demand Lease corresponds to Supply Lease  
+0 → Purchase transaction on Demand with Supply Lease  
+0 → Demand Lease with purchase transaction on Supply  
+
+Current intended PR representation:  
+Demand Buy ↔ Supply Sale = 1  
+
+Backend Implementation: The V2 backend continues to use Buy for purchase transactions on both Demand and Supply. Therefore, relevance processing uses the existing backend Transaction Type representation directly. Sale represents the equivalent business/UI terminology for the Supply-side purchase transaction.  
+
+**Examples:**
+
+Approved V1 – Strict Exact Match  
+
+Example 1:  
+Demand: Lease  
+Supply: Lease  
+→ Match Score = 1  
+
+Example 2:  
+Demand: Lease  
+Supply: Sale  
+→ Match Score = 0  
+
+Latest V2 – Business Transaction Equivalence  
+
+Example 3:  
+Demand: Buy  
+Supply: Sale  
+→ Match Score = 1  
+
+Example 4:  
+Demand: Lease  
+Supply: Lease  
+→ Match Score = 1  
+
+Example 5:  
+Demand: Buy  
+Supply: Lease  
+→ Match Score = 0  
+
+Example 6:  
+Demand: Lease  
+Supply: Sale  
+→ Match Score = 0  
+
+Technical / Backend Confirmation – Sep 22, 2026: The examples above show the confirmed business equivalence of Demand Buy ↔ Supply Sale. In the current V2 backend, purchase transactions continue to use Buy, including on the Supply side; no Buy ↔ Sale wrapper conversion is required solely for terminology.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision:  
+Demand Buy + Supply Sale = 1; Demand Lease + Supply Lease = 1; incompatible combinations = 0.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that the current V2 backend representation for purchase transactions will continue to use Buy, including on the Supply side. Sale may be used as the business/UI terminology for the same purchase transaction context. No backend field change or Buy ↔ Sale wrapper conversion is required solely because of this terminology difference.  
+
+ML / Implementation: Use the current V2 backend Transaction Type representation directly for relevance processing. No Buy ↔ Sale normalization is required in the MongoDB wrapper solely to reconcile the UI/business terminology.  
+
+Latest Live-Sheet Weight Update:  
+Mandatory-field total weight changed from 75% to 80%. With 7 mandatory Retail fields, the effective Transaction Type weight changes from 75% / 7 ≈ 10.71% to 80% / 7 ≈ 11.43%.  
+
+###### City
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| City | M | (merged above) | Latest live sheet: 80% / 7 ≈ 11.43% | City |
+
+**Comments:**
+
+Approved V1: City should match between Demand and Supply and is evaluated using a 1 or 0 Match Score.  
+
+Latest V2 Decision: The exact City match logic continues. PAN_INDIA is a subscription-based option and is not treated as a City for relevance matching; relevance should use the actual Demand and Supply City.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that relevance matching should use the actual City associated with the Demand and Supply. PAN_INDIA is a subscription-level option and should not be treated as the City for relevance matching. The PAN_INDIA / India values observed in previously reviewed V2 records were identified as early/test data and are not the intended current representation for City relevance.  
+
+**Match Score Interpretation:**
+
+Approved V1 / Latest V2:  
+1 → Demand City exactly matches Supply City  
+0 → Demand City does not match Supply City  
+
+PAN_INDIA is not evaluated as a City and does not receive a City Match Score; the actual Demand and Supply City should be used for matching.  
+
+**Examples:**
+
+Approved V1 / Latest V2 – Exact City Match  
+
+Example 1:  
+Demand: Bangalore  
+Supply: Bangalore  
+→ Match Score = 1  
+
+Example 2:  
+Demand: Bangalore  
+Supply: Hyderabad  
+→ Match Score = 0  
+
+Example 3:  
+Demand: Mumbai  
+Supply: Navi Mumbai  
+→ Match Score = 0  
+
+V2 PAN_INDIA Handling  
+Example 4 – PAN_INDIA:  
+Demand selection includes: PAN_INDIA  
+Actual Demand City: Bengaluru  
+Supply City: Bengaluru  
+→ City matching should use Bengaluru, not PAN_INDIA  
+→ Match Score = 1  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision: City continues with exact matching in V2: same City = 1; different City = 0. PAN_INDIA is a subscription-based option, not a City, and should not be used for City relevance matching. The actual Demand and Supply City should be evaluated.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that relevance matching should use the actual City associated with the Demand and Supply. PAN_INDIA is a subscription-level option and should not be treated as the City for relevance matching. The PAN_INDIA / India values previously observed in V2 were identified as early/test data and are not the intended current City representation.  
+
+ML / Implementation: Use the actual Demand and Supply City values with the existing exact-match rule. No special PAN_INDIA Match Score logic is required.  
+
+Latest Live-Sheet Weight Update:  
+Latest live sheet: Mandatory group = 80%  
+Effective City weight = 80% ÷ 7 ≈ 11.43%  
+
+###### Location + Other Interested Location
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Location + Other Interested Location | M | (merged above) | Latest live sheet: 80% / 7 ≈ 11.43% | Location |
+
+**Comments:**
+
+Approved V1: Location matching follows a hierarchical/broader-locality approach. An exact Location match receives a full Match Score of 1. Where the Demand specifies a more specific location (e.g., a road/micro-location) and the Supply matches the approved broader locality containing that location, it receives a partial Match Score of 0.5. Where the Supply Location falls within the Demand's broader requested locality, it receives a full Match Score of 1. Unrelated locations receive a Match Score of 0.  
+
+Example: Demand = DP Road, Kothrud and Supply = Kothrud → 0.5; Demand = Kothrud and Supply = DP Road, Kothrud → 1.  
+
+Latest V2 Decision: Location matching will use Micro-location, Area, City, and distance/radius-based logic. Same Micro-location and different Micro-location within the same Area both receive a full Match Score of 1. For different Areas within the same City, the Match Score will decrease based on distance up to 5 km. Different City receives 0 and should not be considered/shown as a Location match.  
+
+The same Location Match Score logic applies to both Primary Location and Other Interested Location. Other Interested Location is merged into Location and does not have a separate relevance impact.  
+
+Latest Business Confirmation – Sep 18, 2026: Primary Location and each Other Interested Location are evaluated using the same applicable Location logic. The highest Match Score across them is used as the single final Location Match Score. Primary Location and Other Interested Locations have equal priority.  
+
+Technical / Backend Clarification – Sep 22, 2026: Primary Location and Other Interested Locations remain separate backend fields and can be retrieved separately by the wrapper for max-score aggregation. The backend uses Location/Locality as the main location and Micro-location as the sub-location; Area is not maintained as a separate Location level.  
+
+**Match Score Interpretation:**
+
+Approved V1:  
+
+1 → Supply Location exactly matches the Demand Location, or the Supply is at a more specific location within the Demand's broader requested locality.  
+
+0.5 → Demand specifies a more specific location, while the Supply matches the approved broader locality containing that Demand Location.  
+
+0 → Supply Location does not match or fall within an approved geographic relationship with the Demand Location.  
+
+Latest V2:  
+
+Business clarification: Area = Location/Locality.  
+
+Geographic hierarchy: City → Location/Locality → Micro-location.  
+
+Same Micro-location → 1  
+
+Different Micro-location but same  Location/Locality → 1  
+
+Different  Location/Locality but same City → distance-based Match Score:  
+
+≤ 1 km → 0.8  
+
+1 km to ≤ 2 km → 0.7  
+
+2 km to ≤ 3 km → 0.6  
+
+3 km to ≤ 4 km → 0.5  
+
+4 km to ≤ 5 km → 0.3  
+
+> 5 km → 0  
+
+Different City → 0; Supply should not match/showcase.  
+
+The same Location Match Score Interpretation applies to both Primary Location and Other Interested Location.  
+
+**Examples:**
+
+Approved V1 Examples:  
+
+Example 1 – Exact match  
+Demand: Kothrud, Pune  
+Supply: Kothrud, Pune  
+Match Score = 1  
+
+Example 2 – Demand more specific, Supply broader  
+Demand: DP Road, Kothrud, Pune  
+Supply: Kothrud, Pune  
+Match Score = 0.5  
+
+Example 3 – Demand broader, Supply more specific  
+Demand: Kothrud, Pune  
+Supply: DP Road, Kothrud, Pune  
+Match Score = 1  
+
+Example 4 – Unrelated Location  
+Demand: DP Road, Kothrud, Pune  
+Supply: Baner, Pune  
+Match Score = 0  
+
+Latest V2 Examples  
+
+Example 1: Same Micro-location  
+Demand: Kothrud, Pune  
+Supply: Kothrud, Pune  
+→ Match Score = 1  
+
+Example 2: Different Micro-location, Same Area  
+Demand Micro-location: DP Road, Kothrud, Pune  
+Supply Micro-location: Karve Road, Kothrud, Pune  
+Area: Kothrud  
+→ Match Score = 1  
+
+Example 3: Different Area, Same City  
+Demand Location: Kothrud, Pune  
+Supply Location: Baner, Pune  
+→ Different Areas within the same City  
+→ Match Score = distance-based score (0.8 / 0.7 / 0.6 / 0.5 / 0.3 depending on distance up to 5 km)  
+
+Example 4: Different City  
+Demand Location: Kothrud, Pune  
+Supply Location: Andheri, Mumbai  
+→ Match Score = 0  
+
+Example 5 – Different Area, Same City, More Than 5 km  
+Demand Location: Area A, Pune  
+Supply Location: Area B, Pune  
+Distance: >5 km  
+→ Match Score = 0  
+
+Example 6 – Primary Location + Other Interested Location  
+
+Demand Primary Location: Kothrud, Pune  
+Demand OIL: Baner, Pune  
+Supply Location: Baner, Pune  
+
+Against Primary Location (Kothrud):  
+→ Different Area within same City  
+→ Distance-based Match Score  
+
+Against OIL (Baner):  
+→ Location Match Score = 1  
+
+The same V2 Location Match Score logic applies to Primary Location and OIL.  
+
+Latest Business Confirmation – Sep 18, 2026: Use the highest Match Score across Primary Location and all Other Interested Locations. Therefore, in Example 6, Final Location Match Score = 1.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision: V2 Location matching will use Micro-location, Area, City and distance/radius-based logic.  
+
+Same Micro-location → 1  
+Different Micro-location but same Area → 1  
+Different Area but same City → distance-based scoring:  
+≤ 1 km → 0.8  
+
+1 km to ≤ 2 km → 0.7  
+2 km to ≤ 3 km → 0.6  
+3 km to ≤ 4 km → 0.5  
+4 km to ≤ 5 km → 0.3  
+5 km → 0  
+
+Different City → 0 and should not be considered/shown as a Location match.  
+
+The same Location hierarchy and Match Score Interpretation applies to both Primary Location and Other Interested Location. Other Interested Location is merged into Location and has no separate relevance weight.  
+
+Latest Live-Sheet Weight Update:  
+Mandatory-field total weight changed from 75% to 80%. With 7 mandatory Retail fields, the effective Location weight changes from 75% / 7 ≈ 10.71% to 80% / 7 ≈ 11.43%.  
+
+Latest Business Decision: V2 Location logic uses the confirmed Location hierarchy/distance-band Match Scores, with the same logic applied to Primary Location and Other Interested Locations.  
+
+Latest Business Confirmation – Sep 18, 2026: Evaluate Supply Location against Primary Location and each Other Interested Location. Use the highest resulting Match Score as the single final Location Match Score. Primary Location and Other Interested Locations have equal priority.  
+
+Technical / Backend Clarification – Sep 22, 2026: Primary Location and Other Interested Locations remain separate backend fields and can be retrieved separately for relevance evaluation. The current backend uses Location/Locality as the main location and Micro-location as the sub-location; Area is not maintained as a separate Location level. Sathish advised against implementing the distance-based calculation at this stage because it would require additional real-time API processing.  
+
+Confirmed Business Decision – Himanshu Oct 27  
+
+Area refers to Location/Locality.  
+
+Confirmed hierarchy:  
+City → Location/Locality → Micro-location.  
+
+Example:  
+Bengaluru → Indiranagar → 100 Feet Road.  
+
+###### Carpet Area (sq. ft.)
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Carpet Area (sq. ft.) | M | (merged above) | Latest live sheet: 80% / 7 ≈ 11.43% | Carpet Area (sq. ft.) |
+
+**Comments:**
+
+Approved V1:  
+1 → Supply Carpet Area lies within the demanded Carpet Area range.  
+0.8 → Supply Carpet Area lies within ±10% variance of the demanded range, applied to both the lower and upper bounds.  
+0 → Supply Carpet Area falls outside the ±10% variance.  
+
+Later V2 Discussion: The tolerance was proposed to change to -10% on the lower side and +20% on the upper side of the demanded Carpet Area range, with the variance applied to both the bottom and high range values.  
+
+Latest V2 Decision: This fixed-tolerance approach has now been replaced by the Demand-area-based variance-band logic. The applicable lower and upper variance percentages depend on the Demand Carpet Area band. Supply Carpet Area within the applicable variance limits receives Match Score = 1; outside the limits receives Match Score = 0. The same approach applies to Office, Retail, and F&B.  
+
+Representation / Revalidation Status: The latest PR defines Demand Carpet Area as a single numeric value. The freshly restored V2 Dev DB was revalidated across Retail, Office, and F&B and currently provides both carpetArea and carpetAreaRange on the Demand side. Whenever populated, carpetArea = carpetAreaRange.min = carpetAreaRange.max. Supply consistently uses single numeric carpetArea.  
+
+The earlier data-level min–max ambiguity is therefore not present in the refreshed Dev DB.  
+
+Technical / Backend Confirmation – Sep 22, 2026: carpetArea is confirmed as the primary Demand Carpet Area input for V2 relevance. Fallback handling should be retained if the primary value is unavailable. The exact fallback field/order will be finalized after reviewing the migrated V2 data.  
+
+**Match Score Interpretation:**
+
+Approved V1:  
+1 → Supply Carpet Area lies within the demanded Carpet Area range.  
+0.8 → Supply Carpet Area lies within ±10% variance of the demanded range, applied to both lower and upper bounds.  
+0 → Supply Carpet Area falls outside the ±10% variance.  
+
+Latest V2:  
+The applicable lower and upper variance limits are determined by the Demand Carpet Area band:  
+
+Confirmed V2 Carpet Area Variance Bands:  
+
+≤ 500 sq. ft.: Lower 10% | Upper 50%  
+501–1,000: Lower 10% | Upper 25%  
+1,001–2,000: Lower 10% | Upper 20%  
+2,001–4,000: Lower 10% | Upper 20%  
+4,001–6,000: Lower 10% | Upper 15%  
+6,001–10,000: Lower 5% | Upper 15%  
+10,001–15,000: Lower 5% | Upper 10%  
+15,001–25,000: Lower 10% | Upper 15%  
+≥ 25,001: Lower 15% | Upper 20%  
+
+1 → Supply Carpet Area falls within the applicable lower and upper variance limits.  
+0 → Supply Carpet Area falls outside the applicable lower and upper variance limits.  
+
+So 0.8 is no longer part of the latest V2 Carpet Area Match Score logic.  
+
+Technical / Representation Status: Dev DB revalidation is complete. Demand currently provides both carpetArea and carpetAreaRange, with carpetArea = min = max whenever populated; Supply uses single numeric carpetArea. The confirmed V2 variance-band logic remains unchanged.  
+
+Technical / Backend Confirmation – Sep 22, 2026: carpetArea is the primary Demand Carpet Area input for V2 relevance. If carpetArea is unavailable, fallback handling should be retained using an available Carpet Area representation. The exact fallback field/order will be finalized after reviewing the migrated V2 data.  
+
+**Examples:**
+
+Approved V1 Examples  
+
+Example 1 – Within Demand requirement  
+
+Demand: 1,000 sq. ft.  
+Supply: 1,000 sq. ft.  
+→ Match Score = 1  
+
+Example 2 – Within ±10% tolerance  
+
+Demand: 1,000 sq. ft.  
+Supply: 950 sq. ft.  
+→ Match Score = 0.8  
+
+Example 3 – Within ±10% tolerance  
+
+Demand: 1,000 sq. ft.  
+Supply: 1,100 sq. ft.  
+→ Match Score = 0.8  
+
+Example 4 – Outside tolerance  
+
+Demand: 1,000 sq. ft.  
+Supply: 850 sq. ft.  
+→ Match Score = 0  
+
+Example 5 – Outside tolerance  
+
+Demand: 1,000 sq. ft.  
+Supply: 1,200 sq. ft.  
+→ Match Score = 0  
+
+Note: Range-Based Demand Handling  
+
+Demand: 1,000–1,200 sq. ft.  
+
+Supply: 1,100 sq. ft. → Match Score = 1  
+Supply: 950 sq. ft. → Match Score = 0.8  
+Supply: 1,300 sq. ft. → Match Score = 0.8  
+Supply: 850 sq. ft. → Match Score = 0  
+
+Latest V2 – Confirmed Examples  
+
+Example 1 – Demand = 5,000 sq. ft.  
+
+Applicable variance: Lower 10%, Upper 15%  
+Acceptable Supply range: 4,500–5,750 sq. ft.  
+
+Supply: 4,500 sq. ft. → Match Score = 1  
+Supply: 5,750 sq. ft. → Match Score = 1  
+Supply: 4,400 sq. ft. → Match Score = 0  
+Supply: 5,800 sq. ft. → Match Score = 0  
+
+Example 2 – Demand = 10,000 sq. ft.  
+
+Applicable variance: Lower 5%, Upper 15%  
+Acceptable Supply range: 9,500–11,500 sq. ft.  
+
+Supply: 9,500 sq. ft. → Match Score = 1  
+Supply: 11,500 sq. ft. → Match Score = 1  
+Supply: 9,400 sq. ft. → Match Score = 0  
+Supply: 11,600 sq. ft. → Match Score = 0  
+
+V2 Representation / Technical Confirmation – Sep 22, 2026:  
+
+The refreshed V2 Dev DB contains both carpetArea and carpetAreaRange on populated Demand records, with carpetArea = carpetAreaRange.min = carpetAreaRange.max in the reviewed data.  
+
+No true Demand min–max ranges or mismatches were found.  
+
+For V2 relevance, carpetArea is confirmed as the primary Demand Carpet Area input. Fallback handling will be retained if the primary value is unavailable; the exact fallback field/order will be finalized after reviewing the migrated V2 data.  
+
+Supply uses the single numeric carpetArea.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision  
+
+V2 Carpet Area will use the confirmed Demand-area-based variance bands across Retail, Office, and F&B. The applicable lower and upper variance percentages depend on the Demand Carpet Area band. Supply Carpet Area within the applicable variance limits receives Match Score = 1; outside the limits receives 0. The V1 fixed ±10% tolerance and 0.8 partial Match Score are not used in the latest V2 logic.  
+
+Technical / Backend Confirmation – Revalidation Completed:  
+The refreshed V2 Dev DB was revalidated across Retail, Office, and F&B. On populated Demand records, both carpetArea and carpetAreaRange are present, with carpetArea = carpetAreaRange.min = carpetAreaRange.max. No true Demand min–max ranges or mismatches were found. Supply consistently uses the single numeric carpetArea.  
+
+Technical / Backend Confirmation – Sep 22, 2026:  
+carpetArea is confirmed as the primary Demand Carpet Area input for V2 relevance and Stage-1 labelled-data generation. Fallback handling should be retained if the primary value is unavailable.  
+
+Remaining Implementation Point:  
+The exact fallback field/order will be finalized after reviewing the migrated V2 data.  
+
+V1 Integration: The approved V1 range-based Carpet Area logic remains unchanged. carpetAreaRange.min/max remain available for the existing V1 wrapper mapping.  
+
+Latest Live-Sheet Weight Update  
+
+Retail mandatory-field total changed from 75% to 80%. With 7 mandatory fields, the effective Carpet Area weight changes from 75% / 7 ≈ 10.71% to 80% / 7 ≈ 11.43%.  
+
+###### Ceiling Height (ft.)
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Ceiling Height (ft.) | M | (merged above) | Latest live sheet: 80% / 7 ≈ 11.43% | Ceiling Height (ft.) |
+
+**Comments:**
+
+Approved V1:  
+Supply Ceiling Height exactly equal to the Demand Ceiling Height receives 1.  
+Supply Ceiling Height greater than Demand receives 0.8.  
+Supply Ceiling Height below Demand receives 0.  
+
+Earlier V2 Discussion:  
+The Ceiling Height logic was proposed to introduce a +30% upper variance from the Demand Ceiling Height. An earlier April 23 proposal considered 1 / 0.9 / 0 scoring, which was subsequently revised during further business discussion.  
+
+Latest V2 Decision:  
+Ceiling Height now uses both lower-side tolerance and +30% upper variance.  
+
+Supply below Demand but within the permitted lower variance → 0.8  
+Supply equal to Demand or up to 30% above Demand → 1  
+Supply more than 30% above Demand → 0.5  
+Supply below the applicable permitted lower-side variance → 0  
+
+The permitted lower variance depends on the Demand Ceiling Height:  
+
+Demand ≤14 ft → up to 1 ft lower  
+Demand 15–20 ft → up to 2 ft lower  
+Demand ≥21 ft → up to 3 ft lower  
+
+This latest decision supersedes the earlier V1 and proposed V2 Ceiling Height scoring interpretations.  
+
+**Match Score Interpretation:**
+
+Approved V1:  
+
+1 → Supply Ceiling Height is exactly equal to Demand Ceiling Height.  
+
+0.8 → Supply Ceiling Height is greater than Demand Ceiling Height.  
+
+0 → Supply Ceiling Height is less than Demand Ceiling Height.  
+
+Latest V2:  
+
+1 → Supply Ceiling Height is equal to Demand or up to 30% above Demand.  
+
+0.8 → Supply Ceiling Height is below Demand but remains within the applicable permitted lower variance:  
+
+- Demand ≤14 ft → up to 1 ft lower
+- Demand 15–20 ft → up to 2 ft lower
+- Demand ≥21 ft → up to 3 ft lower
+
+0.5 → Supply Ceiling Height is more than 30% above Demand.  
+
+0 → Supply Ceiling Height falls below the applicable permitted lower-side variance.  
+
+**Examples:**
+
+Approved V1 Examples  
+
+Example 1 – Exact match  
+Demand: 12 ft  
+Supply: 12 ft  
+→ Match Score = 1  
+
+Example 2 – Supply above Demand  
+Demand: 12 ft  
+Supply: 14 ft  
+→ Match Score = 0.8  
+
+Example 3 – Supply below Demand  
+Demand: 12 ft  
+Supply: 10 ft  
+→ Match Score = 0  
+
+Latest V2 Examples  
+
+Example 1 – 1 ft lower variance  
+
+Demand: 14 ft  
+Permitted lower variance: 1 ft  
+
+Supply: 13 ft → 0.8  
+Supply: 14 ft → 1  
+Supply: 12 ft → 0  
+
+Example 2 – 2 ft lower variance  
+
+Demand: 18 ft  
+Permitted lower variance: 2 ft  
+
+Supply: 16 ft → 0.8  
+Supply: 17 ft → 0.8  
+Supply: 18 ft → 1  
+Supply: 15 ft → 0  
+
+Example 3 – 3 ft lower variance  
+
+Demand: 25 ft  
+Permitted lower variance: 3 ft  
+
+Supply: 22–24 ft → 0.8  
+Supply: 25 ft → 1  
+Supply: 21 ft → 0  
+
+Example 4 – +30% upper variance  
+
+Demand: 10 ft  
+30% upper variance = 3 ft  
+Upper full-match limit = 13 ft  
+
+Supply: 10–13 ft → 1  
+Supply: >13 ft → 0.5  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision:  
+V2 Ceiling Height uses Demand-dependent lower-side tolerance together with a +30% upper variance:  
+
+- Demand ≤14 ft → Supply up to 1 ft lower → 0.8
+- Demand 15–20 ft → Supply up to 2 ft lower → 0.8
+- Demand ≥21 ft → Supply up to 3 ft lower → 0.8
+- Supply below the applicable permitted lower-side variance → 0
+- Supply equal to Demand or up to 30% above Demand → 1
+- Supply more than 30% above Demand → 0.5
+
+This supersedes the Approved V1 and earlier proposed/interim V2 Ceiling Height scoring interpretations.  
+
+Technical / Backend:  
+V2 provides Demand Ceiling Height through ceilingHeightMinFt and Supply Ceiling Height through ceilingHeightFt. These numeric values support the confirmed V2 Ceiling Height Match Score logic. No additional Ceiling Height-specific backend clarification is currently required.  
+
+Weight:  
+Latest live sheet mandatory-field total = 80%. With 7 mandatory fields, effective Ceiling Height weight = 80% ÷ 7 ≈ 11.43%.  
+
+###### Floor
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Floor | M | (merged above) | Latest live sheet: 80% / 7 ≈ 11.43% | Floor |
+
+**Comments:**
+
+Approved V1:  
+
+Floor represents the physical placement of the store within the Supply. When Store Type is specified, Floor is evaluated together with Store Type using the approved V1 Store-Type-specific Floor matching rules. When Store Type is not specified, Floor is evaluated independently using exact Floor matching.  
+
+Earlier V2 Discussion:  
+
+The latest live sheet proposed Floor as a mandatory 1 / 0 outcome and continued to associate Floor evaluation with Store Type. Initial business clarification indicated that the V1 Store Type dependency would continue in V2.  
+
+Latest V2 Decision:  
+
+Floor continues to be evaluated together with Store Type, but the earlier V1 Store Type outcomes will not continue as-is. The V2 Floor–Store Type logic is based on High Street and Mall.  
+
+- Ground + High Street: Supply Ground or Upper Ground → 1; all other Supply Floors → 0
+
+- Ground + Mall: Supply Ground, Upper Ground, 1st Floor, 2nd Floor, 3rd Floor or Above 3rd Floor → 1; Basement → 0
+
+- Any Floor: can match across all available Supply Floors; where Store Type is specified, Store Type must still be considered during matching.
+
+**Match Score Interpretation:**
+
+Approved V1:  
+
+Floor Match Score depends on whether Store Type is specified.  
+
+When Store Type = High Street:  
+
+1 → Demand Ground + Supply Ground; Demand Any + Supply Any; or a specific Demand Floor exactly matches Supply Floor.  
+0 → Supply Floor does not satisfy the applicable High Street Floor condition.  
+
+When Store Type = Mall:  
+
+1 → Demand Ground + Supply Ground; Demand Any + Supply Any; or a specified upper Demand Floor is satisfied by Supply Ground, Upper Ground, or the same specified Floor.  
+0 → Supply Floor does not satisfy the applicable Mall Floor condition.  
+
+When Store Type is not specified:  
+
+1 → Supply Floor satisfies the Demand Floor condition.  
+0 → Supply Floor does not satisfy the Demand Floor condition.  
+
+Latest V2:  
+
+Demand Floor = Ground + Store Type = High Street  
+
+1 → Supply Floor = Ground or Upper Ground  
+0 → All other Supply Floors  
+
+Demand Floor = Ground + Store Type = Mall  
+
+1 → Supply Floor = Ground, Upper Ground, 1st Floor, 2nd Floor, 3rd Floor, or Above 3rd Floor  
+0 → Supply Floor = Basement  
+
+Demand Floor = Any  
+
+1 → Any available Supply Floor can satisfy the Floor requirement.  
+Where Store Type is specified, Store Type must still be considered separately during matching.  
+
+**Examples:**
+
+Approved V1:  
+
+Example 1 – High Street, Ground Floor match  
+Demand: Store Type = High Street, Floor = Ground  
+Supply: Floor = Ground  
+→ Match Score = 1  
+
+Example 2 – High Street, Floor mismatch  
+Demand: Store Type = High Street, Floor = Ground  
+Supply: Floor = 1st Floor  
+→ Match Score = 0  
+
+Example 3 – Mall, specified upper Floor  
+Demand: Store Type = Mall, Floor = 1st Floor  
+Supply: Floor = Upper Ground  
+→ Match Score = 1  
+
+Example 4 – Store Type not specified, exact Floor match  
+Demand: Store Type = Not Specified, Floor = Ground  
+Supply: Floor = Ground  
+→ Match Score = 1  
+
+Latest V2:  
+
+Example 1 – Ground + High Street / Ground Supply  
+Demand: Floor = Ground, Store Type = High Street  
+Supply: Floor = Ground  
+→ Floor Match Score = 1  
+
+Example 2 – Ground + High Street / Upper Ground Supply  
+Demand: Floor = Ground, Store Type = High Street  
+Supply: Floor = Upper Ground  
+→ Floor Match Score = 1  
+
+Example 3 – Ground + High Street / Higher Floor Supply  
+Demand: Floor = Ground, Store Type = High Street  
+Supply: Floor = 1st Floor  
+→ Floor Match Score = 0  
+
+Example 4 – Ground + Mall / Ground Supply  
+Demand: Floor = Ground, Store Type = Mall  
+Supply: Floor = Ground  
+→ Floor Match Score = 1  
+
+Example 5 – Ground + Mall / Higher Floor Supply  
+Demand: Floor = Ground, Store Type = Mall  
+Supply: Floor = 2nd Floor  
+→ Floor Match Score = 1  
+
+Example 6 – Ground + Mall / Basement Supply  
+Demand: Floor = Ground, Store Type = Mall  
+Supply: Floor = Basement  
+→ Floor Match Score = 0  
+
+Example 7 – Any Floor  
+Demand: Floor = Any, Store Type = High Street  
+Supply: Floor = 2nd Floor  
+→ Floor requirement is satisfied (Floor Match Score = 1); Store Type must still be evaluated according to the applicable Store Type logic.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision:  
+V2 Floor continues to be evaluated together with Store Type, but the earlier V1 Store Type outcomes will not continue as-is. The confirmed V2 Floor–Store Type logic is based on High Street and Mall:  
+
+- Ground + High Street: Supply Ground or Upper Ground → 1; all other Supply Floors → 0
+- Ground + Mall: Supply Ground, Upper Ground, 1st Floor, 2nd Floor, 3rd Floor or Above 3rd Floor → 1; Basement → 0
+- Any Floor: can match across all available Supply Floors; where Store Type is selected, Store Type must still be considered during matching.
+
+Technical / Backend:  
+V2 provides Demand Floor through floorPreference and Supply Floor through floor. These fields can be used for the V2 Floor Match Score implementation together with the applicable Demand Store Type. No additional Floor-specific backend clarification is currently required.  
+
+Weight:  
+Latest live sheet mandatory-field total = 80%. With 7 mandatory fields, effective Floor weight = 80% ÷ 7 ≈ 11.43%.  
+
+###### Fitouts required
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Fitouts required | O | Latest live sheet: 5% | Latest live sheet: 5% | Fitouts available |
+
+**Comments:**
+
+Approved V1: Retail Fitouts used binary requirement-versus-availability matching, with Fitouts evaluated based on whether the Demand required Fitouts and whether Fitouts were available on the Supply.  
+Latest V2 Decision: Retail will use Fitout Required Yes/No on Demand and Fitout Available Yes/No on Supply, with the confirmed Yes/No combination-specific Match Score Interpretation.  
+
+For Retail, Demand Fitouts Required = No means the Demand specifically requires a Supply without Fitouts; it does not mean that the Demand has no Fitouts preference. Therefore, Demand No + Supply No = 1 and Demand No + Supply Yes = 0.  
+
+A missing/not-provided Fitouts value is different from an explicit No. If Demand Fitouts is missing/not provided, exclude Fitouts from the relevance calculation. If Demand Fitouts is provided but Supply Fitouts is missing/not provided, also exclude Fitouts from the relevance calculation.  
+
+**Match Score Interpretation:**
+
+Approved V1:  
+
+1 → Demand Fitout Required = Yes AND Supply Fitout Available = Yes  
+
+0 → Demand Fitout Required = Yes AND Supply Fitout Available = No  
+
+If Demand Fitout Required is not specified, the field is excluded from relevance scoring.  
+
+Latest V2:  
+
+1 →  
+
+Demand Fitout Required = Yes AND Supply Fitout Available = Yes  
+Demand Fitout Required = No AND Supply Fitout Available = No  
+
+0 →  
+
+Demand Fitout Required = Yes AND Supply Fitout Available = No  
+Demand Fitout Required = No AND Supply Fitout Available = Yes  
+
+Missing / Not Provided:  
+If Demand Fitouts is missing/not provided, exclude Fitouts from the relevance calculation.  
+If Demand Fitouts is provided but Supply Fitouts is missing/not provided, exclude Fitouts from the relevance calculation.  
+
+**Examples:**
+
+Approved V1:  
+
+Example 1 – Fitouts Required and Available  
+Demand: Fitouts Required = Yes  
+Supply: Fitouts Available = Yes  
+→ Match Score = 1  
+
+Example 2 – Fitouts Required but Not Available  
+Demand: Fitouts Required = Yes  
+Supply: Fitouts Available = No  
+→ Match Score = 0  
+
+Latest V2:  
+
+Example 1 – Yes / Yes  
+Demand: Fitouts Required = Yes  
+Supply: Fitouts Available = Yes  
+→ Match Score = 1  
+
+Example 2 – Yes / No  
+Demand: Fitouts Required = Yes  
+Supply: Fitouts Available = No  
+→ Match Score = 0  
+
+Example 3 – No / Yes  
+Demand: Fitouts Required = No  
+Supply: Fitouts Available = Yes  
+→ Match Score = 0  
+
+Example 4 – No / No  
+Demand: Fitouts Required = No  
+Supply: Fitouts Available = No  
+→ Match Score = 1  
+
+Example 5 – Missing / Not Provided:  
+Demand Fitouts missing/not provided → exclude Fitouts from the relevance calculation.  
+Demand Fitouts provided + Supply Fitouts missing/not provided → exclude Fitouts from the relevance calculation.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Business Decision:  
+Retail Fitouts uses Fitout Required Yes/No on Demand and Fitout Available Yes/No on Supply:  
+Demand Yes + Supply Yes → 1  
+Demand Yes + Supply No → 0  
+Demand No + Supply Yes → 0  
+Demand No + Supply No → 1  
+Demand Fitouts Required = No is an explicit requirement for a Supply without Fitouts; it is not equivalent to missing/not provided.  
+
+Missing / Not Provided – Sep 18, 2026:  
+If Demand Fitouts is missing/not provided, exclude Fitouts from the relevance calculation. If Demand Fitouts is provided but Supply Fitouts is missing/not provided, also exclude Fitouts from the relevance calculation.  
+
+Technical / Backend Status – Sep 22, 2026:  
+The reviewed V2 data contains categorical fitOutStatus and Boolean fitoutsRequired / fitoutsAvailable. fitOutStatus is populated, while the Boolean fields are largely unpopulated. The applicable Fitouts representation will be revalidated against the migrated V1→V2 data before Stage-1 implementation.  
+
+###### Possession
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Possession | O | Latest live sheet: 5% | Latest live sheet: 5% | Possession |
+
+**Comments:**
+
+Approved V1:  
+Possession used an urgency-based comparison between the Demand's required possession timeline and the Supply's availability timeline. Supply available at the required time or earlier received a full match, while progressively later availability received a lower Match Score.  
+
+Latest V2 Decision:  
+The same urgency-based approach continues using five standardized Possession buckets: Immediate → Within 3 months → Within 6 months → Within 9 months → After 9 months. Supply available at the same time or earlier than required receives a full match; later availability is scored according to how many buckets later it falls.  
+
+V2 Representation: Business terminology is standardized as Possession on both Demand and Supply. The reviewed V2 backend currently represents Possession using propertyAvailableFrom on both sides.  
+
+Technical / Backend Confirmation – Sep 22, 2026: “Possession” is the standardized business/UI terminology. The existing V2 backend field propertyAvailableFrom will continue to be used on both Demand and Supply. No backend field rename or additional MongoDB wrapper change is required solely for this terminology standardization.  
+
+**Match Score Interpretation:**
+
+Approved V1:  
+
+1 → Supply is available at the same time as or earlier than the Demand Possession requirement.  
+0.8 → Supply is available one Possession bucket later than the Demand requirement.  
+0.5 → Supply is available two Possession buckets later than the Demand requirement.  
+0 → Supply is available more than two Possession buckets later than the Demand requirement.  
+
+Latest V2:  
+
+The Approved V1 urgency-based Match Score Interpretation is retained and confirmed using the five V2 Possession buckets:  
+
+Immediate → Within 3 months → Within 6 months → Within 9 months → After 9 months  
+
+1 → Supply available at the same time or earlier than Demand requirement  
+0.8 → Supply available one bucket later  
+0.5 → Supply available two buckets later  
+0 → Supply available more than two buckets later  
+
+**Examples:**
+
+Approved V1 / Confirmed V2 Examples:  
+
+Example 1:  
+Demand: Immediate  
+Supply: Immediate  
+→ Match Score = 1  
+
+Example 2:  
+Demand: Within 3 months  
+Supply: Immediate  
+→ Match Score = 1  
+
+Example 3:  
+Demand: Immediate  
+Supply: Within 3 months  
+→ Match Score = 0.8  
+
+Example 4:  
+Demand: Immediate  
+Supply: Within 6 months  
+→ Match Score = 0.5  
+
+Example 5:  
+Demand: Immediate  
+Supply: Within 9 months  
+→ Match Score = 0  
+
+Example 6 – Latest business-confirmed scenario:  
+Demand: Within 9 months  
+Supply: Immediate / Within 3 months / Within 6 months / Within 9 months  
+→ Match Score = 1  
+
+Demand: Within 9 months  
+Supply: After 9 months  
+→ Match Score = 0.8  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision:  
+
+The Approved V1 urgency-based Possession Match Score logic is retained and confirmed for V2 using the five buckets: Immediate → Within 3 months → Within 6 months → Within 9 months → After 9 months, with scores 1 / 0.8 / 0.5 / 0 based on how much later the Supply is available than the Demand requirement.  
+
+For Retail, Possession is confirmed as an Optional relevance field with 5% weight. This Optional classification applies to relevance configuration only; Possession remains compulsory during both Demand and Supply creation. Therefore, no separate missing-value Match Score treatment is required for the intended V2 flow.  
+
+Technical / Backend Confirmation – Sep 22, 2026:  
+The business/UI terminology is standardized as Possession, while the V2 backend will continue using propertyAvailableFrom on both Demand and Supply. No backend field rename or additional MongoDB wrapper change is required solely for the terminology standardization.  
+
+###### Frontage in feet
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Frontage in feet | O | Latest live sheet: 5% | Latest live sheet: 5% | Frontage in feet |
+
+**Comments:**
+
+Approved V1:  
+
+Frontage uses exact-match scoring when the Demand specifies a minimum Frontage. An exact Supply Frontage match receives full score, while a non-exact or missing Supply Frontage receives a reduced score. If Demand Frontage is not specified, the field is excluded from relevance scoring.  
+
+Latest V2 Decision:  
+Frontage is treated as a minimum requirement. Supply Frontage equal to or greater than the Demand requirement receives a Match Score of 1. Supply Frontage up to 15% below the Demand requirement receives 0.8, and Supply Frontage more than 15% below the Demand requirement receives 0.  
+
+If Demand Frontage is not specified, Frontage is excluded from the applicable relevance calculation. If Demand Frontage is specified but Supply Frontage is missing, Match Score = 0.  
+
+**Match Score Interpretation:**
+
+Approved V1:  
+
+1 → Demand specifies Frontage and Supply Frontage exactly matches the Demand requirement.  
+0.5 → Demand specifies Frontage and Supply Frontage is non-exact or missing.  
+Field excluded → Demand Frontage is not specified.  
+
+Latest V2:  
+
+1 → Supply Frontage is equal to or greater than the Demand requirement.  
+0.8 → Supply Frontage is up to 15% below the Demand requirement.  
+0 → Supply Frontage is more than 15% below the Demand requirement.  
+0 → Demand Frontage is specified but Supply Frontage is missing.  
+Field excluded → Demand Frontage is not specified.  
+
+**Examples:**
+
+Approved V1 Examples:  
+
+Example 1 – Exact Match:  
+Demand: 20 ft  
+Supply: 20 ft  
+→ Match Score = 1  
+
+Example 2 – Non-Exact Match:  
+Demand: 20 ft  
+Supply: 25 ft  
+→ Match Score = 0.5  
+
+Example 3 – Below Demand:  
+Demand: 20 ft  
+Supply: 15 ft  
+→ Match Score = 0.5  
+
+Example 4 – Supply Missing:  
+Demand: 20 ft  
+Supply: Missing  
+→ Match Score = 0.5  
+
+Example 5 – Demand Not Specified:  
+Demand: Not specified  
+→ Frontage excluded from relevance scoring.  
+
+Latest V2 Examples:  
+
+Example 1 – Supply Meets Demand:  
+Demand: 20 ft  
+Supply: 20 ft  
+→ Match Score = 1  
+
+Example 2 – Supply Exceeds Demand:  
+Demand: 20 ft  
+Supply: 25 ft  
+→ Match Score = 1  
+
+Example 3 – 15% Below Demand:  
+Demand: 20 ft  
+Supply: 17 ft  
+→ Match Score = 0.8  
+
+Example 4 – More Than 15% Below Demand:  
+Demand: 20 ft  
+Supply: 16 ft  
+→ Match Score = 0  
+
+Example 5 – Supply Missing:  
+Demand: 20 ft  
+Supply: Missing  
+→ Match Score = 0  
+
+Example 6 – Demand Not Specified:  
+Demand: Not specified  
+→ Frontage excluded from relevance scoring.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision:  
+V2 Frontage is treated as a minimum requirement:  
+
+- Supply Frontage ≥ Demand requirement → 1
+- Supply Frontage up to 15% below Demand requirement → 0.8
+- Supply Frontage more than 15% below Demand requirement → 0
+
+If Demand Frontage is not specified, Frontage is excluded from the applicable relevance calculation. If Demand Frontage is specified but Supply Frontage is missing, Match Score = 0.  
+
+Technical / Backend:  
+No immediate backend clarification is required for the confirmed Frontage scoring logic.  
+
+Weight:  
+Frontage remains an Optional relevance field with 5% weight in the latest Retail live sheet.  
+
+###### Store type
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Store type | O | Latest live sheet: 5% | Latest live sheet: 5% | Store type |
+
+**Comments:**
+
+Approved V1:  
+Store Type is evaluated using exact matching. When Demand specifies a Store Type, the Demand and Supply Store Types must match for a full match; otherwise, the Store Type Match Score is 0. If Demand does not specify Store Type, the field is excluded from scoring.  
+
+Earlier V2 Discussion:  
+The earlier PR supported multiple Demand Store Types, while the relevance logic evaluated a single Store Type. The latest PR has changed Store Type to single-select for both Demand and Supply.  
+
+Latest V2 Decision:  
+Store Type continues with binary exact matching:  
+
+- Demand Store Type = Supply Store Type → 1
+- Demand Store Type ≠ Supply Store Type → 0
+
+Himanshu confirmed that Store Type will be specified on the Demand side as a confirmed input field. The Store Type–Floor dependency remains applicable and should follow the latest confirmed V2 Floor–Store Type logic.  
+
+The latest PR defines Demand Store Type values as Highstreet, Mall, and Any, while Supply supports Highstreet and Mall.  
+
+Latest Business Confirmation:  
+Demand Store Type = Any + Supply Highstreet → 1  
+Demand Store Type = Any + Supply Mall → 1  
+
+Latest Live-Sheet Classification:  
+Store Type remains Optional (O) with 5% weight for Retail. Store Type being specified on the Demand side is an input/data-entry requirement and does not change its relevance classification from Optional to Mandatory.  
+
+Data Alignment Note:  
+Himanshu confirmed that legacy V1 Store Type data will be updated to align with the finalized V2 Store Type fields/values during data upload. Therefore, legacy V1 values outside the finalized V2 values do not require separate relevance-side mapping.  
+
+**Match Score Interpretation:**
+
+Approved V1:  
+
+Demand Store Type = Supply Store Type → 1  
+Demand Store Type ≠ Supply Store Type → 0  
+Demand Store Type not specified → excluded from scoring  
+
+Latest V2 Decision:  
+
+Demand Store Type = Supply Store Type → 1  
+Demand Store Type ≠ Supply Store Type → 0  
+Demand Store Type = Any + Supply Store Type = Highstreet or Mall → 1  
+
+Store Type is a confirmed input field, but it is Optional in the relevance configuration.  
+Store Type–Floor dependency follows the latest confirmed V2 Floor–Store Type logic.  
+
+**Examples:**
+
+Approved V1 Examples  
+
+Example 1 – Exact High Street match  
+Demand: Store Type = Highstreet  
+Supply: Store Type = Highstreet  
+→ Match Score = 1  
+
+Example 2 – Exact Mall match  
+Demand: Store Type = Mall  
+Supply: Store Type = Mall  
+→ Match Score = 1  
+
+Example 3 – Store Type mismatch  
+Demand: Store Type = Highstreet  
+Supply: Store Type = Mall  
+→ Match Score = 0  
+
+Example 4 – Store Type not specified  
+Demand: Store Type = Not Specified  
+→ Store Type is excluded from scoring  
+Latest V2 Examples  
+
+Example 1 – Exact High Street match  
+Demand: Store Type = Highstreet  
+Supply: Store Type = Highstreet  
+→ Store Type Match Score = 1  
+
+Example 2 – Exact Mall match  
+Demand: Store Type = Mall  
+Supply: Store Type = Mall  
+→ Store Type Match Score = 1  
+
+Example 3 – Store Type mismatch  
+Demand: Store Type = Highstreet  
+Supply: Store Type = Mall  
+→ Store Type Match Score = 0  
+
+Example 4 – Demand Store Type = Any  
+Demand: Store Type = Any  
+Supply: Store Type = Highstreet  
+→ Store Type Match Score = 1  
+
+Demand: Store Type = Any  
+Supply: Store Type = Mall  
+→ Store Type Match Score = 1  
+
+Floor Dependency Note:  
+Where Floor and Store Type are evaluated together, the applicable confirmed V2 Floor–Store Type logic must also be applied.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision:  
+V2 Store Type uses single-value binary matching:  
+
+- Demand Store Type = Supply Store Type → 1
+- Demand Store Type ≠ Supply Store Type → 0
+- Demand Store Type = Any + Supply Store Type = Highstreet → 1
+- Demand Store Type = Any + Supply Store Type = Mall → 1
+
+Store Type remains Optional (O) with 5% weight for Retail. Store Type being specified on the Demand side is an input/data-entry requirement and does not make it a Mandatory relevance field. The Store Type–Floor dependency follows the latest confirmed V2 Floor–Store Type logic.  
+
+Technical / Backend Confirmation – Sep 22, 2026:  
+Store Type remains list-based in the V2 backend, with one value expected in the list. Sathish confirmed that the existing wrapper approach can continue, converting the one-value Store Type list to the scalar value required by the relevance engine.  
+
+Data Alignment:  
+Legacy V1 Store Type values outside the finalized V2 values will be aligned during data upload; no separate relevance-side mapping is required.  
+
+Post-Migration Review:  
+Unexpected legacy/multi-value Store Type records, if still present after migration, will be reviewed separately. No multi-value Store Type scoring rule is currently defined.  
+
+###### Other interested location
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Other interested location | Merged with Location | No separate weight – merged with Location | No separate weight – merged with Location |  |
+
+**Comments:**
+
+Approved V1: Other Interested Location was not part of the approved V1 Retail relevance engine.  
+
+Earlier V2 Proposal: Other Interested Location was introduced as an additional Demand-location preference and was initially considered for separate relevance treatment, including a proposed 0.9 Match Score.  
+
+Latest V2 Decision: Other Interested Location is merged with Primary Location for relevance evaluation and will not have a separate weight or separate Match Score. The earlier 0.9 treatment is superseded. A Supply matched through an Other Interested Location will be evaluated using the same Location hierarchy/distance-based logic as a Primary Location match.  
+
+**Match Score Interpretation:**
+
+Approved V1: Not applicable – Other Interested Location was not part of the approved V1 relevance engine.  
+
+Earlier V2 Discussion: OIL matching the Location criteria → 0.9.  
+
+Latest V2 Decision: Other Interested Location has no separate Match Score. Each OIL is evaluated against the Supply Location using the same finalized V2 Location Match Score logic as Primary Location:  
+
+Same Micro-location → 1  
+Different Micro-location but same Area → 1  
+Different Area but same City → distance-based Location Match Score  
+Different City → 0  
+
+The earlier separate 0.9 OIL Match Score is superseded.  
+
+Implementation: Evaluate the Supply against Primary Location and each OIL using the same applicable Location logic, and use the highest resulting score as the single final Location Match Score.  
+
+**Examples:**
+
+Earlier V2 Proposal – Superseded:  
+Primary Location = Kothrud  
+Other Interested Location = Baner  
+Supply Location = Baner  
+OIL Match Score → 0.9 (earlier proposal)  
+
+Latest V2: The separate 0.9 OIL treatment is removed. Supply Location = Baner is evaluated against OIL = Baner using the same V2 Location Match Score logic as Primary Location → 1.  
+
+Primary + OIL Consolidation:  
+Primary Location Match Score → 0.5  
+OIL Match Score → 1.0  
+Final Location Match Score → 1.0  
+
+Multiple OILs:  
+Primary Location → 0.5  
+OIL 1 → 0.7  
+OIL 2 → 1.0  
+Final Location Match Score → 1.0  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision: Other Interested Location is merged with Primary Location for relevance evaluation and will no longer have a separate weight, separate Match Score, or separate impact on the final relevance percentage. The earlier proposed 0.9 OIL Match Score is superseded. Primary Location and Other Interested Locations will use the same finalized V2 Location hierarchy/distance-based Match Score logic.  
+
+Implementation Understanding: Evaluate the Supply against the Primary Location and each Other Interested Location using the same Location Match Score logic, and use the highest resulting score as the single final Location Match Score. Example: Primary Location → 0.5; OIL → 1.0; Final Location Match Score → 1.0.  
+
+Latest Business Confirmation – Sep 18, 2026: Primary Location and each Other Interested Location are evaluated using the same applicable Location Match Score logic. The highest resulting Match Score is used as the single final Location Match Score. Primary Location and Other Interested Locations have equal priority.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Primary Location and Other Interested Locations remain separate in the V2 backend: locality represents Primary Location and otherInterestedLocations[] represents Other Interested Locations. The wrapper can retrieve them separately and expose them in a consistent structure for relevance processing.  
+
+Location Dependency: No separate technical clarification remains for Other Interested Location. Any further change to its scoring will follow the pending final decision under the Location field regarding the Location hierarchy/fields and distance-based component.  
+
+**Implementation reference 1 (unlabelled column):**
+
+    Confirmed Current Wrapper / Relevance-Engine Implementation – Sep 22, 2026:
+    V2 keeps Primary Location and Other Interested Locations separately:
+    
+    # Example V2 Demand
+    demand = {
+        "locality": "Andheri",
+        "otherInterestedLocations": ["Bandra", "Powai"]
+    }
+    
+    # -------------------------
+    # MongoDB Wrapper
+    # -------------------------
+    
+    primary_location = demand.get("locality")
+    oil_locations = demand.get("otherInterestedLocations") or []
+    
+    demand_locations = []
+    
+    if primary_location:
+        demand_locations.append(primary_location)
+    
+    demand_locations.extend(oil_locations)
+    
+    # Result:
+    # demand_locations = ["Andheri", "Bandra", "Powai"]
+    
+    The wrapper therefore converts the separate inputs into one consistent collection for the Location matching function:
+    
+    Primary Location + OILs
+            ↓
+    ["Andheri", "Bandra", "Powai"]
+    
+    Then the relevance engine evaluates the Supply Location against the Primary Location and each Other Interested Location using the same finalized applicable Location Match Score logic:
+    scores = []
+    
+    for demand_location in demand_locations:
+        score = location_match(
+            demand_location,
+            supply_location
+        )
+        scores.append(score)
+    
+    final_location_score = max(scores)
+    
+    For example:
+    
+    scores = [0.5, 0.7, 1.0]
+    
+    final_location_score = max(scores)
+    
+    # final_location_score = 1.0
+    
+    So conceptually:
+    
+    Wrapper
+    Primary + OIL1 + OIL2
+            ↓
+    [Primary, OIL1, OIL2]
+    
+    Relevance Engine
+            ↓
+    score each using same Location logic
+            ↓
+    [0.5, 0.7, 1.0]
+            ↓
+    max()
+            ↓
+    Final Location Match Score = 1.0
+    
+    
+    Note: The Primary Location + Other Interested Location aggregation approach and use of the highest Match Score are confirmed. The specific Location scoring applied within location_match() will follow the final V2 Location decision, including the pending confirmation on the Location levels/fields and distance-based component.
+    
+    Primary + OILs → score each → max(scores) → one final Location Match Score
+
+**Implementation reference 2 (unlabelled column):**
+
+    Future Reference / Alternative Backend Scenario – Not Current Implementation:
+    As of the Sep 22, 2026 technical confirmation, V2 keeps Primary Location (locality) and Other Interested Locations (otherInterestedLocations[]) as separate backend fields. Therefore, the scenario below is not applicable to the current implementation. It is retained only as a reference in case the backend is changed in the future to provide Primary Location and Other Interested Locations as one unified list.
+    
+    
+    If V2 does not keep Primary Location and OIL separately and instead already provides them as one unified list, for example:
+    
+    demand = {
+        "locations": ["Andheri", "Bandra", "Powai"]
+    }
+    
+    then the wrapper becomes simpler:
+    
+    # -------------------------
+    # MongoDB Wrapper
+    # -------------------------
+    
+    demand_locations = demand.get("locations") or []
+    
+    # Result:
+    # demand_locations = ["Andheri", "Bandra", "Powai"]
+    
+    There is no need for the wrapper to separately read Primary Location and otherInterestedLocations[] and combine them.
+    
+    The relevance engine can still use exactly the same approach:
+    
+    scores = []
+    
+    for demand_location in demand_locations:
+        score = location_match(
+            demand_location,
+            supply_location
+        )
+        scores.append(score)
+    
+    final_location_score = max(scores)
+    
+    Conceptually:
+    
+    V2 Backend
+    [Primary, OIL1, OIL2]
+            ↓
+    Wrapper
+    [Primary, OIL1, OIL2]
+            ↓
+    Relevance Engine
+    score each using the same Location logic
+            ↓
+    [0.5, 0.7, 1.0]
+            ↓
+    max()
+            ↓
+    Final Location Match Score = 1.0
+
+**Relevance Scoring Framework & Eligibility Rules:**
+
+All fields explicitly specified in the demand are considered in relevance scoring.  
+
+For each such field, a match score is assigned according to the approved field-level business logic.  
+
+- Exact matches receive full score.
+- Partial matches receive reduced score where business logic allows.
+- Non-matches receive zero score.
+
+The final relevance score is computed as a weighted and normalized combination of the match scores across all demand-specified fields.  
+
+
+##### Tab 3 — F&B_V2_Relevance_Logic
+**Title (R1):** F&B DEMAND & SUPPLY RELEVANCY
+
+###### Asset Class
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Asset Class | M | Latest live sheet: Mandatory group = 75% | Latest live sheet: 9.38% per mandatory field (75% ÷ 8 = 9.375% ≈ 9.38%) | Asset Class |
+
+**Comments:**
+
+Approved V1: Asset Class uses strict exact matching. Demand and Supply must have the same Asset Class; same Asset Class receives full match and a different Asset Class receives no match.  
+
+Latest V2 Decision: Retail ↔ F&B cross-Asset-Class matching is permitted in both directions. Retail Demand → F&B Supply and F&B Demand → Retail Supply receive Asset Class Match Score = 1. Office and Managed Space remain outside this Retail ↔ F&B cross-match exception.  
+
+Latest Business Confirmation – Sep 18, 2026: For Retail ↔ F&B cross-matching, relevance will be calculated using the confirmed common Mandatory relevance fields plus Store Type: Asset Class, Transaction Type, City, Location + Other Interested Location, Carpet Area, Floor, Ceiling Height, and Store Type. Asset-class-specific Optional relevance fields are excluded. Each applicable field will use its finalized V2 Match Score logic, including partial Match Scores where applicable; all fields are not required to have Match Score = 1.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Retail and F&B remain separate V2 backend Asset Classes (retail and f-and-b). No additional backend dependency/change was identified by Sathish for supporting the confirmed Retail ↔ F&B cross-match.  
+
+**Match Score Interpretation:**
+
+V1 Reference:  
+Asset Class uses strict exact matching:  
+
+- Demand Asset Class = Supply Asset Class → 1
+- Demand Asset Class ≠ Supply Asset Class → 0
+
+Latest V2 Decision – Retail ↔ F&B Exception:  
+V2 retains same-Asset-Class matching and introduces a confirmed Retail ↔ F&B cross-match exception:  
+
+- Retail Demand + Retail Supply → 1
+- Retail Demand + F&B Supply → 1
+- F&B Demand + F&B Supply → 1
+- F&B Demand + Retail Supply → 1
+
+Retail ↔ F&B cross-matching does not extend to Office or Managed Space.  
+Therefore:  
+
+- Retail Demand + Office Supply → 0
+- Retail Demand + Managed Space Supply → 0
+- F&B Demand + Office Supply → 0
+- F&B Demand + Managed Space Supply → 0
+
+Cross-Match Relevance:  
+For a Retail ↔ F&B pair, Asset Class receives Match Score 1. The pair is then evaluated using the confirmed common Mandatory relevance fields plus Store Type, with each applicable field using its finalized V2 Match Score logic. Asset-class-specific Optional relevance fields are excluded from the cross-match calculation.  
+
+**Examples:**
+
+V1 Reference – Strict Exact Match  
+
+Example 1:  
+Demand: F&B  
+Supply: F&B  
+→ Match Score = 1  
+
+Example 2:  
+Demand: F&B  
+Supply: Retail  
+→ Match Score = 0  
+
+Example 3:  
+Demand: F&B  
+Supply: Office  
+→ Match Score = 0  
+
+Example 4:  
+Demand: F&B  
+Supply: Managed Space / Managed Office  
+→ Match Score = 0  
+
+Latest V2 Decision / Discussion – Retail ↔ F&B Cross-Match  
+
+Example 5:  
+Demand: F&B  
+Supply: F&B  
+→ Match Score = 1  
+
+Example 6:  
+Demand: F&B  
+Supply: Retail  
+→ Cross-match allowed  
+→ Asset Class Match Score = 1  
+Example 7:  
+Demand: Retail  
+Supply: F&B  
+→ Cross-match allowed  
+→ Asset Class Match Score = 1  
+Example 8:  
+Demand: F&B  
+Supply: Office  
+→ Match Score = 0  
+
+Example 9:  
+Demand: F&B  
+Supply: Managed Space / Managed Office  
+→ Match Score = 0  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision: Retail ↔ F&B cross-matching is allowed in both directions, with Asset Class Match Score = 1 for F&B Demand ↔ Retail Supply and Retail Demand ↔ F&B Supply.  
+
+For Retail ↔ F&B cross-matching, relevance will be calculated using the common Mandatory relevance fields plus Store Type: Asset Class, Transaction Type, City, Location + OIL, Carpet Area, Floor, Ceiling Height, and Store Type. Asset-class-specific Optional relevance fields are excluded. Each applicable field uses its respective finalized V2 Match Score logic, including partial Match Scores where applicable.  
+
+Technical / Backend Confirmation – Sep 22, 2026: The V2 backend continues to retain Retail and F&B as separate Asset Classes (retail and f-and-b). No additional backend dependency/change was identified by Sathish for supporting the confirmed Retail ↔ F&B cross-match.  
+
+Business Decision – Downstream Display Cutoff: Business has not yet finalized the Retail ↔ F&B cross-match display cutoff. Sathish confirmed that a separate configurable cutoff can be maintained once the final percentage is provided. The 50% mentioned during the Sep 22 discussion is temporary and is not the final business-approved cutoff.  
+
+###### Transcation type
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Transcation type | M | (merged above) | Latest live sheet: 9.38% per mandatory field (75% ÷ 8 = 9.375% ≈ 9.38%) | Transcation type |
+
+**Comments:**
+
+V1 Reference: Transaction Type uses strict exact matching between Demand and Supply.  
+
+Latest V2 Decision: Transaction Type should follow business transaction equivalence: Demand Buy ↔ Supply Sale and Demand Lease ↔ Supply Lease are valid matches. Incompatible transaction combinations are non-matches.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that the current V2 backend representation for purchase transactions will continue to use Buy, including on the Supply side. Sale may be used as the business/UI terminology, but Buy and Sale represent the same purchase transaction context. No backend field change or Buy ↔ Sale wrapper conversion is required solely because of this terminology difference.  
+
+**Match Score Interpretation:**
+
+V1 Reference: Exact Transaction Type match = 1; mismatch = 0.  
+
+Latest V2 Business Rule:  
+Demand Buy + Supply Sale → 1  
+Demand Lease + Supply Lease → 1  
+Demand Buy + Supply Lease → 0  
+Demand Lease + Supply Sale → 0  
+
+Backend Representation: The current V2 backend uses Buy for purchase transactions, including on the Supply side. Sale is the corresponding business/UI terminology for the Supply-side purchase transaction.  
+
+**Examples:**
+
+Approved V1 – Strict Exact Match  
+
+Example 1:  
+Demand: Lease  
+Supply: Lease  
+→ Match Score = 1  
+
+Example 2:  
+Demand: Lease  
+Supply: Sale  
+→ Match Score = 0  
+
+Latest V2 – Business Transaction Equivalence  
+
+Example 3:  
+Demand: Buy  
+Supply: Sale  
+→ Match Score = 1  
+
+Example 4:  
+Demand: Lease  
+Supply: Lease  
+→ Match Score = 1  
+
+Example 5:  
+Demand: Buy  
+Supply: Lease  
+→ Match Score = 0  
+
+Example 6:  
+Demand: Lease  
+Supply: Sale  
+→ Match Score = 0  
+
+Technical / Backend Confirmation – Sep 22, 2026: The V2 examples above show the confirmed business equivalence of Demand Buy ↔ Supply Sale. In the current V2 backend, purchase transactions continue to use Buy, including on the Supply side.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision: Demand Buy ↔ Supply Sale = 1 and Demand Lease ↔ Supply Lease = 1. Incompatible Transaction Type combinations = 0. The Match Score remains binary (1/0).  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that the current V2 backend representation for purchase transactions will continue to use Buy, including on the Supply side. Sale may be used as the business/UI terminology for the same purchase transaction context. No backend field change or Buy ↔ Sale wrapper conversion is required solely because of this terminology difference.  
+
+ML / Implementation: Use the current V2 backend Transaction Type representation directly for relevance processing. No Buy ↔ Sale normalization is required in the MongoDB wrapper solely to reconcile the UI/business terminology.  
+
+###### City
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| City | M | (merged above) | Latest live sheet: 9.38% per mandatory field (75% ÷ 8 = 9.375% ≈ 9.38%) | City |
+
+**Comments:**
+
+V1 Reference: City uses strict exact matching between Demand and Supply.  
+
+Latest V2 Decision: The exact City match logic continues. PAN_INDIA is a subscription-based option and is not treated as a City for relevance matching; relevance should use the actual Demand and Supply City.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that relevance matching should use the actual City associated with the Demand and Supply. PAN_INDIA is a subscription-level option and should not be treated as the City for relevance matching. The PAN_INDIA / India values observed in previously reviewed V2 records were identified as early/test data and are not the intended current representation for City relevance.  
+
+**Match Score Interpretation:**
+
+V1 Reference / Latest V2:  
+1 → Demand City exactly matches Supply City  
+0 → Demand City does not match Supply City  
+
+PAN_INDIA is not evaluated as a City and does not receive a City Match Score; the actual Demand and Supply City should be used for matching.  
+
+**Examples:**
+
+V1 Reference / Latest V2 – Exact City Match  
+
+Example 1:  
+Demand: Bangalore  
+Supply: Bangalore  
+→ Match Score = 1  
+
+Example 2:  
+Demand: Bangalore  
+Supply: Hyderabad  
+→ Match Score = 0  
+
+Example 3:  
+Demand: Mumbai  
+Supply: Navi Mumbai  
+→ Match Score = 0  
+
+V2 PAN_INDIA Handling  
+Example 4 – PAN_INDIA:  
+Demand selection includes: PAN_INDIA  
+Actual Demand City: Bengaluru  
+Supply City: Bengaluru  
+→ City matching should use Bengaluru, not PAN_INDIA  
+→ Match Score = 1  
+
+**Latest Decision / Pending Clarification:**
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that relevance matching should use the actual City associated with the Demand and Supply. PAN_INDIA is a subscription-level option and should not be treated as the City for relevance matching. The PAN_INDIA / India values previously observed in V2 were identified as early/test data and are not the intended current City representation.  
+
+ML / Implementation: Use the actual Demand and Supply City values with the existing exact-match rule. No special PAN_INDIA Match Score logic is required.  
+
+###### Location + Other Interested Location*
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Location + Other Interested Location* | M | (merged above) | Latest live sheet: 9.38% per mandatory field (75% ÷ 8 = 9.375% ≈ 9.38%) | Location |
+
+**Comments:**
+
+V1 Reference: Location matching follows a hierarchical/broader-locality approach. An exact Location match receives a full Match Score of 1. Where the Demand specifies a more specific location (e.g., a road/micro-location) and the Supply matches the broader locality containing that location, it receives a partial Match Score of 0.5. Where the Supply Location falls within the Demand's broader requested locality, it receives a full Match Score of 1. Unrelated locations receive a Match Score of 0.  
+
+Example: Demand = DP Road, Kothrud and Supply = Kothrud → 0.5; Demand = Kothrud and Supply = DP Road, Kothrud → 1.  
+
+Latest V2 Decision: Location matching will use Micro-location, Area, City, and distance/radius-based logic. Same Micro-location and different Micro-location within the same Area both receive a full Match Score of 1. For different Areas within the same City, the Match Score decreases based on distance up to 5 km. Different City receives 0 and should not be considered/shown as a Location match.  
+
+The same Location Match Score logic applies to both Primary Location and Other Interested Locations (OIL). OIL is merged into Location and does not have a separate relevance impact.  
+
+Latest Business Confirmation – Sep 18, 2026: Primary Location and each Other Interested Location are evaluated using the same applicable Location logic. The highest Match Score across them is used as the single final Location Match Score. Primary Location and Other Interested Locations have equal priority.  
+
+Technical / Backend Clarification – Sep 22, 2026: Primary Location and Other Interested Locations remain separate backend fields and can be retrieved separately by the wrapper for max-score aggregation. The backend uses Location/Locality as the main location and Micro-location as the sub-location; Area is not maintained as a separate Location level.  
+
+**Match Score Interpretation:**
+
+V1 Reference:  
+
+1 → Supply Location exactly matches the Demand Location, or the Supply is at a more specific location within the Demand's broader requested locality.  
+
+0.5 → Demand specifies a more specific location, while the Supply matches the approved broader locality containing that Demand Location.  
+
+0 → Supply Location does not match or fall within an approved geographic relationship with the Demand Location.  
+
+Latest V2:  
+
+Business clarification: Area = Location/Locality.  
+
+Geographic hierarchy: City → Location/Locality → Micro-location.  
+
+Same Micro-location → 1  
+
+Different Micro-location but same  Location/Locality → 1  
+
+Different  Location/Locality but same City → distance-based Match Score:  
+
+≤ 1 km → 0.8  
+
+1 km to ≤ 2 km → 0.7  
+
+2 km to ≤ 3 km → 0.6  
+
+3 km to ≤ 4 km → 0.5  
+
+4 km to ≤ 5 km → 0.3  
+
+> 5 km → 0  
+
+Different City → 0; Supply should not match/showcase.  
+
+The same Location Match Score Interpretation applies to both Primary Location and Other Interested Location.  
+
+**Examples:**
+
+V1 Reference Examples  
+
+Example 1 – Exact Match  
+Demand: Kothrud, Pune  
+Supply: Kothrud, Pune  
+→ Match Score = 1  
+
+Example 2 – Demand More Specific, Supply Broader  
+Demand: DP Road, Kothrud, Pune  
+Supply: Kothrud, Pune  
+→ Match Score = 0.5  
+
+Example 3 – Demand Broader, Supply More Specific  
+Demand: Kothrud, Pune  
+Supply: DP Road, Kothrud, Pune  
+→ Match Score = 1  
+
+Example 4 – Unrelated Location  
+Demand: DP Road, Kothrud, Pune  
+Supply: Baner, Pune  
+→ Match Score = 0  
+
+Latest V2 Examples  
+
+Example 1 – Same Micro-location  
+Demand: Kothrud, Pune  
+Supply: Kothrud, Pune  
+→ Match Score = 1  
+
+Example 2 – Different Micro-location, Same Area  
+Demand Micro-location: DP Road, Kothrud, Pune  
+Supply Micro-location: Karve Road, Kothrud, Pune  
+Area: Kothrud  
+→ Match Score = 1  
+
+Example 3 – Different Area, Same City  
+Demand Location: Kothrud, Pune  
+Supply Location: Baner, Pune  
+→ Different Areas within the same City  
+→ Match Score = distance-based score (0.8 / 0.7 / 0.6 / 0.5 / 0.3 depending on distance up to 5 km)  
+
+Example 4 – Different City  
+Demand Location: Kothrud, Pune  
+Supply Location: Andheri, Mumbai  
+→ Match Score = 0  
+→ Supply should not match/showcase.  
+
+Example 5 – Different Area, Same City, More Than 5 km  
+Demand Location: Area A, Pune  
+Supply Location: Area B, Pune  
+Distance: >5 km  
+→ Match Score = 0  
+Example 6 – Primary Location + Other Interested Location  
+
+Demand Primary Location: Kothrud, Pune  
+Demand OIL: Baner, Pune  
+Supply Location: Baner, Pune  
+
+Against Primary Location (Kothrud):  
+→ Different Area within same City  
+→ Distance-based Match Score  
+
+Against OIL (Baner):  
+→ Location Match Score = 1  
+
+The same V2 Location Match Score logic applies to Primary Location and OIL.  
+
+Latest Business Confirmation – Sep 18, 2026: Use the highest Match Score across Primary Location and all Other Interested Locations. Therefore, in Example 6, Final Location Match Score = 1.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision: V2 Location matching will use Micro-location, Area, City and distance/radius-based logic.  
+
+Same Micro-location → 1  
+Different Micro-location but same Area → 1  
+Different Area but same City → distance-based scoring:  
+
+≤ 1 km → 0.8  
+
+1 km to ≤ 2 km → 0.7  
+2 km to ≤ 3 km → 0.6  
+3 km to ≤ 4 km → 0.5  
+4 km to ≤ 5 km → 0.3  
+5 km → 0  
+
+Different City → 0 and should not be considered/shown as a Location match.  
+
+The same Location hierarchy and Match Score Interpretation applies to both Primary Location and Other Interested Location. Other Interested Location is merged into Location and has no separate relevance weight.  
+
+Latest Business Confirmation – Sep 18, 2026: Primary Location and each Other Interested Location are evaluated using the same applicable Location logic. The highest Match Score across them is used as the single final Location Match Score. Primary Location and Other Interested Locations have equal priority.  
+
+Technical / Backend Clarification – Sep 22, 2026: Primary Location and Other Interested Locations remain separate backend fields and can be retrieved separately for relevance evaluation. The current backend uses Location/Locality as the main location and Micro-location as the sub-location; Area is not maintained as a separate Location level. Sathish advised against implementing the distance-based calculation at this stage because it would require additional real-time API processing.  
+
+Confirmed Business Decision – Himanshu Oct 27  
+
+Area refers to Location/Locality.  
+
+Confirmed hierarchy:  
+City → Location/Locality → Micro-location.  
+
+Example:  
+Bengaluru → Indiranagar → 100 Feet Road.  
+
+###### Carpet area in sq.ft*
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Carpet area in sq.ft* | M | (merged above) | Latest live sheet: 9.38% per mandatory field (75% ÷ 8 = 9.375% ≈ 9.38%) | Carpet area in square feet |
+
+**Comments:**
+
+Latest Decision:  
+V2 Carpet Area will use the confirmed Demand-area-based variance bands across F&B, Retail, and Office. The applicable lower and upper variance percentages depend on the Demand Carpet Area band. Supply Carpet Area within the applicable variance limits receives Match Score = 1; outside the limits receives 0. The V1 Reference fixed ±10% tolerance and 0.8 partial Match Score are not used in the latest V2 logic.  
+
+PR-to-V2 Representation Observation:  
+The latest PR defines Demand Carpet Area as a single numeric value, which directly maps a Demand value to one of the confirmed V2 variance bands. Earlier reviewed V2 data represented Demand Carpet Area as a min–max range (carpetAreaRange.min/max), creating a representation gap because the confirmed variance-band logic is based on a single Demand Carpet Area value.  
+
+Future / Conditional Note: If true min–max Demand Carpet Area ranges are introduced in future, an additional business rule will be required because the min and max values may fall into different Demand Carpet Area bands.  
+
+Technical / Backend Confirmation – Sep 22, 2026:  
+The refreshed V2 Dev DB revalidation confirmed that Demand carpetArea, carpetAreaRange.min, and carpetAreaRange.max are equal whenever populated, while Supply uses a single numeric carpetArea. Sathish confirmed that carpetArea can be used as the primary Demand Carpet Area input for V2 relevance. Fallback handling should be retained if the primary value is unavailable; the exact fallback field/order can be finalized after reviewing the migrated V2 data.  
+
+Latest Live-Sheet Weight:  
+F&B mandatory-field total = 75%. With 8 mandatory fields, effective Carpet Area weight = 75% ÷ 8 = 9.375% ≈ 9.38%.  
+
+**Match Score Interpretation:**
+
+V1 Reference:  
+
+If Demand is a single value:  
+
+1 → Supply Carpet Area exactly matches Demand.  
+0.8 → Supply Carpet Area is within ±10% of Demand.  
+0 → Supply Carpet Area is outside the ±10% tolerance.  
+
+If Demand is a range:  
+
+1 → Supply Carpet Area lies within the demanded range.  
+0.8 → Supply Carpet Area lies within ±10% variance of the demanded range boundaries.  
+0 → Supply Carpet Area falls outside the ±10% tolerance.  
+
+Latest V2 Decision:  
+
+The fixed ±10% tolerance and 0.8 partial Match Score are replaced by the confirmed Demand-area-based variance bands:  
+
+≤500 sq. ft. → Lower 10% | Upper 50%  
+501–1,000 → Lower 10% | Upper 25%  
+1,001–2,000 → Lower 10% | Upper 20%  
+2,001–4,000 → Lower 10% | Upper 20%  
+4,001–6,000 → Lower 10% | Upper 15%  
+6,001–10,000 → Lower 5% | Upper 15%  
+10,001–15,000 → Lower 5% | Upper 10%  
+15,001–25,000 → Lower 10% | Upper 15%  
+≥25,001 → Lower 15% | Upper 20%  
+
+V2 Match Score:  
+
+1 → Supply Carpet Area falls within the applicable lower and upper variance limits.  
+0 → Supply Carpet Area falls outside the applicable variance limits.  
+
+No 0.8 partial Match Score applies in the latest V2 logic.  
+
+Technical / Representation Status: Dev DB revalidation is complete. Demand currently provides both carpetArea and carpetAreaRange, with carpetArea = min = max whenever populated; Supply uses single numeric carpetArea. carpetArea is confirmed as the primary Demand input for V2 relevance. Fallback handling will be retained if the primary value is unavailable, with the exact fallback field/order to be finalized after migrated V2 data review.  
+
+**Examples:**
+
+V1 Reference – Single-Value Demand:  
+
+Example 1:  
+Demand: 1,000 sq. ft.  
+Supply: 1,000 sq. ft.  
+→ Match Score = 1  
+
+Example 2:  
+Demand: 1,000 sq. ft.  
+Supply: 950 sq. ft.  
+→ Match Score = 0.8  
+
+Example 3:  
+Demand: 1,000 sq. ft.  
+Supply: 1,100 sq. ft.  
+→ Match Score = 0.8  
+
+Example 4:  
+Demand: 1,000 sq. ft.  
+Supply: 850 sq. ft.  
+→ Match Score = 0  
+
+Example 5:  
+Demand: 1,000 sq. ft.  
+Supply: 1,200 sq. ft.  
+→ Match Score = 0  
+
+V1 Reference – Range-Based Demand:  
+
+Demand: 1,000–1,200 sq. ft.  
+
+Supply: 1,100 sq. ft. → Match Score = 1  
+Supply: 950 sq. ft. → Match Score = 0.8  
+Supply: 1,300 sq. ft. → Match Score = 0.8  
+Supply: 850 sq. ft. → Match Score = 0  
+
+Latest V2 Examples:  
+
+Example 1:  
+Demand: 5,000 sq. ft.  
+Applicable band: 4,001–6,000 → Lower 10%, Upper 15%  
+Acceptable Supply range: 4,500–5,750 sq. ft.  
+→ Supply within this range = 1; outside = 0  
+
+Example 2:  
+Demand: 10,000 sq. ft.  
+Applicable band: 6,001–10,000 → Lower 5%, Upper 15%  
+Acceptable Supply range: 9,500–11,500 sq. ft.  
+→ Supply within this range = 1; outside = 0  
+
+Updated Technical Status – Sep 22, 2026:  
+Revalidation confirmed that carpetArea = carpetAreaRange.min = carpetAreaRange.max whenever populated in the reviewed V2 data. Sathish confirmed carpetArea as the primary Demand Carpet Area input for V2 relevance. If the primary value is unavailable, fallback handling will be retained; the exact fallback field/order will be finalized after reviewing the migrated V2 data.  
+
+Future / Conditional Note – If True Min–Max Ranges Are Introduced:  
+If a true min–max Demand Carpet Area representation is supported in future, an additional rule will be required to determine how the confirmed variance bands should be applied. For example, if Demand Carpet Area = 5,000–7,000 sq. ft., 5,000 falls in the 4,001–6,000 band (Lower 10%, Upper 15%), while 7,000 falls in the 6,001–10,000 band (Lower 5%, Upper 15%). Therefore, a true min–max representation would require clarification on which variance band should determine the acceptable Supply Carpet Area range and resulting V2 Match Score (1/0).  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision:  
+V2 Carpet Area will use the confirmed Demand-area-based variance bands across F&B, Retail, and Office. The applicable lower and upper variance percentages depend on the Demand Carpet Area band. Supply Carpet Area within the applicable variance limits receives Match Score = 1; outside the limits receives Match Score = 0. The F&B V1 Reference fixed ±10% tolerance and 0.8 partial Match Score are not used in the latest V2 logic.  
+
+Latest Live-Sheet Weight:  
+F&B mandatory-field total = 75%. With 8 mandatory fields, the effective Carpet Area weight = 75% ÷ 8 = 9.375% ≈ 9.38%.  
+
+Technical / Backend Confirmation – Sep 22, 2026:  
+The refreshed V2 Dev DB confirms that Demand carpetArea, carpetAreaRange.min, and carpetAreaRange.max are equivalent whenever populated. Supply uses single numeric carpetArea. Sathish confirmed carpetArea as the primary Demand Carpet Area input for V2 relevance.  
+
+Remaining Implementation Point:  
+Fallback handling should be retained if the primary Demand carpetArea is unavailable. The exact fallback field/order will be finalized after reviewing the migrated V2 data.  
+
+###### Floor Preference*
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Floor Preference* | M | (merged above) | Latest live sheet: 9.38% per mandatory field (75% ÷ 8 = 9.375% ≈ 9.38%) | Floor |
+
+**Comments:**
+
+V1 Reference:  
+
+Floor represents the physical placement of the store within the Supply. When Store Type is specified, Floor is evaluated together with Store Type using the V1 Reference Store-Type-specific Floor matching rules. When Store Type is not specified, Floor is evaluated independently using exact Floor matching.  
+
+Earlier V2 Discussion:  
+
+The latest live sheet proposed Floor as a mandatory 1 / 0 outcome and continued to associate Floor evaluation with Store Type. Initial business clarification indicated that the V1 Store Type dependency would continue in V2.  
+
+Latest V2 Decision:  
+
+Floor continues to be evaluated together with Store Type, but the earlier V1 Store Type outcomes will not continue as-is. The V2 Floor–Store Type logic is based on High Street and Mall.  
+
+- Ground + High Street: Supply Ground or Upper Ground → 1; all other Supply Floors → 0
+- Ground + Mall: Supply Ground, Upper Ground, 1st Floor, 2nd Floor, 3rd Floor or Above 3rd Floor → 1; Basement → 0
+- Any Floor: Can match across all available Supply Floors; where Store Type is specified, Store Type must still be considered during matching.
+
+**Match Score Interpretation:**
+
+V1 Reference:  
+
+Floor Match Score depends on whether Store Type is specified.  
+
+When Store Type = High Street:  
+
+1 → Demand Ground + Supply Ground; Demand Any + Supply Any; or a specific Demand Floor exactly matches Supply Floor.  
+0 → Supply Floor does not satisfy the applicable High Street Floor condition.  
+
+When Store Type = Mall:  
+
+1 → Demand Ground + Supply Ground; Demand Any + Supply Any; or a specified upper Demand Floor is satisfied by Supply Ground, Upper Ground, or the same specified Floor.  
+0 → Supply Floor does not satisfy the applicable Mall Floor condition.  
+
+When Store Type is not specified:  
+
+1 → Supply Floor satisfies the Demand Floor condition.  
+0 → Supply Floor does not satisfy the Demand Floor condition.  
+
+Latest V2:  
+
+Demand Floor = Ground + Store Type = High Street  
+
+1 → Supply Floor = Ground or Upper Ground  
+0 → All other Supply Floors  
+
+Demand Floor = Ground + Store Type = Mall  
+
+1 → Supply Floor = Ground, Upper Ground, 1st Floor, 2nd Floor, 3rd Floor, or Above 3rd Floor  
+0 → Supply Floor = Basement  
+
+Demand Floor = Any  
+
+1 → Any available Supply Floor can satisfy the Floor requirement.  
+Where Store Type is specified, Store Type must still be considered separately during matching.  
+
+**Examples:**
+
+V1 Reference:  
+
+Example 1 – High Street, Ground Floor match  
+Demand: Store Type = High Street, Floor = Ground  
+Supply: Floor = Ground  
+→ Match Score = 1  
+
+Example 2 – High Street, Floor mismatch  
+Demand: Store Type = High Street, Floor = Ground  
+Supply: Floor = 1st Floor  
+→ Match Score = 0  
+
+Example 3 – Mall, specified upper Floor  
+Demand: Store Type = Mall, Floor = 1st Floor  
+Supply: Floor = Upper Ground  
+→ Match Score = 1  
+
+Example 4 – Store Type not specified, exact Floor match  
+Demand: Store Type = Not Specified, Floor = Ground  
+Supply: Floor = Ground  
+→ Match Score = 1  
+
+Latest V2:  
+
+Example 1 – Ground + High Street / Ground Supply  
+Demand: Floor = Ground, Store Type = High Street  
+Supply: Floor = Ground  
+→ Floor Match Score = 1  
+
+Example 2 – Ground + High Street / Upper Ground Supply  
+Demand: Floor = Ground, Store Type = High Street  
+Supply: Floor = Upper Ground  
+→ Floor Match Score = 1  
+
+Example 3 – Ground + High Street / Higher Floor Supply  
+Demand: Floor = Ground, Store Type = High Street  
+Supply: Floor = 1st Floor  
+→ Floor Match Score = 0  
+
+Example 4 – Ground + Mall / Ground Supply  
+Demand: Floor = Ground, Store Type = Mall  
+Supply: Floor = Ground  
+→ Floor Match Score = 1  
+
+Example 5 – Ground + Mall / Higher Floor Supply  
+Demand: Floor = Ground, Store Type = Mall  
+Supply: Floor = 2nd Floor  
+→ Floor Match Score = 1  
+
+Example 6 – Ground + Mall / Basement Supply  
+Demand: Floor = Ground, Store Type = Mall  
+Supply: Floor = Basement  
+→ Floor Match Score = 0  
+
+Example 7 – Any Floor  
+Demand: Floor = Any, Store Type = High Street  
+Supply: Floor = 2nd Floor  
+→ Floor requirement is satisfied (Floor Match Score = 1); Store Type must still be evaluated according to the applicable Store Type logic.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision:  
+V2 Floor continues to be evaluated together with Store Type, but the earlier V1 Reference Store Type outcomes will not continue as-is. The confirmed V2 Floor–Store Type logic is based on High Street and Mall:  
+
+- Ground + High Street: Supply Ground or Upper Ground → 1; all other Supply Floors → 0
+
+- Ground + Mall: Supply Ground, Upper Ground, 1st Floor, 2nd Floor, 3rd Floor or Above 3rd Floor → 1; Basement → 0
+
+- Any Floor: can match across all available Supply Floors; where Store Type is selected, Store Type must still be considered during matching.
+
+Technical / Backend:  
+V2 provides Demand Floor through floorPreference and Supply Floor through floor. These fields can be used for the V2 Floor Match Score implementation together with the applicable Demand Store Type. No additional Floor-specific backend clarification is currently required.  
+
+Latest Live-Sheet Weight:  
+Mandatory-field total remains 75% across 8 mandatory fields; effective Floor weight = 75% ÷ 8 = 9.375% ≈ 9.38%.  
+
+###### Clear ceiling height
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Clear ceiling height | M | (merged above) | Latest live sheet: 9.38% per mandatory field (75% ÷ 8 = 9.375% ≈ 9.38%) | Ceiling height in feet |
+
+**Comments:**
+
+V1 Reference:  
+Supply Ceiling Height exactly equal to the Demand Ceiling Height receives 1.  
+Supply Ceiling Height greater than Demand receives 0.8.  
+Supply Ceiling Height below Demand receives 0.  
+
+Earlier V2 Discussion:  
+The Ceiling Height logic was proposed to introduce a +30% upper variance from the Demand Ceiling Height. An earlier April 23 proposal considered 1 / 0.9 / 0 scoring, which was subsequently revised during further business discussion.  
+
+Latest V2 Decision:  
+Ceiling Height now uses both lower-side tolerance and +30% upper variance.  
+
+Supply below Demand but within the permitted lower variance → 0.8  
+Supply equal to Demand or up to 30% above Demand → 1  
+Supply more than 30% above Demand → 0.5  
+Supply below the applicable permitted lower-side variance → 0  
+
+The permitted lower variance depends on the Demand Ceiling Height:  
+
+Demand ≤14 ft → up to 1 ft lower  
+Demand 15–20 ft → up to 2 ft lower  
+Demand ≥21 ft → up to 3 ft lower  
+
+This latest decision supersedes the earlier V1 Reference and proposed V2 Ceiling Height scoring interpretations.  
+
+**Match Score Interpretation:**
+
+V1 Reference:  
+
+1 → Supply Ceiling Height exactly equals the Demand Ceiling Height.  
+
+0.8 → Supply Ceiling Height is greater than the Demand Ceiling Height.  
+
+0 → Supply Ceiling Height is lower than the Demand Ceiling Height.  
+
+Latest V2:  
+
+0.8 → Supply Ceiling Height is below Demand but within the permitted lower-side variance:  
+
+- Demand ≤14 ft → up to 1 ft lower
+
+- Demand 15–20 ft → up to 2 ft lower
+
+- Demand ≥21 ft → up to 3 ft lower
+
+1 → Supply Ceiling Height is equal to Demand or up to 30% above Demand.  
+
+0.5 → Supply Ceiling Height is more than 30% above Demand.  
+
+0 → Supply Ceiling Height is below the applicable permitted lower-side variance.  
+
+**Examples:**
+
+V1 Reference Examples  
+
+Example 1 – Exact match  
+Demand: 12 ft  
+Supply: 12 ft  
+→ Match Score = 1  
+
+Example 2 – Supply above Demand  
+Demand: 12 ft  
+Supply: 14 ft  
+→ Match Score = 0.8  
+
+Example 3 – Supply below Demand  
+Demand: 12 ft  
+Supply: 10 ft  
+→ Match Score = 0  
+
+Latest V2 Examples  
+
+Example 1 – 1 ft lower variance  
+
+Demand: 14 ft  
+Permitted lower variance: 1 ft  
+
+Supply: 13 ft → 0.8  
+Supply: 14 ft → 1  
+Supply: 12 ft → 0  
+
+Example 2 – 2 ft lower variance  
+
+Demand: 18 ft  
+Permitted lower variance: 2 ft  
+
+Supply: 16 ft → 0.8  
+Supply: 17 ft → 0.8  
+Supply: 18 ft → 1  
+Supply: 15 ft → 0  
+Example 3 – 3 ft lower variance  
+
+Demand: 25 ft  
+Permitted lower variance: 3 ft  
+
+Supply: 22–24 ft → 0.8  
+Supply: 25 ft → 1  
+Supply: 21 ft → 0  
+
+Example 4 – +30% upper variance  
+
+Demand: 10 ft  
+30% upper variance = 3 ft  
+Upper full-match limit = 13 ft  
+
+Supply: 10–13 ft → 1  
+Supply: >13 ft → 0.5  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision:  
+V2 Ceiling Height uses Demand-dependent lower-side tolerance together with a +30% upper variance:  
+
+- Demand ≤14 ft → up to 1 ft lower receives 0.8
+
+- Demand 15–20 ft → up to 2 ft lower receives 0.8
+
+- Demand ≥21 ft → up to 3 ft lower receives 0.8
+
+- Supply below the applicable permitted lower-side variance → 0
+
+- Supply equal to Demand or up to 30% above Demand → 1
+
+- Supply more than 30% above Demand → 0.5
+
+This supersedes the F&B V1 Reference and earlier proposed/interim V2 Ceiling Height scoring interpretations.  
+
+Technical / Backend:  
+V2 provides Demand Ceiling Height through ceilingHeightMinFt and Supply Ceiling Height through ceilingHeightFt. These numeric values support the confirmed V2 Ceiling Height Match Score logic. No additional Ceiling Height-specific backend clarification is currently required.  
+
+Latest Live-Sheet Weight:  
+Mandatory-field total remains 75% across 8 mandatory fields; effective Ceiling Height weight = 75% ÷ 8 = 9.375% ≈ 9.38%.  
+
+###### Store type*
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Store type* | M | (merged above) | Latest live sheet: 9.38% per mandatory field (75% ÷ 8 = 9.375% ≈ 9.38%) | Store type |
+
+**Comments:**
+
+V1 Reference:  
+Store Type is evaluated using exact matching. Demand and Supply Store Types must match for a full match; otherwise, the Store Type Match Score is 0. Store Type is a mandatory relevance field for F&B.  
+
+Earlier V2 Discussion:  
+The earlier PR supported multiple Demand Store Types, while the relevance logic evaluated a single Store Type. The latest PR has changed Store Type to single-select for both Demand and Supply.  
+
+Latest V2 Decision:  
+
+Store Type continues with binary exact matching:  
+
+- Demand Store Type = Supply Store Type → 1
+- Demand Store Type ≠ Supply Store Type → 0
+
+Demand Store Type = Any is also confirmed:  
+
+- Demand Any + Supply Highstreet → 1
+- Demand Any + Supply Mall → 1
+
+Store Type is a confirmed Demand input field and is Mandatory for F&B relevance. The Store Type–Floor dependency remains applicable and follows the latest confirmed V2 Floor–Store Type logic.  
+
+F&B Live-Sheet Classification Note:  
+In the latest F&B live relevance sheet, the Store Type M/O cell still shows O; however, Store Type is positioned within the Mandatory-field group and carries the 75% mandatory-group weight. With 8 Mandatory relevance fields, the effective Store Type weight is 75% ÷ 8 = 9.375% ≈ 9.38%. Therefore, the O is treated as a missed M/O cell update, and Store Type is treated as Mandatory for F&B in the V2 evolving logic.  
+
+Technical / Backend Confirmation – Sep 22, 2026:  
+Although Store Type is single-select in the latest PR, the V2 backend will continue storing Store Type as a list, with one Store Type value expected in the list. The existing wrapper approach can continue, converting the one-value Store Type list to the scalar Store Type value required by the relevance engine.  
+
+Unexpected legacy/multi-value Store Type records, if still present after migration, will be reviewed separately. No multi-value Store Type scoring rule is currently defined.  
+
+Data Alignment Note:  
+Himanshu confirmed that legacy V1 Store Type data will be updated to align with the finalized V2 Store Type fields/values during data upload. Therefore, legacy V1 values outside the finalized V2 values do not require separate relevance-side mapping.  
+
+**Match Score Interpretation:**
+
+Approved V1:  
+
+Demand Store Type = Supply Store Type → 1  
+Demand Store Type ≠ Supply Store Type → 0  
+Demand Store Type not specified → excluded from scoring  
+
+Latest V2 Decision:  
+
+Demand Store Type = Supply Store Type → 1  
+Demand Store Type ≠ Supply Store Type → 0  
+Demand Store Type = Any + Supply Store Type = Highstreet or Mall → 1  
+Store Type is a confirmed input field and Mandatory in the relevance configuration.  
+Store Type–Floor dependency follows the latest confirmed V2 Floor–Store Type logic.  
+
+**Examples:**
+
+V1 Reference Examples  
+
+Example 1 – Exact High Street match  
+Demand: Store Type = Highstreet  
+Supply: Store Type = Highstreet  
+→ Match Score = 1  
+
+Example 2 – Exact Mall match  
+Demand: Store Type = Mall  
+Supply: Store Type = Mall  
+→ Match Score = 1  
+
+Example 3 – Store Type mismatch  
+Demand: Store Type = Highstreet  
+Supply: Store Type = Mall  
+→ Match Score = 0  
+
+Example 4 – Store Type not specified  
+Demand: Store Type = Not Specified  
+→ Store Type is excluded from scoring  
+
+Latest V2 Examples  
+
+Example 1 – Exact High Street match  
+Demand: Store Type = Highstreet  
+Supply: Store Type = Highstreet  
+→ Store Type Match Score = 1  
+
+Example 2 – Exact Mall match  
+Demand: Store Type = Mall  
+Supply: Store Type = Mall  
+→ Store Type Match Score = 1  
+
+Example 3 – Store Type mismatch  
+Demand: Store Type = Highstreet  
+Supply: Store Type = Mall  
+→ Store Type Match Score = 0  
+
+Example 4 – Demand Store Type = Any  
+
+Demand: Store Type = Any  
+Supply: Store Type = Highstreet  
+→ Store Type Match Score = 1  
+
+Demand: Store Type = Any  
+Supply: Store Type = Mall  
+→ Store Type Match Score = 1  
+
+Floor Dependency Note:  
+Where Floor and Store Type are evaluated together, the applicable confirmed V2 Floor–Store Type logic must also be applied.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision:  
+Store Type retains binary exact matching in V2: same Store Type → 1; different Store Type → 0. Demand Store Type = Any matches Supply Highstreet or Mall with Match Score = 1.  
+
+The latest PR defines Store Type as single-select for both Demand and Supply. Store Type is a Mandatory relevance field for F&B, and the Store Type–Floor dependency continues using the latest confirmed V2 Floor–Store Type logic.  
+
+Technical / Backend Confirmation – Sep 22, 2026:  
+V2 will continue storing Store Type as a list, with one value expected. The existing wrapper approach can continue converting the one-value list to the scalar Store Type value required by the relevance engine. Unexpected legacy/multi-value records, if still present after migration, will be reviewed separately.  
+
+Pending Clarification: None currently identified for Store Type.  
+
+###### Fitouts required
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Fitouts required | O | 5% | Latest live sheet: 5% | Fitouts available |
+
+**Comments:**
+
+V1 Reference: F&B Fitouts used binary requirement-versus-availability matching, with Fitouts evaluated based on whether the Demand required Fitouts and whether Fitouts were available on the Supply. If the Demand did not specify a Fitouts requirement, the field was excluded from relevance scoring.  
+
+Latest V2 Decision: F&B will use Fitout Required Yes/No on Demand and Fitout Available Yes/No on Supply, with the confirmed Yes/No combination-specific Match Score Interpretation.  
+
+For F&B, Demand Fitouts Required = No means the Demand specifically requires a Supply without Fitouts; it does not mean that the Demand has no Fitouts preference. Therefore, Demand No + Supply No = 1 and Demand No + Supply Yes = 0.  
+
+A missing/not-provided Fitouts value is different from an explicit No. If Demand Fitouts is missing/not provided, exclude Fitouts from the relevance calculation. If Demand Fitouts is provided but Supply Fitouts is missing/not provided, also exclude Fitouts from the relevance calculation.  
+
+**Match Score Interpretation:**
+
+V1 Reference:  
+
+1 → Demand Fitout Required = Yes AND Supply Fitout Available = Yes  
+
+0 → Demand Fitout Required = Yes AND Supply Fitout Available = No  
+
+If Demand Fitout Required is not specified, the field is excluded from relevance scoring.  
+
+Latest V2:  
+
+1 →  
+
+Demand Fitout Required = Yes AND Supply Fitout Available = Yes  
+Demand Fitout Required = No AND Supply Fitout Available = No  
+
+0 →  
+
+Demand Fitout Required = Yes AND Supply Fitout Available = No  
+Demand Fitout Required = No AND Supply Fitout Available = Yes  
+
+Missing / Not Provided:  
+If Demand Fitouts is missing/not provided, exclude Fitouts from the relevance calculation. If Demand Fitouts is provided but Supply Fitouts is missing/not provided, exclude Fitouts from the relevance calculation.  
+
+**Examples:**
+
+V1 Reference  
+
+Example 1: Demand Yes + Supply Yes → 1  
+Example 2: Demand Yes + Supply No → 0  
+Example 3: Demand not specified → Fitouts excluded from relevance scoring  
+
+Latest V2  
+
+Example 1: Demand Yes + Supply Yes → 1  
+Example 2: Demand Yes + Supply No → 0  
+Example 3: Demand No + Supply Yes → 0  
+Example 4: Demand No + Supply No → 1  
+Example 5 – Missing / Not Provided:  
+Demand Fitouts missing/not provided → exclude Fitouts from the relevance calculation.  
+Demand Fitouts provided + Supply Fitouts missing/not provided → exclude Fitouts from the relevance calculation.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision:  
+Latest Business Decision:  
+F&B Fitouts uses Fitout Required Yes/No on Demand and Fitout Available Yes/No on Supply:  
+Demand Yes + Supply Yes → 1  
+Demand Yes + Supply No → 0  
+Demand No + Supply Yes → 0  
+Demand No + Supply No → 1  
+Demand Fitouts Required = No is an explicit requirement for a Supply without Fitouts; it is not equivalent to missing/not provided.  
+
+Missing / Not Provided – Sep 18, 2026:  
+If Demand Fitouts is missing/not provided, exclude Fitouts from the relevance calculation. If Demand Fitouts is provided but Supply Fitouts is missing/not provided, also exclude Fitouts from the relevance calculation.  
+
+Technical / Backend Status – Sep 22, 2026:  
+The reviewed V2 data contains categorical fitOutStatus and Boolean fitoutsRequired / fitoutsAvailable. fitOutStatus is populated, while the Boolean fields are largely unpopulated. The applicable Fitouts representation will be revalidated against the migrated V1→V2 data before Stage-1 implementation.  
+
+Weight:  
+Fitouts remains an Optional relevance field with 5% weight in the latest F&B live sheet.  
+
+###### Possession
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Possession | O | 5% | Latest live sheet: 5% | Possession |
+
+**Comments:**
+
+V1 Reference:  
+Possession used an urgency-based comparison between the Demand's required possession timeline and the Supply's availability timeline. Supply available at the required time or earlier received a full match, while progressively later availability received a lower Match Score.  
+
+Latest V2 Decision:  
+The same urgency-based approach continues using five standardized Possession buckets: Immediate → Within 3 months → Within 6 months → Within 9 months → After 9 months. Supply available at the same time or earlier than required receives a full match; later availability is scored according to how many buckets later it falls.  
+
+V2 Representation: Business terminology is standardized as Possession on both Demand and Supply. The reviewed V2 backend currently represents Possession using propertyAvailableFrom on both sides.  
+
+Technical / Backend Confirmation – Sep 22, 2026: “Possession” is the standardized business/UI terminology, while the existing V2 backend field propertyAvailableFrom will continue to be used on both Demand and Supply. No backend field rename or additional MongoDB wrapper change is required solely for the terminology standardization.  
+
+**Match Score Interpretation:**
+
+V1 Reference:  
+Possession was evaluated using the urgency order:  
+Immediate → Within 3 months → Within 6 months → Within 9 months  
+
+-Supply available at the same time or earlier than Demand → 1  
+
+- Supply available 1 bucket later → 0.8
+- Supply available 2 buckets later → 0.5
+- Supply available more than 2 buckets later → 0
+
+Latest V2 Decision:  
+The same urgency-based scoring continues using five standardized Possession buckets:  
+Immediate → Within 3 months → Within 6 months → Within 9 months → After 9 months  
+
+- Supply available at the same time or earlier than Demand → 1
+- Supply available 1 bucket later → 0.8
+- Supply available 2 buckets later → 0.5
+- Supply available more than 2 buckets later → 0
+
+**Examples:**
+
+V1 Reference / Confirmed V2 Examples:  
+
+Example 1:  
+Demand: Immediate  
+Supply: Immediate  
+→ Match Score = 1  
+
+Example 2:  
+Demand: Within 3 months  
+Supply: Immediate  
+→ Match Score = 1  
+
+Example 3:  
+Demand: Immediate  
+Supply: Within 3 months  
+→ Match Score = 0.8  
+
+Example 4:  
+Demand: Immediate  
+Supply: Within 6 months  
+→ Match Score = 0.5  
+
+Example 5:  
+Demand: Immediate  
+Supply: Within 9 months  
+→ Match Score = 0  
+
+Example 6 – Latest business-confirmed scenario:  
+Demand: Within 9 months  
+Supply: Immediate / Within 3 months / Within 6 months / Within 9 months  
+→ Match Score = 1  
+
+Demand: Within 9 months  
+Supply: After 9 months  
+→ Match Score = 0.8  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision:  
+F&B V2 Possession will use five standardized buckets: Immediate → Within 3 months → Within 6 months → Within 9 months → After 9 months.  
+
+The urgency-based Match Score logic is confirmed: Supply available in the same bucket or earlier → 1; 1 bucket later → 0.8; 2 buckets later → 0.5; more than 2 buckets later → 0.  
+
+Possession is compulsory during both Demand and Supply creation. For F&B relevance scoring, the latest live sheet defines Possession as an Optional field with 5% weight.  
+
+Possession is compulsory during both Demand and Supply creation. For F&B relevance scoring, Possession is confirmed as an Optional field with 5% weight. The Optional relevance classification and compulsory data-entry requirement are therefore treated separately. Since Possession is compulsory during creation, no separate missing-value Match Score treatment is required for the intended V2 flow.  
+
+Technical / Backend Confirmation – Sep 22, 2026: The V2 backend will continue using propertyAvailableFrom on both Demand and Supply, while Possession remains the standardized business/UI terminology. No backend field rename or additional MongoDB wrapper change is required solely for this terminology standardization.  
+
+###### Frontage in feet
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Frontage in feet | O | 5% | Latest live sheet: 5% | Frontage in feet |
+
+**Comments:**
+
+V1 Reference:  
+F&B Frontage compared the Supply's available frontage with the Demand's minimum required frontage. An exact match received 1, while a non-exact or unavailable Supply Frontage received 0.5. If the Demand did not specify Frontage, the field was excluded from relevance scoring.  
+
+Latest V2 Decision:  
+Frontage changes to a minimum-requirement-based approach. Supply Frontage equal to or greater than the Demand requirement receives 1, Supply Frontage up to 15% below the Demand requirement receives 0.8, and Supply Frontage more than 15% below the Demand requirement receives 0.  
+
+If Demand Frontage is not specified, Frontage is excluded from the applicable relevance calculation. If Demand Frontage is specified but Supply Frontage is missing, Match Score = 0.  
+
+**Match Score Interpretation:**
+
+V1 Reference:  
+
+- Demand specifies Frontage and Supply Frontage exactly matches Demand → 1
+- Demand specifies Frontage and Supply Frontage does not exactly match or is unavailable → 0.5
+- Demand does not specify Frontage → Field excluded from relevance scoring
+
+Latest V2 Decision:  
+
+- Supply Frontage equal to or greater than Demand requirement → 1
+- Supply Frontage up to 15% below Demand requirement → 0.8
+- Supply Frontage more than 15% below Demand requirement → 0
+- Demand specifies Frontage but Supply Frontage is missing/not available → 0
+- Demand does not specify Frontage → Field excluded from the applicable relevance calculation
+
+**Examples:**
+
+V1 Reference Examples:  
+
+Example 1 – Exact Match:  
+Demand: 20 ft  
+Supply: 20 ft  
+→ Match Score = 1  
+
+Example 2 – Non-Exact Match:  
+Demand: 20 ft  
+Supply: 25 ft  
+→ Match Score = 0.5  
+
+Example 3 – Below Demand:  
+Demand: 20 ft  
+Supply: 15 ft  
+→ Match Score = 0.5  
+
+Example 4 – Supply Missing:  
+Demand: 20 ft  
+Supply: Missing  
+→ Match Score = 0.5  
+
+Example 5 – Demand Not Specified:  
+Demand: Not specified  
+→ Frontage excluded from relevance scoring.  
+
+Latest V2 Examples:  
+
+Example 1 – Supply Meets Demand:  
+Demand: 20 ft  
+Supply: 20 ft  
+→ Match Score = 1  
+
+Example 2 – Supply Exceeds Demand:  
+Demand: 20 ft  
+Supply: 25 ft  
+→ Match Score = 1  
+
+Example 3 – 15% Below Demand:  
+Demand: 20 ft  
+Supply: 17 ft  
+→ Match Score = 0.8  
+
+Example 4 – More Than 15% Below Demand:  
+Demand: 20 ft  
+Supply: 16 ft  
+→ Match Score = 0  
+
+Example 5 – Supply Missing:  
+Demand: 20 ft  
+Supply: Missing  
+→ Match Score = 0  
+
+Example 6 – Demand Not Specified:  
+Demand: Not specified  
+→ Frontage excluded from relevance scoring.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision:  
+V2 Frontage is treated as a minimum requirement:  
+
+- Supply Frontage ≥ Demand requirement → 1
+- Supply Frontage up to 15% below Demand requirement → 0.8
+- Supply Frontage more than 15% below Demand requirement → 0
+
+If Demand Frontage is not specified, Frontage is excluded from the applicable relevance calculation. If Demand Frontage is specified but Supply Frontage is missing/not available, Match Score = 0.  
+
+Technical / Backend:  
+No immediate backend clarification is required for the confirmed Frontage scoring logic.  
+
+Weight:  
+Frontage remains an Optional relevance field with 5% weight in the latest F&B live sheet.  
+
+###### Cooking Type
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Cooking Type | O | 5% | Latest live sheet: 5% | Cooking Type |
+
+**Comments:**
+
+V1 Reference: F&B Cooking Type relevance was evaluated based on whether the required Supply Gas Connection was available. If the Demand specified Cooking Type, required Gas Connection available → Match Score = 1; required Gas Connection unavailable → Match Score = 0. If Demand Cooking Type was not specified, the field was excluded from relevance scoring.  
+
+Latest V2 Decision: Cooking Type will be evaluated by directly comparing Demand Cooking Type with Supply Cooking Type, replacing the V1 Reference Gas Connection availability approach. Demand values are Electric, Gas, or Either; Supply values are Electric or Gas. Electric Demand matches Electric or Gas Supply; Gas Demand matches only Gas Supply; Either Demand matches Electric or Gas Supply.  
+
+Missing-Value Handling – Confirmed Sep 18, 2026:  
+If Demand Cooking Type is missing/not provided, exclude Cooking Type from the applicable relevance calculation. If Demand Cooking Type is specified but Supply Cooking Type is missing/not provided, also exclude Cooking Type from the applicable relevance calculation. When both Demand and Supply Cooking Type are specified, apply the confirmed V2 Cooking Type Match Score logic.  
+
+Technical / Backend Confirmation – Sep 22, 2026:  
+Although Cooking Type is single-select in the latest PR, V2 intentionally stores cookingTypes as a list for future flexibility. Under the current requirement, one Cooking Type value is expected in the list, and the existing wrapper can convert the one-value list to the corresponding scalar value before relevance matching.  
+
+Demand also contains gasLineRequired; however, no relevance role for gasLineRequired is currently defined  
+
+**Match Score Interpretation:**
+
+V1 Reference:  
+If Demand specifies Cooking Type:  
+
+Required Supply Gas Connection available → 1  
+Required Supply Gas Connection not available → 0  
+
+If Demand does not specify Cooking Type → Cooking Type excluded from relevance scoring  
+
+Latest V2 Decision:  
+
+Demand Electric → Supply Electric = 1  
+Demand Electric → Supply Gas = 1  
+Demand Gas → Supply Gas = 1  
+Demand Gas → Supply Electric = 0  
+Demand Either → Supply Electric or Gas = 1  
+
+Business Rationale: For Demand Electric → Supply Gas, Himanshu confirmed Match Score = 1 because a Supply with Gas is considered suitable for an Electric Demand, based on the business assumption that Electric would also be available where Gas is available.  
+
+Missing-value handling:  
+
+Demand Cooking Type not specified → Cooking Type excluded from relevance scoring.  
+Demand Cooking Type specified + Supply Cooking Type missing/not provided → Cooking Type excluded from the applicable relevance calculation.  
+
+**Examples:**
+
+V1 Reference Examples:  
+
+Example 1:  
+Demand Cooking Type specified  
+Supply: Required Gas Connection available  
+→ Match Score = 1  
+
+Example 2:  
+Demand Cooking Type specified  
+Supply: Required Gas Connection not available  
+→ Match Score = 0  
+
+Example 3:  
+Demand Cooking Type not specified  
+→ Cooking Type excluded from relevance scoring  
+
+Latest V2 Examples:  
+
+Example 1:  
+Demand: Electric  
+Supply: Electric  
+→ Match Score = 1  
+
+Example 2:  
+Demand: Electric  
+Supply: Gas  
+→ Match Score = 1  
+
+Reason: Supply with Gas is considered suitable for an Electric Demand because Electric is assumed to also be available.  
+
+Example 3:  
+Demand: Gas  
+Supply: Gas  
+→ Match Score = 1  
+
+Example 4:  
+Demand: Gas  
+Supply: Electric  
+→ Match Score = 0  
+
+Example 5:  
+Demand: Either  
+Supply: Electric or Gas  
+→ Match Score = 1  
+
+Example 6:  
+Demand Cooking Type not specified  
+→ Cooking Type excluded from relevance scoring  
+
+Example 7 – Missing Supply Value:  
+Demand: Gas  
+Supply: Cooking Type not provided  
+→ Cooking Type excluded from the applicable relevance calculation.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision:  
+F&B V2 Cooking Type uses direct Demand–Supply Cooking Type matching, replacing the V1 Reference Gas Connection availability approach.  
+Confirmed scoring: Electric → Electric = 1; Electric → Gas = 1; Gas → Gas = 1; Gas → Electric = 0; Either → Electric or Gas = 1.  
+Cooking Type remains Optional with 5% weight.  
+
+Missing-Value Handling – Confirmed Sep 18, 2026:  
+Demand Cooking Type missing/not provided → exclude Cooking Type from the applicable relevance calculation.  
+Demand specified + Supply Cooking Type missing/not provided → exclude Cooking Type from the applicable relevance calculation.  
+
+Technical / Backend Confirmation – Sep 22, 2026:  
+V2 intentionally stores cookingTypes as a list, with one value expected under the current single-select requirement. The existing wrapper converts the one-value list to a scalar before relevance matching.gasLineRequired currently has no defined role in the Cooking Type relevance logic.  
+
+Post-Migration Data Review:  
+Any unexpected legacy multi-value cookingTypes records remaining after migration will be reviewed separately before deciding their relevance treatment. No multi-value scoring rule is currently defined.  
+
+Pending Clarification: None currently identified for the confirmed Cooking Type relevance logic.  
+
+###### Non veg served
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Non veg served | O | 5% | Latest live sheet: 5% | Non-veg allowed |
+
+**Comments:**
+
+V1 Reference: Non-Veg Served was an Optional F&B relevance field. If Demand Non-Veg Served = Yes, Supply allowing Non-Veg received Match Score = 1 and Supply not allowing Non-Veg received Match Score = 0. If Demand did not specify the field, it was excluded from relevance scoring.  
+
+Latest V2 Decision: Demand Non-Veg Served and Supply Non-Veg Allowed use Yes/No values. The confirmed matching logic is:  
+
+Demand Non-Veg Served = Yes + Supply Non-Veg Allowed = Yes → 1  
+Demand Non-Veg Served = Yes + Supply Non-Veg Allowed = No → 0  
+Demand Non-Veg Served = No + Supply Non-Veg Allowed = Yes → 1  
+Demand Non-Veg Served = No + Supply Non-Veg Allowed = No → 1  
+Demand specified + Supply Non-Veg Allowed missing/not provided → 0.8  
+Demand Non-Veg Served not specified → field excluded from relevance scoring  
+
+V2 Data / Technical Observation:  
+The latest PR represents Demand Non-Veg Served and Supply Non-Veg Allowed as Yes/No, while V2 stores nonVegServed and nonVegAllowed as Boolean fields. In the reviewed V2 data, only True and missing/null values were observed; no explicit False values were found.  
+
+Technical / Backend Clarification – Sep 22, 2026:  
+The distinction between explicit False and missing/null was raised with Sathish. Sathish advised reassessing the data after the V1→V2 migration and identifying any remaining data/backend requirements at that stage. Until then, True, False, and missing/null must remain distinct and missing/null must not be defaulted to False.  
+
+**Match Score Interpretation:**
+
+V1 Reference:  
+If Demand Non-Veg Served = Yes:  
+
+Supply Non-Veg Allowed = Yes → 1  
+Supply Non-Veg Allowed = No → 0  
+
+If Demand Non-Veg Served is not specified → Non-Veg field excluded from relevance scoring  
+
+Latest V2 Decision:  
+
+Demand Non-Veg Served = Yes + Supply Non-Veg Allowed = Yes → 1  
+Demand Non-Veg Served = Yes + Supply Non-Veg Allowed = No → 0  
+Demand Non-Veg Served = No + Supply Non-Veg Allowed = Yes → 1  
+Demand Non-Veg Served = No + Supply Non-Veg Allowed = No → 1  
+Demand Non-Veg Served = Yes + Supply Non-Veg Allowed = Missing/Not Provided → 0.8  
+Demand Non-Veg Served = No + Supply Non-Veg Allowed = Missing/Not Provided → 0.8  
+
+If Demand Non-Veg Served is not specified → Non-Veg field excluded from relevance scoring.  
+
+**Examples:**
+
+V1 Reference Examples:  
+
+Example 1:  
+Demand: Non-Veg Served = Yes  
+Supply: Non-Veg Allowed = Yes  
+→ Match Score = 1  
+
+Example 2:  
+Demand: Non-Veg Served = Yes  
+Supply: Non-Veg Allowed = No  
+→ Match Score = 0  
+
+Example 3:  
+Demand: Non-Veg Served = Not Specified  
+→ Field excluded from relevance scoring  
+
+Latest V2 Examples:  
+
+Example 1:  
+Demand: Non-Veg Served = Yes  
+Supply: Non-Veg Allowed = Yes  
+→ Match Score = 1  
+
+Example 2:  
+Demand: Non-Veg Served = Yes  
+Supply: Non-Veg Allowed = No  
+→ Match Score = 0  
+
+Example 3:  
+Demand: Non-Veg Served = No  
+Supply: Non-Veg Allowed = Yes  
+→ Match Score = 1  
+
+Example 4:  
+Demand: Non-Veg Served = No  
+Supply: Non-Veg Allowed = No  
+→ Match Score = 1  
+
+Example 5 — Supply Value Missing:  
+Demand: Non-Veg Served = Yes  
+Supply: Non-Veg Allowed = Missing/Not Provided  
+→ Match Score = 0.8  
+
+Example 6 — Supply Value Missing:  
+Demand: Non-Veg Served = No  
+Supply: Non-Veg Allowed = Missing/Not Provided  
+→ Match Score = 0.8  
+
+Example 7 — Demand Not Specified:  
+Demand: Non-Veg Served = Not Specified  
+→ Field excluded from relevance scoring  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision:  
+F&B V2 Non-Veg relevance will use Demand Non-Veg Served (Yes/No) against Supply Non-Veg Allowed (Yes/No). Confirmed Match Score logic:  
+
+- Demand Yes + Supply Yes → 1
+- Demand Yes + Supply No → 0
+- Demand No + Supply Yes → 1
+- Demand No + Supply No → 1
+- Demand specified + Supply missing/not provided → 0.8
+- Demand not specified → field excluded from relevance scoring
+
+The earlier Veg / Non-Veg / Any discussion is superseded by the latest PR Yes/No representation. Non-Veg Served remains Optional with 5% weight.  
+
+V2 Data Observation:  
+The latest PR uses Yes/No, while V2 stores Demand nonVegServed and Supply nonVegAllowed as Boolean fields. In the reviewed V2 data, only True and missing/null values were observed; no explicit False values were found.  
+
+Technical / Backend Clarification – Sep 22, 2026:  
+The distinction between explicit False and missing/null was raised with Sathish. Sathish advised reassessing the data after the V1→V2 migration and identifying any remaining data/backend requirements at that stage.  
+
+Post-Migration Verification:  
+Verify whether explicit No is represented as False for both Demand nonVegServed and Supply nonVegAllowed, and whether missing/null represents unavailable/not-specified data rather than No. True, False, and missing/null must remain distinct because they can produce different relevance outcomes.  
+
+###### Other interested location
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Other interested location | N/A – Merged with Location | No separate weight – merged with Location | No separate weight – included within Location | Location |
+
+**Comments:**
+
+V1 Reference: Other Interested Location was not a separate F&B relevance field/weight.  
+
+Latest V2 Decision: Other Interested Location is merged with Primary Location for relevance evaluation and is no longer treated as a separate weighted relevance field. A Supply matched through an Other Interested Location will be evaluated using the same Location hierarchy/distance-based Match Score logic as a Primary Location match. An OIL match does not receive the earlier separate 0.9 treatment or any other penalty simply because it comes from an additional location.  
+
+Evaluate the Supply Location against the Demand Primary Location and each Other Interested Location using the same Location logic, and use the highest resulting score as the single final Location Match Score.  
+
+**Match Score Interpretation:**
+
+V1 Reference: Not applicable – Other Interested Location was not part of the F&B V1 Reference relevance logic.  
+
+Earlier V2 Discussion: OIL matching the Location criteria → 0.9.  
+
+Latest V2 Decision: Other Interested Location has no separate Match Score. Each OIL is evaluated against the Supply Location using the same finalized V2 Location Match Score logic as Primary Location:  
+
+- Same Micro-location → 1
+- Different Micro-location but same Area → 1
+- Different Area but same City → distance-based Location Match Score
+- Different City → 0
+
+The earlier separate 0.9 OIL Match Score is superseded.  
+
+Evaluate Primary Location and each OIL using the above Location logic and use the highest resulting score as the single final Location Match Score.  
+
+**Examples:**
+
+V1 Reference: Not applicable – Other Interested Location was not part of the F&B V1 Reference relevance logic.  
+
+Earlier V2 Example:  
+OIL matches Location criteria → 0.9  
+(Superseded by latest V2 decision)  
+
+Latest V2 Examples:  
+
+Example 1 – OIL gives the better match:  
+Primary Location Match Score = 0.5  
+OIL Match Score = 1.0  
+→ Final Location Match Score = 1.0  
+
+Example 2 – Primary Location gives the better match:  
+Primary Location Match Score = 1.0  
+OIL Match Score = 0.7  
+→ Final Location Match Score = 1.0  
+
+Example 3 – Multiple OILs:  
+Primary Location Match Score = 0.5  
+OIL 1 Match Score = 0.7  
+OIL 2 Match Score = 1.0  
+→ Final Location Match Score = 1.0  
+
+Example 4 – All locations are in a different City:  
+Primary Location Match Score = 0  
+OIL Match Score(s) = 0  
+→ Final Location Match Score = 0  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision: Other Interested Location is merged with Primary Location for relevance evaluation and will no longer have a separate weight, separate Match Score, or separate impact on the final relevance percentage. The earlier proposed 0.9 OIL Match Score is superseded.  
+
+Primary Location and each Other Interested Location have equal priority. The Supply Location is evaluated against each using the same finalized applicable Location Match Score logic, and the highest resulting Match Score is used as the single final Location Match Score.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Primary Location and Other Interested Locations remain separate in the V2 backend (locality and otherInterestedLocations[]). The wrapper can retrieve them separately and expose them in a consistent structure for relevance processing. No separate technical clarification remains for Other Interested Location.  
+
+Location Dependency: The scoring applied to Primary Location and OIL will follow the final decision under the Location field. The Location levels/fields and distance-based component remain pending there.  
+
+**Implementation reference 1 (unlabelled column):**
+
+    Confirmed Current Wrapper / Relevance-Engine Implementation – Sep 22, 2026: 
+    If V2 keeps Primary Location and OIL separately:
+    
+    # Example V2 Demand
+    demand = {
+        "locality": "Andheri",
+        "otherInterestedLocations": ["Bandra", "Powai"]
+    }
+    
+    # -------------------------
+    # MongoDB Wrapper
+    # -------------------------
+    
+    primary_location = demand.get("locality")
+    oil_locations = demand.get("otherInterestedLocations") or []
+    
+    demand_locations = []
+    
+    if primary_location:
+        demand_locations.append(primary_location)
+    
+    demand_locations.extend(oil_locations)
+    
+    # Result:
+    # demand_locations = ["Andheri", "Bandra", "Powai"]
+    
+    The wrapper therefore converts the separate inputs into one consistent collection for the Location matching function:
+    
+    Primary Location + OILs
+            ↓
+    ["Andheri", "Bandra", "Powai"]
+    
+    Then the relevance engine evaluates the Supply Location against the Primary Location and each Other Interested Location using the same finalized applicable Location Match Score logic:
+    scores = []
+    
+    for demand_location in demand_locations:
+        score = location_match(
+            demand_location,
+            supply_location
+        )
+        scores.append(score)
+    
+    final_location_score = max(scores)
+    
+    For example:
+    
+    scores = [0.5, 0.7, 1.0]
+    
+    final_location_score = max(scores)
+    
+    # final_location_score = 1.0
+    
+    So conceptually:
+    
+    Wrapper
+    Primary + OIL1 + OIL2
+            ↓
+    [Primary, OIL1, OIL2]
+    
+    Relevance Engine
+            ↓
+    score each using same Location logic
+            ↓
+    [0.5, 0.7, 1.0]
+            ↓
+    max()
+            ↓
+    Final Location Match Score = 1.0
+    
+    Note: The Primary Location + Other Interested Location aggregation approach and use of the highest Match Score are confirmed. The specific scoring within location_match() will follow the final V2 Location decision, including the pending Location levels/fields and distance-based component.
+
+**Implementation reference 2 (unlabelled column):**
+
+    Future / Alternative Backend Reference – Not Current V2 Implementation:
+    The current V2 backend keeps Primary Location and Other Interested Locations separately. The following is retained only as a reference in case the backend representation changes to a unified Location list in the future.
+    
+    If V2 does not keep Primary Location and OIL separately and instead already provides them as one unified list, for example:
+    
+    demand = {
+        "locations": ["Andheri", "Bandra", "Powai"]
+    }
+    
+    then the wrapper becomes simpler:
+    
+    # -------------------------
+    # MongoDB Wrapper
+    # -------------------------
+    
+    demand_locations = demand.get("locations") or []
+    
+    # Result:
+    # demand_locations = ["Andheri", "Bandra", "Powai"]
+    
+    There is no need for the wrapper to separately read Primary Location and otherInterestedLocations[] and combine them.
+    
+    The relevance engine can still use exactly the same approach:
+    
+    scores = []
+    
+    for demand_location in demand_locations:
+        score = location_match(
+            demand_location,
+            supply_location
+        )
+        scores.append(score)
+    
+    final_location_score = max(scores)
+    
+    Conceptually:
+    
+    V2 Backend
+    [Primary, OIL1, OIL2]
+            ↓
+    Wrapper
+    [Primary, OIL1, OIL2]
+            ↓
+    Relevance Engine
+    score each using the same Location logic
+            ↓
+    [0.5, 0.7, 1.0]
+            ↓
+    max()
+            ↓
+    Final Location Match Score = 1.0
+
+**Relevance Scoring Framework & Eligibility Rules:**
+
+All fields explicitly specified in the demand are considered in relevance scoring.  
+
+For each such field, a match score is assigned according to the approved field-level business logic.  
+
+- Exact matches receive full score.
+- Partial matches receive reduced score where business logic allows.
+- Non-matches receive zero score.
+
+The final relevance score is computed as a weighted and normalized combination of the match scores across all demand-specified fields.  
+
+
+##### Tab 4 — Managed_Space_V2_Relevance_Logi
+**Title (R1):** Manged Office Demand & Supply Relevancy
+
+###### Asset Class
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Asset Class | M | 100% | 100% ÷ 6 mandatory relevance fields = 16.67% effective weight per field | Asset Class |
+
+**Comments:**
+
+V1 Reference: Managed Space Asset Class was treated as a strict eligibility field. Demand and Supply Asset Class should be equal; matching Asset Class → Match Score 1, different Asset Class → 0.  
+
+Latest V2 Decision: Managed Space relevance is structured as Managed Space Demand ↔ Managed Space Centre. Asset Class remains a Mandatory relevance field, with no cross-Asset-Class matching intended between Office and Managed Space / Managed Office. The updated V2 database currently represents both Managed Space Demand and Supply consistently as assetClass = "managed-space".  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that the different Managed Space-related business/PR/UI naming will use the common Managed Space backend representation for relevance. The current V2 database uses assetClass = "managed-space" on both Demand and Supply. These naming variations will not be treated as separate Asset Class categories.  
+
+**Match Score Interpretation:**
+
+V1 Reference:  
+
+Demand Asset Class exactly matches Supply Asset Class → 1  
+Demand Asset Class does not match Supply Asset Class → 0  
+
+Latest V2 Decision:  
+
+Managed Space Demand ↔ Managed Space Centre → Asset Class Match Score = 1, when both represent the Managed Space Asset Class.  
+Managed Space ↔ different Asset Class (for example, Office or Retail) → 0  
+No cross-Asset-Class exception is currently defined for Managed Space.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Managed Space Demand and Managed Space Supply use the common backend representation assetClass = "managed-space". The different Managed Space-related business/PR/UI labels are not treated as different Asset Classes for relevance.  
+
+**Examples:**
+
+V1 Reference Examples:  
+
+Example 1:  
+Demand Asset Class: Managed Space  
+Supply Asset Class: Managed Space  
+→ Match Score = 1  
+
+Example 2:  
+Demand Asset Class: Managed Space  
+Supply Asset Class: Office  
+→ Match Score = 0  
+
+Example 3:  
+Demand Asset Class: Managed Space  
+Supply Asset Class: Retail  
+→ Match Score = 0  
+
+Latest V2 Examples:  
+
+Example 1 – Intended Managed Space Pairing:  
+Demand: Managed Space Demand  
+Supply: Managed Space Centre  
+Backend Asset Class: managed-space ↔ managed-space  
+→ Match Score = 1  
+
+Example 2:  
+Managed Space Demand + Office Supply  
+→ Match Score = 0  
+
+Example 3:  
+Managed Space Demand + Retail Supply  
+→ Match Score = 0  
+
+Example 4:  
+Managed Space Demand + F&B Supply  
+→ Match Score = 0  
+
+Technical / Backend Confirmation – Sep 22, 2026:  
+Managed Space-related business/PR/UI naming variations use the common backend Asset Class representation managed-space; they are not treated as separate Asset Classes for relevance.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision: Managed Space Asset Class remains a Mandatory relevance field. The confirmed business structure is Managed Space Demand ↔ Managed Space Centre. Matching Managed Space Asset Class → 1; different Asset Class → 0. No cross-Asset-Class matching exception is defined for Managed Space. The updated V2 data represents both Managed Space Demand and Supply consistently as the scalar assetClass = "managed-space".  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that the different Managed Space-related business/PR/UI naming uses the common Managed Space backend representation for relevance. The current V2 database uses assetClass = "managed-space" on both Demand and Supply. These naming variations are not treated as separate Asset Class categories or separate ML features.  
+
+Implementation Impact: No Asset Class Match Score logic change is required for Managed Space. The standardized managed-space backend representation will be used for Managed Space Demand ↔ Managed Space Centre relevance: managed-space ↔ managed-space → 1; different Asset Class → 0.  
+
+###### Transaction type*
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Transaction type* | M | (merged above) | 100% ÷ 6 mandatory relevance fields = 16.67% effective weight per field | Transaction type* |
+
+**Comments:**
+
+V1 Reference: Transaction Type was treated as a mandatory eligibility field requiring an exact Demand–Supply match. Same Transaction Type → Match Score = 1; different Transaction Type → 0.  
+
+Latest V2 Decision: Transaction Type remains Mandatory for Managed Space. Under the current V2 requirement, Managed Space supports Lease only. Therefore, Managed Space Demand Lease + Supply Lease → Match Score = 1. Buy/Purchase is not supported for Managed Space under the current V2 requirement. If Buy/Purchase is introduced in the future, the corresponding relevance logic can be defined at that stage.  
+
+V2 Data Observation: In the reviewed updated V2 data, all 34 Managed Space Demands and all 18 Managed Space Supplies currently have transactionType = "lease".  
+
+**Match Score Interpretation:**
+
+V1 Reference:  
+Exact Transaction Type match → 1  
+Transaction Type mismatch → 0  
+
+Latest V2 Decision – Managed Space:  
+Managed Space currently supports Lease only.  
+Demand Lease + Supply Lease → 1.  
+
+Buy/Purchase is not supported under the current V2 Managed Space requirement. If introduced in the future, the corresponding relevance logic will be defined at that stage.  
+
+**Examples:**
+
+V1 Reference Examples:  
+
+Example 1:  
+Demand: Lease  
+Supply: Lease  
+→ Match Score = 1  
+
+Example 2:  
+Demand: Lease  
+Supply: Sale  
+→ Match Score = 0  
+
+Latest V2 Example:  
+
+Demand: Lease  
+Supply: Lease  
+→ Match Score = 1  
+
+This reflects the currently reviewed V2 data, where Managed Space Demand and Supply records use lease.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Business Decision: Managed Space Transaction Type remains a Mandatory relevance field. Under the current V2 requirement, Managed Space supports Lease only. Demand Lease + Supply Lease → Match Score = 1. Buy/Purchase is not supported for Managed Space under the current V2 requirement. If Buy/Purchase is introduced in the future, the corresponding relevance logic can be defined at that stage.  
+
+V2 Data Validation: All 34 reviewed Managed Space Demands and all 18 Managed Space Supplies currently have transactionType = "lease".  
+
+ML / Implementation: Use the current V2 backend Transaction Type representation directly. No Buy ↔ Sale normalization is required for Managed Space.  
+
+###### City*
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| City* | M | (merged above) | 100% ÷ 6 mandatory relevance fields = 16.67% effective weight per field | City* |
+
+**Comments:**
+
+V1 Reference: City uses strict exact matching between Demand and Supply.  
+
+Latest V2 Decision: The exact City match logic continues. PAN_INDIA is a subscription-based option and is not treated as a City for relevance matching; relevance should use the actual Demand and Supply City.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that relevance matching should use the actual City associated with the Demand and Supply. PAN_INDIA is a subscription-level option and should not be treated as the City for relevance matching. The PAN_INDIA / India values observed in previously reviewed V2 records were identified as early/test data and are not the intended current representation for City relevance.  
+
+**Match Score Interpretation:**
+
+V1 Reference / Latest V2:  
+
+1 → Demand City exactly matches Supply City  
+0 → Demand City does not match Supply City  
+
+PAN_INDIA is not evaluated as a City and does not receive a City Match Score; the actual Demand and Supply City should be used for matching.  
+
+**Examples:**
+
+V1 Reference / Latest V2 – Exact City Match  
+
+Example 1:  
+Demand: Bangalore  
+Supply: Bangalore  
+→ Match Score = 1  
+
+Example 2:  
+Demand: Bangalore  
+Supply: Hyderabad  
+→ Match Score = 0  
+
+Example 3:  
+Demand: Mumbai  
+Supply: Navi Mumbai  
+→ Match Score = 0  
+
+V2 PAN_INDIA Handling  
+
+Example 4 – PAN_INDIA:  
+Demand subscription option: PAN_INDIA  
+Actual Demand City: Bengaluru  
+Supply City: Bengaluru  
+→ City matching should use Bengaluru, not PAN_INDIA  
+→ Match Score = 1  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision: City continues with exact matching in V2: same City = 1; different City = 0. PAN_INDIA is a subscription-based option, not a City, and should not be used for City relevance matching. The actual Demand and Supply City should be evaluated.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that relevance matching should use the actual City associated with the Demand and Supply. PAN_INDIA is a subscription-level option and should not be treated as the City for relevance matching. The PAN_INDIA / India values previously observed in V2 were identified as early/test data and are not the intended current City representation.  
+
+ML / Implementation: Use the actual Demand and Supply City values with the existing exact-match rule. No special PAN_INDIA Match Score logic is required.  
+
+###### Location + Other Interested Location*
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Location + Other Interested Location* | M | (merged above) | 100% ÷ 6 mandatory relevance fields = 16.67% effective weight per field. | Location* |
+
+**Comments:**
+
+V1 Reference: Location matching follows a hierarchical/broader-locality approach. An exact Location match receives a full Match Score of 1. Where the Demand specifies a more specific location (e.g., a road/micro-location) and the Supply matches the approved broader locality containing that location, it receives a partial Match Score of 0.5. Where the Supply Location falls within the Demand's broader requested locality, it receives a full Match Score of 1. Unrelated locations receive a Match Score of 0.  
+
+Example: Demand = DP Road, Kothrud and Supply = Kothrud → 0.5; Demand = Kothrud and Supply = DP Road, Kothrud → 1.  
+
+Latest V2 Decision: Location matching will use Micro-location, Area, City, and distance/radius-based logic. Same Micro-location and different Micro-location within the same Area both receive a full Match Score of 1. For different Areas within the same City, the Match Score will decrease based on distance up to 5 km. Different City receives 0 and should not be considered/shown as a Location match.  
+
+The same Location Match Score logic applies to both Primary Location and Other Interested Location. Other Interested Location is merged into Location and does not have a separate relevance impact.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Primary Location and Other Interested Locations remain separate backend fields. The relevance layer/wrapper can retrieve them separately, evaluate each using the finalized Location logic, and use the highest Match Score as the single final Location Match Score.  
+
+The current V2 backend does not maintain Area as a separate Location level. Location/Locality represents the main location, while Micro-location represents a sub-location.  
+
+**Match Score Interpretation:**
+
+V1 Reference:  
+
+1 → Supply Location exactly matches the Demand Location, or the Supply is at a more specific location within the Demand's broader requested locality.  
+
+0.5 → Demand specifies a more specific location, while the Supply matches the approved broader locality containing that Demand Location.  
+
+0 → Supply Location does not match or fall within an approved geographic relationship with the Demand Location.  
+
+Latest V2:  
+
+Business clarification: Area = Location/Locality.  
+
+Geographic hierarchy: City → Location/Locality → Micro-location.  
+
+Same Micro-location → 1  
+
+Different Micro-location but same  Location/Locality → 1  
+
+Different  Location/Locality but same City → distance-based Match Score:  
+
+≤ 1 km → 0.8  
+
+1 km to ≤ 2 km → 0.7  
+
+2 km to ≤ 3 km → 0.6  
+
+3 km to ≤ 4 km → 0.5  
+
+4 km to ≤ 5 km → 0.3  
+
+> 5 km → 0  
+
+Different City → 0; Supply should not match/showcase.  
+
+The same Location Match Score Interpretation applies to both Primary Location and Other Interested Location.  
+
+**Examples:**
+
+V1 Reference Examples  
+
+Example 1 – Exact Match  
+Demand: Kothrud, Pune  
+Supply: Kothrud, Pune  
+→ Match Score = 1  
+
+Example 2 – Demand More Specific, Supply Broader  
+Demand: DP Road, Kothrud, Pune  
+Supply: Kothrud, Pune  
+→ Match Score = 0.5  
+
+Example 3 – Demand Broader, Supply More Specific  
+Demand: Kothrud, Pune  
+Supply: DP Road, Kothrud, Pune  
+→ Match Score = 1  
+
+Example 4 – Unrelated Location  
+Demand: DP Road, Kothrud, Pune  
+Supply: Baner, Pune  
+→ Match Score = 0  
+
+Latest V2 Examples  
+
+Example 1 – Same Micro-location  
+Demand: Kothrud, Pune  
+Supply: Kothrud, Pune  
+→ Match Score = 1  
+
+Example 2 – Different Micro-location, Same Area  
+Demand Micro-location: DP Road, Kothrud, Pune  
+Supply Micro-location: Karve Road, Kothrud, Pune  
+Area: Kothrud  
+→ Match Score = 1  
+
+Example 3 – Different Area, Same City  
+Demand Location: Kothrud, Pune  
+Supply Location: Baner, Pune  
+→ Different Areas within the same City  
+→ Match Score = distance-based score (0.8 / 0.7 / 0.6 / 0.5 / 0.3 depending on distance up to 5 km)  
+
+Example 4 – Different City  
+Demand Location: Kothrud, Pune  
+Supply Location: Andheri, Mumbai  
+→ Match Score = 0  
+→ Supply should not match/showcase.  
+
+Example 5 – Different Area, Same City, More Than 5 km  
+Demand Location: Area A, Pune  
+Supply Location: Area B, Pune  
+Distance: >5 km  
+→ Match Score = 0  
+
+Example 6 – Primary Location + Other Interested Location  
+
+Demand Primary Location: Kothrud, Pune  
+Demand OIL: Baner, Pune  
+Supply Location: Baner, Pune  
+
+Against Primary Location (Kothrud):  
+→ Different Area within same City  
+→ Distance-based Match Score  
+
+Against OIL (Baner):  
+→ Location Match Score = 1  
+
+The same V2 Location Match Score logic applies to Primary Location and OIL.  
+
+Latest Business / Technical Confirmation: Use the highest Match Score across Primary Location and all Other Interested Locations. Therefore, in this example, Final Location Match Score = 1.  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision: V2 Location matching is currently defined using Micro-location, Area, City and distance/radius-based logic.  
+Same Micro-location → 1  
+Different Micro-location but same Area → 1  
+Different Area but same City → distance-based scoring:  
+≤ 1 km → 0.8  
+1 km to ≤ 2 km → 0.7  
+2 km to ≤ 3 km → 0.6  
+3 km to ≤ 4 km → 0.5  
+4 km to ≤ 5 km → 0.3  
+5 km → 0  
+Different City → 0.  
+
+Primary Location + OIL Confirmation: Primary Location and each Other Interested Location use the same Location Match Score logic. The highest Match Score across them is used as the single final Location Match Score. Primary Location and OIL have equal priority and remain separate backend fields.  
+
+Latest Live-Sheet Weight: Location remains Mandatory. OIL is merged into Location with no separate relevance weight. The 6 mandatory Managed Space relevance fields collectively represent 100%, giving Location an effective weight of 16.67%.  
+
+Confirmed Business Decision – Himanshu Oct 27  
+
+Area refers to Location/Locality.  
+
+Confirmed hierarchy:  
+City → Location/Locality → Micro-location.  
+
+Example:  
+Bengaluru → Indiranagar → 100 Feet Road.  
+
+###### Possession
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Possession | M | (merged above) | 100% ÷ 6 mandatory relevance fields = 16.67% effective weight per field. | Possession |
+
+**Comments:**
+
+V1 Reference:  
+Possession used an urgency-based comparison between the Demand's required possession timeline and the Supply's availability timeline. Supply available at the required time or earlier received a full match, while progressively later availability received a lower Match Score.  
+
+Latest V2 Decision:  
+The same urgency-based approach continues using five standardized Possession buckets: Immediate → Within 3 months → Within 6 months → Within 9 months → After 9 months. Supply available at the same time or earlier than required receives a full match; later availability is scored according to how many buckets later it falls.  
+
+V2 Representation: Business terminology is standardized as Possession on both Demand and Supply. The reviewed V2 backend currently represents Possession using propertyAvailableFrom on both sides.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that propertyAvailableFrom can continue to be used on both Demand and Supply for Possession. “Possession” remains the business/UI terminology. No backend field rename or additional MongoDB wrapper change is required solely for this terminology standardization.  
+
+**Match Score Interpretation:**
+
+V1 Reference:  
+Possession was evaluated using the urgency order:  
+Immediate → Within 3 months → Within 6 months → Within 9 months  
+
+-Supply available at the same time or earlier than Demand → 1  
+
+- Supply available 1 bucket later → 0.8
+- Supply available 2 buckets later → 0.5
+- Supply available more than 2 buckets later → 0
+
+Latest V2 Decision:  
+The same urgency-based scoring continues using five standardized Possession buckets:  
+Immediate → Within 3 months → Within 6 months → Within 9 months → After 9 months  
+
+- Supply available at the same time or earlier than Demand → 1
+- Supply available 1 bucket later → 0.8
+- Supply available 2 buckets later → 0.5
+- Supply available more than 2 buckets later → 0
+
+**Examples:**
+
+V1 Reference / Confirmed V2 Examples:  
+
+Example 1:  
+Demand: Immediate  
+Supply: Immediate  
+→ Match Score = 1  
+
+Example 2:  
+Demand: Within 3 months  
+Supply: Immediate  
+→ Match Score = 1  
+
+Example 3:  
+Demand: Immediate  
+Supply: Within 3 months  
+→ Match Score = 0.8  
+
+Example 4:  
+Demand: Immediate  
+Supply: Within 6 months  
+→ Match Score = 0.5  
+
+Example 5:  
+Demand: Immediate  
+Supply: Within 9 months  
+→ Match Score = 0  
+
+Example 6 – Latest business-confirmed scenario:  
+Demand: Within 9 months  
+Supply: Immediate / Within 3 months / Within 6 months / Within 9 months  
+→ Match Score = 1  
+
+Demand: Within 9 months  
+Supply: After 9 months  
+→ Match Score = 0.8  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision: Possession remains a Mandatory relevance field for Managed Space. The existing urgency-based Match Score logic continues in V2 using five standardized buckets: Immediate → Within 3 months → Within 6 months → Within 9 months → After 9 months. Supply available in the same bucket or earlier than Demand → 1; 1 bucket later → 0.8; 2 buckets later → 0.5; more than 2 buckets later → 0.  
+
+Business terminology is standardized as Possession on both Demand and Supply. The latest Managed Space live sheet confirms Possession as one of the 6 mandatory relevance fields, giving an effective weight of 16.67%.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Sathish confirmed that propertyAvailableFrom can continue to be used on both Demand and Supply for Possession. No backend field rename or additional MongoDB wrapper change is required solely for the terminology standardization.  
+
+###### Number of seats*
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Number of seats* | M | (merged above) | 100% ÷ 6 mandatory relevance fields = 16.67% effective weight per field. | Number of seats* |
+
+**Comments:**
+
+V1 Reference:  
+Number of Seats follows a capacity-based comparison. Supply Number of Seats can be equal to or greater than the Demand requirement.  
+
+Latest V2 Decision:  
+Managed Space is project-based, and Demand Number of Seats is evaluated against the Supply seating capacity. The latest PR defines Demand Number of Seats as a numeric field with a minimum input value of 20 seats and Supply Total Number of Seats as a single numeric value representing total seating capacity.  
+
+The confirmed Match Score logic remains:  
+Supply Number of Seats ≥ Demand Number of Seats → 1  
+Supply Number of Seats < Demand Number of Seats → 0  
+
+The Demand-side minimum input value of 20 seats is an input requirement only and does not introduce a separate Match Score condition.  
+
+Technical / Backend Confirmation:  
+The current working V2 field mapping is Demand numberOfSeatsMin → Supply numberOfSeats.  
+
+Sathish confirmed that formats.*, including formats.totalSeats and formats.availableSeats, should not be used for Number of Seats relevance.  
+
+Technical / Backend Clarification – Sep 22, 2026:  
+The additional Demand field numberOfSeatsBucket was raised with Sathish. Its purpose and relevance role were not finalized during the discussion and remain to be clarified.  
+
+**Match Score Interpretation:**
+
+V1 Reference:  
+1 → Supply Number of Seats ≥ Demand Number of Seats.  
+0 → Supply Number of Seats < Demand Number of Seats.  
+
+Latest V2 Decision:  
+
+1 → Supply Number of Seats ≥ Demand Number of Seats  
+0 → Supply Number of Seats < Demand Number of Seats  
+
+The minimum Demand input value of 20 seats is an input requirement and does not introduce a separate Match Score condition.  
+
+**Examples:**
+
+V1 Reference / Confirmed V2 Match Logic Examples:  
+
+Demand = 25, Supply = 50 → 1  
+Demand = 50, Supply = 50 → 1  
+Demand = 60, Supply = 50 → 0  
+
+Current V2 Field Representation Example:  
+
+Demand numberOfSeatsMin = 25  
+Supply numberOfSeats = 50  
+→ 50 ≥ 25 → Match Score = 1  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision:  
+
+Managed Space Number of Seats remains Mandatory. The latest live-sheet weight is 100% across 6 mandatory relevance fields → 16.67% effective weight per field.  
+
+Demand Number of Seats is evaluated against the Supply seating capacity.  
+
+The confirmed Match Score logic is:  
+Supply Number of Seats ≥ Demand Number of Seats → 1  
+Supply Number of Seats < Demand Number of Seats → 0  
+
+The Demand-side minimum input value of 20 seats is an input requirement only and does not introduce a separate Match Score condition.  
+
+Technical / Backend Confirmation:  
+The current working V2 field mapping is Demand numberOfSeatsMin → Supply numberOfSeats. Sathish confirmed that formats.*, including formats.totalSeats and formats.availableSeats, should not be used for Number of Seats relevance.  
+
+Pending Technical Clarification – Sep 22, 2026:  
+The additional Demand field numberOfSeatsBucket was raised with Sathish. Sathish indicated that he needs to check what this field represents. Its purpose and relevance role, if any, remain to be clarified before finalizing the Number of Seats field mapping for Stage-1 implementation.  
+
+###### Other interested locations
+| Demand field | M/O | Weight (%) | Effective Weight (%) | Supply Field |
+|---|---|---|---|---|
+| Other interested locations | N/A – Merged with Location | No separate weight – merged with Location | No separate weight – included within Location | Location |
+
+**Comments:**
+
+V1 Reference:  
+Other Interested Location was not part of the V1 relevance engine. An earlier reference proposed a separate optional 5% weight and 0.9 Match Score when an OIL matched the Location criteria.  
+
+Latest V2 Decision:  
+Other Interested Location is merged with Primary Location for relevance evaluation and is no longer a separate weighted relevance field. The earlier separate 5% weight and 0.9 Match Score are removed.  
+
+The same finalized Location Match Score logic applies when evaluating Supply Location against either the Demand Primary Location or any Other Interested Location. An OIL match is not penalized simply because it is an additional location.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Primary Location and Other Interested Locations remain separate in the V2 backend (locality and otherInterestedLocations[]). The wrapper can retrieve them separately and expose them in a consistent structure for relevance processing. The Supply Location is evaluated against the Primary Location and each Other Interested Location, and the highest resulting Match Score is used as the single final Location Match Score.  
+
+**Match Score Interpretation:**
+
+V1 Reference: Not applicable – Other Interested Location was not part of the F&B V1 Reference relevance logic.  
+
+Earlier V2 Discussion: OIL matching the Location criteria → 0.9.  
+
+Latest V2 Decision: Other Interested Location has no separate Match Score. Each OIL is evaluated against the Supply Location using the same finalized V2 Location Match Score logic as Primary Location:  
+
+- Same Micro-location → 1
+- Different Micro-location but same Area → 1
+- Different Area but same City → distance-based Location Match Score
+- Different City → 0
+
+The earlier separate 0.9 OIL Match Score is superseded.  
+
+Current V2 Status: Primary Location and each Other Interested Location are evaluated using the same applicable Location Match Score logic, and the highest resulting score becomes the single final Location Match Score. The specific Location scoring applied will follow the final decision under the Location field, where the Location levels/fields and distance-based component remain pending.  
+
+**Examples:**
+
+V1 Reference: Not applicable – Other Interested Location was not part of the F&B V1 Reference relevance logic.  
+
+Earlier V2 Example:  
+OIL matches Location criteria → 0.9  
+(Superseded by latest V2 decision)  
+
+Latest V2 Examples:  
+
+Example 1 – OIL gives the better match:  
+Primary Location Match Score = 0.5  
+OIL Match Score = 1.0  
+→ Final Location Match Score = 1.0  
+
+Example 2 – Primary Location gives the better match:  
+Primary Location Match Score = 1.0  
+OIL Match Score = 0.7  
+→ Final Location Match Score = 1.0  
+
+Example 3 – Multiple OILs:  
+Primary Location Match Score = 0.5  
+OIL 1 Match Score = 0.7  
+OIL 2 Match Score = 1.0  
+→ Final Location Match Score = 1.0  
+
+Example 4 – All locations are in a different City:  
+Primary Location Match Score = 0  
+OIL Match Score(s) = 0  
+→ Final Location Match Score = 0  
+
+**Latest Decision / Pending Clarification:**
+
+Latest Decision: Other Interested Location is merged with Primary Location for relevance evaluation and will no longer have a separate weight, separate Match Score, or separate impact on the final relevance percentage. The earlier proposed 0.9 OIL Match Score is superseded. Primary Location and Other Interested Locations will use the same finalized V2 Location hierarchy/distance-based Match Score logic.  
+
+Technical / Backend Confirmation – Sep 22, 2026: Primary Location and Other Interested Locations remain separate in the V2 backend (locality and otherInterestedLocations[]). The wrapper can retrieve them separately and expose them in a consistent structure for relevance processing. The Supply Location is evaluated against the Primary Location and each Other Interested Location using the same applicable Location scoring, and the highest resulting Match Score is used as the single final Location Match Score.  
+
+Location Dependency: No separate technical clarification remains for Other Interested Location. The specific scoring applied to Primary Location and OIL will follow the final decision under the Location field. The Location levels/fields and distance-based component remain pending there.  
+
+**Implementation reference 1 (unlabelled column):**
+
+    Confirmed Current Wrapper / Relevance-Engine Implementation – Sep 22, 2026:
+    V2 keeps Primary Location and OIL separately:
+    
+    # Example V2 Demand
+    demand = {
+        "locality": "Andheri",
+        "otherInterestedLocations": ["Bandra", "Powai"]
+    }
+    
+    # -------------------------
+    # MongoDB Wrapper
+    # -------------------------
+    
+    primary_location = demand.get("locality")
+    oil_locations = demand.get("otherInterestedLocations") or []
+    
+    demand_locations = []
+    
+    if primary_location:
+        demand_locations.append(primary_location)
+    
+    demand_locations.extend(oil_locations)
+    
+    # Result:
+    # demand_locations = ["Andheri", "Bandra", "Powai"]
+    
+    The wrapper therefore converts the separate inputs into one consistent collection for the Location matching function:
+    
+    Primary Location + OILs
+            ↓
+    ["Andheri", "Bandra", "Powai"]
+    
+    Then the relevance engine can evaluate every Demand location using the same Location function:
+    scores = []
+    
+    for demand_location in demand_locations:
+        score = location_match(
+            demand_location,
+            supply_location
+        )
+        scores.append(score)
+    
+    final_location_score = max(scores)
+    
+    For example:
+    
+    scores = [0.5, 0.7, 1.0]
+    
+    final_location_score = max(scores)
+    
+    # final_location_score = 1.0
+    
+    So conceptually:
+    
+    Wrapper
+    Primary + OIL1 + OIL2
+            ↓
+    [Primary, OIL1, OIL2]
+    
+    Relevance Engine
+            ↓
+    score each using same Location logic
+            ↓
+    [0.5, 0.7, 1.0]
+            ↓
+    max()
+            ↓
+    Final Location Match Score = 1.0
+    
+    Note: The Primary Location + Other Interested Location aggregation approach and use of the highest Match Score are confirmed. The specific scoring within location_match() will follow the final V2 Location decision, including the pending Location levels/fields and distance-based component.
+
+**Implementation reference 2 (unlabelled column):**
+
+    Future / Alternative Backend Reference – Not Current V2 Implementation:
+    The current V2 backend keeps Primary Location and Other Interested Locations separately. The following is retained only as a reference in case the backend representation changes to a unified Location list in the future.
+    
+    If V2 does not keep Primary Location and OIL separately and instead already provides them as one unified list, for example:
+    
+    demand = {
+        "locations": ["Andheri", "Bandra", "Powai"]
+    }
+    
+    then the wrapper becomes simpler:
+    
+    # -------------------------
+    # MongoDB Wrapper
+    # -------------------------
+    
+    demand_locations = demand.get("locations") or []
+    
+    # Result:
+    # demand_locations = ["Andheri", "Bandra", "Powai"]
+    
+    There is no need for the wrapper to separately read Primary Location and otherInterestedLocations[] and combine them.
+    
+    The relevance engine can still use exactly the same approach:
+    
+    scores = []
+    
+    for demand_location in demand_locations:
+        score = location_match(
+            demand_location,
+            supply_location
+        )
+        scores.append(score)
+    
+    final_location_score = max(scores)
+    
+    Conceptually:
+    
+    V2 Backend
+    [Primary, OIL1, OIL2]
+            ↓
+    Wrapper
+    [Primary, OIL1, OIL2]
+            ↓
+    Relevance Engine
+    score each using the same Location logic
+            ↓
+    [0.5, 0.7, 1.0]
+            ↓
+    max()
+            ↓
+    Final Location Match Score = 1.0
+
+**Relevance Scoring Framework & Eligibility Rules:**
+
+All fields explicitly specified in the demand are considered in relevance scoring.  
+
+For each such field, a match score is assigned according to the approved field-level business logic.  
+
+- Exact matches receive full score.
+- Partial matches receive reduced score where business logic allows.
+- Non-matches receive zero score.
+
+The final relevance score is computed as a weighted and normalized combination of the match scores across all demand-specified fields.
+
+#### Business rules extracted
+- **BR-REL-135** — Relevance scoring framework (all four tabs): every field explicitly specified in the demand is scored with its approved field-level logic; exact match = full score, partial match = reduced score where the logic allows, non-match = 0. The final relevance score is a weighted, normalized combination of the match scores across all demand-specified fields. _(§ Relevance Scoring Framework & Eligibility Rules)_
+- **BR-REL-136** — Office weights: 5 mandatory fields (Asset Class, Transaction Type, City, Location + Other Interested Location, Carpet Area) share 80%, i.e. 16% each. Optional: Possession 5%, Fitouts 15%. _(§ Office_V2_Relevance_Logic)_
+- **BR-REL-137** — Retail weights: 7 mandatory fields (Asset Class, Transaction type, City, Location + OIL, Carpet Area, Ceiling Height, Floor) share 80%, ≈11.43% each (changed from 75% / 7 ≈ 10.71%). Optional at 5% each: Fitouts required, Possession, Frontage, Store type. _(§ Retail_V2_Relevance_Logic)_
+- **BR-REL-138** — F&B weights: 8 mandatory fields (Asset Class, Transaction type, City, Location + OIL, Carpet area, Floor Preference, Clear ceiling height, Store type) share 75%, ≈9.38% each. Optional at 5% each: Fitouts required, Possession, Frontage, Cooking Type, Non veg served. _(§ F&B_V2_Relevance_Logic)_
+- **BR-REL-139** — Managed Space weights: 6 mandatory fields (Asset Class, Transaction type, City, Location + OIL, Possession, Number of seats) share 100%, ≈16.67% each. No optional fields. _(§ Managed_Space_V2_Relevance_Logic)_
+- **BR-REL-140** — Asset Class is exact match (1/0). Office and Managed Space never cross-match with any other asset class. _(§ Office / Managed Space, Asset Class)_
+- **BR-REL-141** — Retail ↔ F&B cross-matching is allowed in both directions with Asset Class score 1. A cross-match is scored only on the common mandatory fields plus Store Type (Asset Class, Transaction Type, City, Location + OIL, Carpet Area, Floor, Ceiling Height, Store Type); asset-class-specific optional fields are excluded. _(§ Retail / F&B, Asset Class — Sep 18, 2026)_
+- **BR-REL-142** — The Retail ↔ F&B cross-match display cutoff is not finalized; it will be a separate configurable cutoff. The 50% mentioned on Sep 22 is temporary. _(§ Retail, Asset Class)_
+- **BR-REL-143** — Transaction Type: Demand Buy + Supply Sale = 1; Demand Lease + Supply Lease = 1; any other combination = 0. The backend uses "Buy" on both sides ("Sale" is UI wording), so no Buy↔Sale conversion is needed. _(§ Office / Retail / F&B, Transaction Type)_
+- **BR-REL-144** — Managed Space supports Lease only: Demand Lease + Supply Lease = 1. Buy/Purchase is not supported for Managed Space in the current V2 requirement. _(§ Managed Space, Transaction type)_
+- **BR-REL-145** — City is exact match (same = 1, different = 0, e.g. Mumbai vs Navi Mumbai = 0). PAN_INDIA is a subscription option, not a City, and is never used for City matching; the actual Demand and Supply City is used. _(§ all tabs, City)_
+- **BR-REL-146** — Location hierarchy is City → Location/Locality (= "Area") → Micro-location, e.g. Bengaluru → Indiranagar → 100 Feet Road. _(§ Location — Himanshu, Oct 27, 2026)_
+- **BR-REL-147** — Location score: same Micro-location = 1; different Micro-location in the same Location/Locality = 1; different Locality in the same City is scored by distance (≤1 km 0.8; 1–2 km 0.7; 2–3 km 0.6; 3–4 km 0.5; 4–5 km 0.3; >5 km 0); different City = 0 and the supply is not shown as a match. _(§ all tabs, Location + Other Interested Location)_
+- **BR-REL-148** — Other Interested Location (OIL) is merged into Location: no separate weight or score (the earlier 0.9 OIL score and 5% weight are removed). Supply Location is scored against the primary Location and each OIL with the same logic; the highest score is the final Location score. Primary and OIL have equal priority. _(§ all tabs, Other interested location — Sep 18, 2026)_
+- **BR-REL-149** — Carpet Area (Office, Retail, F&B) uses demand-area variance bands; supply inside the band = 1, outside = 0 (the V1 partial 0.8 is dropped). Bands (lower % / upper %): ≤500 sq ft 10/50; 501–1,000 10/25; 1,001–2,000 10/20; 2,001–4,000 10/20; 4,001–6,000 10/15; 6,001–10,000 5/15; 10,001–15,000 5/10; 15,001–25,000 10/15; ≥25,001 15/20. Example: demand 5,000 → 4,500–5,750 matches. _(§ Office / Retail / F&B, Carpet Area)_
+- **BR-REL-150** — Demand carpetArea is the primary Carpet Area input; a fallback (e.g. carpetAreaRange.min) is retained if it is missing, but the fallback field/order is still to be finalized after the migrated-data review. _(§ Carpet Area, Sep 22, 2026)_
+- **BR-REL-151** — Possession buckets: Immediate → Within 3 months → Within 6 months → Within 9 months → After 9 months. Supply same bucket or earlier = 1; one bucket later = 0.8; two later = 0.5; more = 0. Backend field: propertyAvailableFrom on both sides. Possession is Optional for relevance in Office/Retail/F&B (5%) but always a compulsory input; it is Mandatory for Managed Space. _(§ all tabs, Possession)_
+- **BR-REL-152** — Office Fitouts uses only Furnished, Unfurnished, Developer/Landlord to do Fitout: Furnished→Furnished 1, Furnished→Unfurnished 0, Furnished→Developer/Landlord 1, Unfurnished→Furnished 0, Unfurnished→Unfurnished 1, Unfurnished→Developer/Landlord 1. If the demand gives no Fitouts, the field is excluded. _(§ Office, Fitouts)_
+- **BR-REL-153** — Retail/F&B Fitouts: Demand Fitout Required Yes/No vs Supply Fitout Available Yes/No: Yes/Yes 1, Yes/No 0, No/Yes 0, No/No 1. "No" is an explicit requirement, not "missing". If either side is missing, the field is excluded. _(§ Retail / F&B, Fitouts required — Sep 18, 2026)_
+- **BR-REL-154** — Ceiling Height (Retail, F&B): supply equal to or up to 30% above demand = 1; more than 30% above = 0.5; slightly lower = 0.8 within a demand-dependent allowance (demand ≤14 ft: up to 1 ft lower; 15–20 ft: up to 2 ft; ≥21 ft: up to 3 ft); lower than that = 0. _(§ Retail / F&B, Ceiling Height)_
+- **BR-REL-155** — Floor is scored with Store Type: Ground + High Street matches supply Ground or Upper Ground only (1; else 0); Ground + Mall matches Ground, Upper Ground, 1st, 2nd, 3rd or Above 3rd (1; Basement 0); "Any Floor" matches all floors, but a selected Store Type is still applied. _(§ Retail / F&B, Floor)_
+- **BR-REL-156** — Store Type is single-value exact match (1/0); demand "Any" matches Highstreet or Mall (1). It is Optional (5%) for Retail and Mandatory for F&B. _(§ Retail / F&B, Store type)_
+- **BR-REL-157** — Frontage is a minimum: supply ≥ demand = 1; up to 15% below = 0.8; more than 15% below = 0. Demand not specified → excluded; demand specified but supply missing → 0. _(§ Retail / F&B, Frontage in feet)_
+- **BR-REL-158** — F&B Cooking Type replaces the V1 gas-connection check: Electric→Electric 1, Electric→Gas 1, Gas→Gas 1, Gas→Electric 0, Either→Electric or Gas 1. Missing on either side → excluded. gasLineRequired has no role. _(§ F&B, Cooking Type)_
+- **BR-REL-159** — F&B Non-veg: Demand Non-Veg Served vs Supply Non-Veg Allowed: Yes/Yes 1, Yes/No 0, No/Yes 1, No/No 1; demand specified but supply missing 0.8; demand not specified → excluded. True, False and missing must stay distinct. _(§ F&B, Non veg served)_
+- **BR-REL-160** — Managed Space Number of Seats: supply numberOfSeats ≥ demand numberOfSeatsMin = 1, else 0. The 20-seat demand minimum is an input rule only. formats.* (totalSeats, availableSeats) are not used. _(§ Managed Space, Number of seats)_
+- **BR-REL-161** — Managed Space relevance is Managed Space Demand ↔ Managed Space Centre; all Managed Space naming variants map to assetClass "managed-space". _(§ Managed Space, Asset Class)_
+
+#### Open questions / ambiguities in this doc
+- Location: the backend has no separate "Area" level (only Locality and Micro-location), and Sathish advised against real-time distance/API calls for every comparison. How the distance bands will be computed is not settled; the Office/F&B OIL rows still call the distance component "pending" while the Location rows call it confirmed.
+- Carpet Area fallback field/order when demand carpetArea is missing is not finalized.
+- Retail ↔ F&B cross-match display cutoff is not finalized (50% is temporary). No general display threshold is stated either.
+- Managed Space: purpose of the demand field numberOfSeatsBucket is unknown (Sathish to check).
+- Fitouts (Retail/F&B): which backend representation is used (categorical fitOutStatus vs Boolean fitoutsRequired/fitoutsAvailable, mostly empty) is to be revalidated after the V1→V2 migration.
+- Non-veg: V2 data shows only True or missing, no explicit False; how "No" is stored must be verified after migration.
+- Office: no Match Score is defined for a missing Supply Fitouts (not expected in the normal flow).
+- Ceiling Height: the 0.8 lower-side bands leave gaps for non-integer demands (e.g. 14.5 ft) — which band applies is not stated.
+- Retail Asset Class "Latest Decision" cell repeats its first sentence (copy/paste in the source).
+
+---
 ### Group-level notes
 #### Version history
 - No versioned duplicates in this group. Relevancy Logics.xlsx (modified 2026-10-14) is the latest relevancy-logic spec and is the sheet the business points to in the Guide's FYI block. The gsheet (2026-10-10) covers *where* relevancy/similar matches show per role; the image gdoc (2026-10-14) covers demand-card imagery. All three are AUTHORITATIVE and complementary.
+- *KeyDemand V2 Relevance Logic – Business Approval* (gsheet, owner sithara.j, modified 2026-10-29; added 2026-11-01) is the newest relevancy doc. It keeps the asset-class field lists and block weights of Relevancy Logics.xlsx and adds field-level match scoring, backend field mapping (Sep 22) and the Location hierarchy confirmation (Oct 27). Both are AUTHORITATIVE; the Business Approval sheet wins on property relevancy scoring, Relevancy Logics.xlsx still governs project relevancy.
 - The Business Guide (2026-10-06) predates them and is NON-AUTHORITATIVE by its "DO NOT TAKE" title; its inline KD comments reject the price-based v2 model and redirect to Relevancy Logics.xlsx.
 
 #### Conflicts across docs in this group
 - **Price in score:** Guide scores price 25 pts; Relevancy Logics.xlsx has no price; KD comments: price never a component. → Authoritative: no price (xlsx).
 - **Weights:** Guide 30/25/25/15/5; xlsx per-asset-class field weights (80/5×4; 80/5/15; 75/5×5; 100). → Authoritative: xlsx.
-- **Display threshold:** Guide 40%; KD comment in Guide "50% or above"; xlsx silent. → Unresolved; 50% is the business's stated view but not in an authoritative doc.
+- **Display threshold:** Guide 40%; KD comment in Guide "50% or above"; xlsx silent; Business Approval sheet: Retail ↔ F&B cross-match cutoff not finalized, "50% … is temporary". → Unresolved.
 - **Location scope:** Guide region-wide/city matching; KD + xlsx project tab: area/micro-locality based, nearby areas as suggestions. → Authoritative: xlsx (Location\* + other interested location, mandatory).
-- **Size tolerance:** Guide 10% / +25%; xlsx project rule −10% / +20% or within min–max. → Authoritative: xlsx for projects; properties undefined.
+- **Size tolerance:** Guide 10% / +25%; xlsx project rule −10% / +20% or within min–max; Business Approval sheet (properties): demand-area variance bands from 10%/50% (≤500 sq ft) to 15%/20% (≥25,001), 1/0 scoring. → Authoritative: Business Approval sheet for properties (BR-REL-149); xlsx for projects.
 - **Similar projects:** Guide lists projects for demands (no similar-projects concept); gsheet: similar projects on project page = Phase 2, nearby localities only; relevant projects for a self-posted demand = Phase 1 (Yes). → Authoritative: gsheet.
 - **Relevant demands visibility:** Guide: property owner + KD team. Gsheet: relevant demands shown on self-posted property only; KD team viewing a property not their own sees only similar properties, no relevant demands. → Authoritative: gsheet.
+- **F&B Store type:** Relevancy Logics.xlsx: Store type\* is Optional with no weight (BR-REL-008); Business Approval sheet: Store type is one of 8 Mandatory F&B fields at ≈9.38% (BR-REL-138/156). → Business Approval sheet (newer, 2026-10-29); confirm with the business.
+- **Other interested location:** earlier proposals gave OIL a separate 0.9 score (and 5% weight in one reference); Business Approval sheet merges OIL into Location with max-score aggregation (BR-REL-148). Consistent with xlsx "Location\* + other interested location". → Business Approval sheet.
+- **Optional fields missing on the supply side:** xlsx: "If the optional data is required from the demand side and missing in property then the % should be reducted" (BR-REL-012); Business Approval sheet: field-specific — Fitouts and Cooking Type are excluded when supply is missing, Frontage scores 0, Non-veg scores 0.8 (BR-REL-153/157/158/159). → Business Approval sheet (field-level and newer).
 
 ---
 
@@ -21342,3 +26112,4 @@ A strict "Separation of Concerns" is enforced between business operations and pl
 | 2026-10-24 | Scope narrowed to the core business-rule groups (CRs, clarifications, requirements, master sheet, fields, relevancy, pages/journeys, Keydemand Team, Control Panel/admin, roles/notifications). Only current docs are included; older versions are listed by name only. |
 | 2026-10-24 | Coverage check: each of the 46 current docs was re-fetched from Drive and its source text compared line by line with the KB (`kb/coverage.py`). The only gap was "Agent Complete Journey", which had its "Agent Specific Home Page" snapshot summarised. It is now added word for word, along with BR-PG1-278 to 284. Every other remaining difference was checked by hand and is formatting only (wide sheet rows split into tables, `<br>` line breaks, header cells glued together in the export). |
 | 2026-11-01 | Change check after the 2026-10-24 build. The PDF export (`KEYDEMAND_V2_BUSINESS_RULES.pdf`, 2026-10-29) was compared word for word with this file: same content, render differences only. Drive was searched for source docs modified after 2026-10-24. **Notifications Breakdown** (`1HkwJ-9ZHhL9snZmncJVg0iWImGh_L5lBKWdkgYDAZPo`) is now titled "Rough 2" with an empty body (2026-10-30); its last-known content is kept and flagged for confirmation. **Version 2.0 Control Panel V2.1 -0 .docx** was re-saved 2026-10-29; the text was re-checked and is unchanged. **Delivery Plan.xlsx** (2026-10-30, outside the built groups) gained a "Phase 2.1 Important Links" block and one more UAT admin login; both are added to `kb/sections/01-delivery.md`. Two of the new links are unreadable. No other in-scope doc changed. |
+| 2026-11-01 | Added **KeyDemand V2 Relevance Logic – Business Approval** (`1pO37bzXWSkpT_-poaFu1XI73e1319ZWWzejLAt02Ur8`, owner sithara.j, modified 2026-10-29) to group 07 as AUTHORITATIVE. All 4 tabs are transcribed in full (coverage check 99.6%; the rest is header rows). New rules BR-REL-135 to 161 give field-level V2 scoring for Office, Retail, F&B and Managed Space. Three new in-group conflicts are noted: F&B Store type becomes Mandatory, OIL is merged into Location, and missing optional supply fields are handled per field. Cross-doc C-44 and P-11 now point to it. |

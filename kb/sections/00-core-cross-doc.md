@@ -229,7 +229,7 @@ Scope: core business-rule groups G02–G12, authoritative documents only.
 | C-41 | Inventory on user deactivation | 3-month hibernation, then permanent removal (G05 US-007) | Paused/hidden; data preserved (G05 other sections; G09 shared rules) | Preserved (majority) | Needs decision |
 | C-42 | KD member deletion | Soft-delete, inventory retained (G05 BR-MS-049) | Handover to another KD user first (G10 BR-KDT-006; G11 BR-ADM-016/017) | Handover (V2.0) | Resolved-by-rule |
 | C-43 | KD relevancy scope | Brands and Tenants only (G02 BR-CR-130/266; G10 BR-KDT-132) | Also agents and KD members (G10 BR-KDT-041; G12 BR-ROL-071) | Unresolved (D-19) | Needs decision |
-| C-44 | Relevancy fields | Asset Class, Carpet Area, Location, Transaction only (G05 BR-MS-173) | Weighted fields incl. ceiling height, floor, possession, fit-outs (G07 BR-REL-001/003/006/009) | G07 xlsx (relevancy spec, 14 Oct) | Resolved-by-rule |
+| C-44 | Relevancy fields | Asset Class, Carpet Area, Location, Transaction only (G05 BR-MS-173) | Weighted fields incl. ceiling height, floor, possession, fit-outs (G07 BR-REL-001/003/006/009) | G07 xlsx (relevancy spec, 14 Oct), with field-level scoring in the G07 Business Approval sheet (29 Oct; BR-REL-135–161) | Resolved-by-rule |
 | C-45 | Relevancy % display | Properties: % shown in KD drill-downs (G10 BR-KDT-097/158; G02 BR-CR-312) | Projects: no % (G05 BR-MS-148/173; G06 BR-FLD-167; G08 BR-PG1-247) | Consistent: % for property matches only | Resolved-by-rule |
 | C-46 | Media limits | Images <2 MB, video <5 MB (G04 BR-REQ-013; G06 BR-FLD-036) | 5 MB / 15 MB (G05 BR-MS-125); 5 MB ≥300 ppi / 20 MB (G06 persona; G08 BR-PG1-226) | Unresolved (D-16) | Needs decision |
 | C-47 | PDF limit | <2 MB (G04 BR-REQ-034; G06 BR-FLD-065) | <5 MB (Keydemand block, same BRs; floorplans G06 BR-FLD-085) | Unresolved | Needs decision |
@@ -274,7 +274,7 @@ Scope: core business-rule groups G02–G12, authoritative documents only.
 | P-08 | Notification daily cap value | G04 BR-REQ-111; G12 BR-NTF-011 | Number |
 | P-09 | Daily digest send time and channel | G12 open question | Time, channel, recipients |
 | P-10 | Enterprise Solution Lead SLA ("45 min left") | G11 open question | SLA definition |
-| P-11 | Relevancy display threshold | G07 open question | Minimum % |
+| P-11 | Relevancy display threshold | G07 open question; G07 Business Approval sheet: Retail ↔ F&B cross-match cutoff not finalized, 50% temporary (BR-REL-142) | Minimum % |
 | P-12 | Property (non-project) size tolerance | G07 open question | ± % |
 | P-13 | Similar-properties criteria | G07 open question | Definition |
 | P-14 | Project relevancy weights | G07 open question (Project tab) | Weight columns empty |
