@@ -3,7 +3,7 @@
 ## Documents in this group
 | # | Title | Type | Drive ID | Owner | Modified | Status |
 |---|---|---|---|---|---|---|
-| 1 | Keydemand V2 Phase 1 - Delivery Plan.xlsx | xlsx (6 tabs, 1 hidden) | 1LvPiNQFNLQu-IYuu-1VNS47Y952OaR6L | pradeepa.pv@futuristglobal.com | 2026-10-22 | AUTHORITATIVE (hidden tab "DEV - Ongoing plus CRs & New Fe" is HISTORY, superseded by tab "Ongoing plus CRs & New Features") |
+| 1 | Keydemand V2 Phase 1 - Delivery Plan.xlsx | xlsx (6 tabs, 1 hidden) | 1LvPiNQFNLQu-IYuu-1VNS47Y952OaR6L | pradeepa.pv@futuristglobal.com | 2026-10-30 | AUTHORITATIVE (hidden tab "DEV - Ongoing plus CRs & New Fe" is HISTORY, superseded by tab "Ongoing plus CRs & New Features") |
 | 2 | Keydemand V2 - Phase 1 Tracker | Google Sheet (3 tabs) | 1HDjVsQGcavd2uamI4rmVeCTemFJczg6eRN0RJdbyHvM | pradeepa.pv@futuristglobal.com | 2026-07-30 | HISTORY (superseded by Keydemand V2 Phase 1 - Delivery Plan.xlsx; the Delivery Plan's link register labels it "Old tracker") |
 | 3 | Production_OnCall_Sheet.xlsx | xlsx (6 tabs, 1 hidden) | 1Kye-tYrvHv4dz9cTCTEdRhkImVJ_Xh_p | pradeepa.pv@futuristglobal.com | 2026-10-23 | AUTHORITATIVE |
 | 4 | V2 SIT Environment Details.docx | docx | 1XuokGE1CoAUqBltFl9fhQh8MHhMJJ849 | pradeepa.pv@futuristglobal.com | 2026-10-14 | AUTHORITATIVE |
@@ -13,7 +13,7 @@
 
 ---
 ## Keydemand V2 Phase 1 - Delivery Plan.xlsx  [AUTHORITATIVE]
-**Source:** xlsx · ID `1LvPiNQFNLQu-IYuu-1VNS47Y952OaR6L` · owner pradeepa.pv@futuristglobal.com · created 2026-07-20, modified 2026-10-22 · tabs read: Delivery Tracker; Effort Summary by App; Ongoing plus CRs & New Features; UAT Links; Phase 1- Important Links to all; DEV - Ongoing plus CRs & New Fe (hidden tab) · read coverage: 100% (all 6 sheets parsed cell by cell from the raw xlsx; the drawing parts attached to each sheet contain no images or shapes; no cell comments in the file).
+**Source:** xlsx · ID `1LvPiNQFNLQu-IYuu-1VNS47Y952OaR6L` · owner pradeepa.pv@futuristglobal.com · created 2026-07-20, modified 2026-10-30 (re-checked 2026-11-01) · tabs read: Delivery Tracker; Effort Summary by App; Ongoing plus CRs & New Features; UAT Links; Phase 1- Important Links to all; DEV - Ongoing plus CRs & New Fe (hidden tab) · read coverage: 100% (all 6 sheets parsed cell by cell from the raw xlsx; the drawing parts attached to each sheet contain no images or shapes; no cell comments in the file).
 
 Notes on transcription: "Row" = the Excel row number. "Milestone Date Cutoff" values are stored as Excel serial dates and are shown converted (46241 = 07-Aug-2026, 46262 = 28-Aug-2026, 46276 = 11-Sep-2026, 46290 = 25-Sep-2026, 46297 = 02-Oct-2026). `<br>` marks a line break inside a cell. Blank cells are kept blank (the source does not repeat Feature Group / Feature on every row; a blank means "same as the row above").
 
@@ -345,6 +345,7 @@ Status dropdowns (data validation on Developer Status / SIT/QA Status): `To Do, 
 | k.iyer@keydemand.in | [REDACTED-credential] |
 | himanshu@keydemand.in | [REDACTED-credential] |
 | pradeepa.pv@futuristglobal.com | [REDACTED-credential] |
+| tech@keydemand.in | [REDACTED-credential] |
 
 **R30:** SIT Details
 
@@ -449,6 +450,21 @@ Rows 11, 33 and 58 have no URL in the source ("Keydemand Team Specific Page - Re
 | 69 | Sathish Buglist | https://docs.google.com/spreadsheets/d/189jFuMLjDTcDKrli9su8uIMLnSGXnKBD0YMFzSRXT5w/edit?gid=0#gid=0 |
 | 70 | Development Bug list | https://docs.google.com/spreadsheets/d/1BfQ5JB9x8pYJNJoQP4kJsfVak2FIbeY-zPPwQM9oI4s/edit?gid=1608696293#gid=1608696293 |
 | 72 | Production_OnCall_Sheet | https://docs.google.com/spreadsheets/d/1Kye-tYrvHv4dz9cTCTEdRhkImVJ_Xh_p/edit?gid=577554112#gid=577554112 |
+| — | Post Production Dev Bug List | https://docs.google.com/spreadsheets/d/1X8ooRFUxrkcq-jSA6S6aaHv_iCHgE8-7f23Kpe-0JUw/edit?pli=1&gid=170781657#gid=170781657 |
+
+**Phase 2.1 Important Links** (added in the 2026-10-30 revision)
+
+| Name of the Asset | Link | What is the sheet for |
+|---|---|---|
+| Process for Bug Triaging | https://docs.google.com/document/d/1A9LQ9CG2JTk_uqmV9_Qf-tZZFWHwm1P2vCBwdEeFgB8/edit?tab=t.0 |  |
+| Resolved Bugs- to be pushed to JIRA- last one month sprint | https://docs.google.com/spreadsheets/d/1BfQ5JB9x8pYJNJoQP4kJsfVak2FIbeY-zPPwQM9oI4s/edit?gid=2000538407#gid=2000538407 | JIRA FIRST SET OF RESOLVED BUGS |
+| Post Production Dev Bug List | https://docs.google.com/spreadsheets/d/1X8ooRFUxrkcq-jSA6S6aaHv_iCHgE8-7f23Kpe-0JUw/edit?pli=1&gid=454540197#gid=454540197 | Main copy for PP bugs that will be put to JIRA |
+| Phase 1 - Keydemanand Important documents | https://drive.google.com/drive/folders/10w9bCTRPiwayAGPj97lzsORdkm90apk6?usp=drive_link | Has all the product documents generated. |
+| Business Rules Template for Keydemand CR's and Enhancements - Post Production | https://docs.google.com/spreadsheets/d/1H1wcmKdc2_rJCkoabISuv02j70ii5y48AEqPKzT59hM/edit?gid=1882548338#gid=1882548338 | Final Business Rules Excel Copy |
+| KeyDemand From Launch to Scale | https://docs.google.com/presentation/d/1nebRWxt11eJPjPKz9FVQUZfQ-R3V7G_Y/edit?slide=id.h8988cf040d95507_0_60#slide=id.h8988cf040d95507_0_60 | Final PPT copy |
+| Epic number and stories-Jsut names | https://docs.google.com/document/d/1ZT1o-hOZgTBfLCG2WaHRHZES55V8FOmrgOhpsBzxDN4/edit?tab=t.0 | Final copy for checking future bugs |
+
+Re-check 2026-11-01: "Business Rules Template … Post Production" (`1H1wcmKdc2_rJCkoabISuv02j70ii5y48AEqPKzT59hM`) and "Epic number and stories-Jsut names" (`1ZT1o-hOZgTBfLCG2WaHRHZES55V8FOmrgOhpsBzxDN4`) are UNREADABLE ("Requested entity was not found"); they need sharing before their content can be added.
 
 ### Business rules extracted
 Delivery Tracker / Effort Summary (plan-level rules):

@@ -1,6 +1,6 @@
 # Keydemand V2 Phase 1 — Business Rules & Requirements Knowledge Base
 
-**As of:** 2026-10-24 · **Entry point:** *Keydemand V2 Phase 1 - Delivery Plan.xlsx* (Drive `1LvPiNQFNLQu-IYuu-1VNS47Y952OaR6L`)
+**As of:** 2026-11-01 · **Entry point:** *Keydemand V2 Phase 1 - Delivery Plan.xlsx* (Drive `1LvPiNQFNLQu-IYuu-1VNS47Y952OaR6L`)
 
 ## What this file is
 
@@ -501,7 +501,7 @@ Every document in scope, including superseded ones (listed by name only). 2082 b
 | G10 | 5 | Keydemand team- Specific Page | Google Doc | `1ltuysizKtddbyFNpYRs836Oh57TvwdSEz0QLM5sx2Ck` | pradeepa.pv@futuristglobal.com | 2026-07-29 | HISTORY (superseded by Version 2.0 Keydemand Team Specific Page - Registered) |
 | G10 | 6 | Version 1.0 - Keydemand Team- Dashboard 30062026 - Final.docx | Word (.docx) | `1Iql1n5LaO46KTs3ticv3Hfk33E2d32Y2` | pradeepa.pv@futuristglobal.com | 2026-08-10 | AUTHORITATIVE (dashboard family) |
 | G10 | 7 | Keydemand Team- Dashboard 30062026 - Final.docx | Word (.docx) | `1Dck2ggJdwOHxreN5hV0DFrBndchuHbcr` | pradeepa.pv@futuristglobal.com | 2026-08-12 | HISTORY (superseded by Version 1.0 - Keydemand Team- Dashboard 30062026 - Final.docx) |
-| G11 | 1 | Version 2.0 Control Panel V2.1 -0 .docx | docx | `1Kv7FiKdeRP53F0vYiV8THEdMNrlvgSM4` | pradeepa.pv@futuristglobal.com | 2026-10-09 | AUTHORITATIVE |
+| G11 | 1 | Version 2.0 Control Panel V2.1 -0 .docx | docx | `1Kv7FiKdeRP53F0vYiV8THEdMNrlvgSM4` | pradeepa.pv@futuristglobal.com | 2026-10-29 (re-checked 2026-11-01: text unchanged from the 2026-10-09 version) | AUTHORITATIVE |
 | G11 | 2 | Version 1.0 Control Panel V2.1 -0.docx | docx | `1TzelTFc-ie1E1pp1zFwMXDEAI8RGhvEA` | pradeepa.pv@futuristglobal.com | 2026-10-04 | HISTORY (superseded by Version 2.0 Control Panel V2.1 -0) — note: content is actually the Phase 1 platform BRD (EP-001…EP-019), not a Control Panel spec |
 | G11 | 3 | Control Panel V2.1 -0 Keydemand.docx | docx | `1CcjZcH6RU1G48AW47ZqjrcsoGfPOhlyy` | pradeepa.pv@futuristglobal.com | 2026-10-14 | HISTORY (superseded by Version 2.0 Control Panel V2.1 -0). **VERSION CONFLICT, user to confirm** (see top) |
 | G11 | 4 | Super Admin, Normal Admin what they can do | gdoc | `1qh1Uh-T8MWhGs2WumwpJY8mzXv3v9UhEVE2N4vp2cak` | pradeepa.pv@futuristglobal.com | 2026-08-27 | AUTHORITATIVE |
@@ -510,7 +510,7 @@ Every document in scope, including superseded ones (listed by name only). 2082 b
 | G11 | 6a | KeyDemand Daily Summary.pdf (linked from doc 5) | pdf | `1UBbIFk4jDgHOXmAXl3gvS9RjfiPsW452` | — | — | Referenced attachment of doc 5. Read to define the admin email content |
 | G12 | 1 | Reference Guide to User Roles, CTA's, Dev Links, Tech Stack for Keydemand V2 Platform | Google Doc | `13IxQfdp4HhjqRNUp3K6rGDf1y454LstSLOE-z0CNkE4` | pradeepa.pv@futuristglobal.com | 2026-09-22 | AUTHORITATIVE (for Dev links, Tech stack, CTAs, Persona journeys; for role-journey text that overlaps doc 2, doc 2 is newer and wins — see Group notes) |
 | G12 | 2 | Reference Guide to User Roles on Keydemand Platform | Google Doc | `1v84nXG7_YORBZH2okgSiOfibYemXa7zZ3KK9KliOqcM` | pradeepa.pv@futuristglobal.com | 2026-10-06 | AUTHORITATIVE (complementary; newer revision of the role-journey/access sections) |
-| G12 | 3 | Notifications Breakdown | Google Doc | `1HkwJ-9ZHhL9snZmncJVg0iWImGh_L5lBKWdkgYDAZPo` | pradeepa.pv@futuristglobal.com | 2026-10-16 | AUTHORITATIVE (explainer of notification-matrix column semantics only; the matrix itself is not in this doc) |
+| G12 | 3 | Notifications Breakdown | Google Doc | `1HkwJ-9ZHhL9snZmncJVg0iWImGh_L5lBKWdkgYDAZPo` | pradeepa.pv@futuristglobal.com | 2026-10-16 (content as read); 2026-10-30 emptied and renamed "Rough 2" in Drive | AUTHORITATIVE, last-known content (explainer of notification-matrix column semantics only; the matrix itself is not in this doc) |
 | G12 | 4 | HTL workflow | Google Doc | `1eUnwSbr1CxBnc1VANFYdSp2h92QsTOeXAaGmcaZDtsQ` | pradeepa.pv@futuristglobal.com | 2026-06-30 | AUTHORITATIVE |
 
 ---
@@ -19663,7 +19663,7 @@ Footer: Page 1 of 7
 ### Documents in this group
 | # | Title | Type | Drive ID | Owner | Modified | Status |
 |---|---|---|---|---|---|---|
-| 1 | Version 2.0 Control Panel V2.1 -0 .docx | docx | `1Kv7FiKdeRP53F0vYiV8THEdMNrlvgSM4` | pradeepa.pv@futuristglobal.com | 2026-10-09 | AUTHORITATIVE |
+| 1 | Version 2.0 Control Panel V2.1 -0 .docx | docx | `1Kv7FiKdeRP53F0vYiV8THEdMNrlvgSM4` | pradeepa.pv@futuristglobal.com | 2026-10-29 (re-checked 2026-11-01: text unchanged from the 2026-10-09 version) | AUTHORITATIVE |
 | 2 | Version 1.0 Control Panel V2.1 -0.docx | docx | `1TzelTFc-ie1E1pp1zFwMXDEAI8RGhvEA` | pradeepa.pv@futuristglobal.com | 2026-10-04 | HISTORY (superseded by Version 2.0 Control Panel V2.1 -0) — note: content is actually the Phase 1 platform BRD (EP-001…EP-019), not a Control Panel spec |
 | 3 | Control Panel V2.1 -0 Keydemand.docx | docx | `1CcjZcH6RU1G48AW47ZqjrcsoGfPOhlyy` | pradeepa.pv@futuristglobal.com | 2026-10-14 | HISTORY (superseded by Version 2.0 Control Panel V2.1 -0). **VERSION CONFLICT, user to confirm** (see top) |
 | 4 | Super Admin, Normal Admin what they can do | gdoc | `1qh1Uh-T8MWhGs2WumwpJY8mzXv3v9UhEVE2N4vp2cak` | pradeepa.pv@futuristglobal.com | 2026-08-27 | AUTHORITATIVE |
@@ -19673,7 +19673,7 @@ Footer: Page 1 of 7
 
 ---
 ### Version 2.0 Control Panel V2.1 -0 .docx  [AUTHORITATIVE]
-**Source:** docx · ID `1Kv7FiKdeRP53F0vYiV8THEdMNrlvgSM4` · pradeepa.pv@futuristglobal.com · modified 2026-10-09 · sections read: Business Rules; KD Control Panel nav; Home; 1. Management (1.1 User Management, 1.2 Enterprise, 1.3 Listing Management incl. Bulk Uploads, 1.4 Subscription Mgmt, 1.5 HVL); 2. Administration (Control Panel Users, Enquiries); 3. Insights (Dashboard, Analytics, Site Down) · read coverage: 100% of the extracted text. Embedded images and screenshots are not visible in the text export (the file is 793 KB). Docx comments are not available through the read tool.
+**Source:** docx · ID `1Kv7FiKdeRP53F0vYiV8THEdMNrlvgSM4` · pradeepa.pv@futuristglobal.com · modified 2026-10-09 (re-saved 2026-10-29; re-checked 2026-11-01, text unchanged) · sections read: Business Rules; KD Control Panel nav; Home; 1. Management (1.1 User Management, 1.2 Enterprise, 1.3 Listing Management incl. Bulk Uploads, 1.4 Subscription Mgmt, 1.5 HVL); 2. Administration (Control Panel Users, Enquiries); 3. Insights (Dashboard, Analytics, Site Down) · read coverage: 100% of the extracted text. Embedded images and screenshots are not visible in the text export (the file is 793 KB). Docx comments are not available through the read tool.
 
 #### Content
 
@@ -20768,7 +20768,7 @@ Legend: **Y** = allowed · **G** = only if that permission is granted (by Super 
 |---|---|---|---|---|---|---|
 | 1 | Reference Guide to User Roles, CTA's, Dev Links, Tech Stack for Keydemand V2 Platform | Google Doc | `13IxQfdp4HhjqRNUp3K6rGDf1y454LstSLOE-z0CNkE4` | pradeepa.pv@futuristglobal.com | 2026-09-22 | AUTHORITATIVE (for Dev links, Tech stack, CTAs, Persona journeys; for role-journey text that overlaps doc 2, doc 2 is newer and wins — see Group notes) |
 | 2 | Reference Guide to User Roles on Keydemand Platform | Google Doc | `1v84nXG7_YORBZH2okgSiOfibYemXa7zZ3KK9KliOqcM` | pradeepa.pv@futuristglobal.com | 2026-10-06 | AUTHORITATIVE (complementary; newer revision of the role-journey/access sections) |
-| 3 | Notifications Breakdown | Google Doc | `1HkwJ-9ZHhL9snZmncJVg0iWImGh_L5lBKWdkgYDAZPo` | pradeepa.pv@futuristglobal.com | 2026-10-16 | AUTHORITATIVE (explainer of notification-matrix column semantics only; the matrix itself is not in this doc) |
+| 3 | Notifications Breakdown | Google Doc | `1HkwJ-9ZHhL9snZmncJVg0iWImGh_L5lBKWdkgYDAZPo` | pradeepa.pv@futuristglobal.com | 2026-10-16 (content as read); 2026-10-30 emptied and renamed "Rough 2" in Drive | AUTHORITATIVE, last-known content (explainer of notification-matrix column semantics only; the matrix itself is not in this doc) |
 | 4 | HTL workflow | Google Doc | `1eUnwSbr1CxBnc1VANFYdSp2h92QsTOeXAaGmcaZDtsQ` | pradeepa.pv@futuristglobal.com | 2026-06-30 | AUTHORITATIVE |
 
 ---
@@ -21174,6 +21174,8 @@ This doc covers only the role-journey and access sections. Its text is otherwise
 ### Notifications Breakdown  [AUTHORITATIVE]
 **Source:** Google Doc · ID `1HkwJ-9ZHhL9snZmncJVg0iWImGh_L5lBKWdkgYDAZPo` · pradeepa.pv@futuristglobal.com · modified 2026-10-16 (created 2026-01-02) · sections read: whole doc (Daily cap / daily digest / typical per day explainer; Toast vs Push; "Typical per day 0.02"; How are they calculated) · comments: none · read coverage: 100% of text. File size (35 KB) suggests embedded images (likely the spreadsheet screenshot referenced as "your screenshot") which are not returned by the reader.
 
+> **SOURCE CHANGED 2026-10-30 — user to confirm.** Re-checked 2026-11-01: this Drive file (same ID) is now titled **"Rough 2"** and its body is **empty** (modified 2026-10-30 18:53 UTC). No other doc named "Notifications Breakdown" was found in Drive. The content below is the last-known version (read 2026-10-24, doc modified 2026-10-16). Confirm whether this explainer was retired or moved before relying on it.
+
 **Important:** this doc does **not** contain the notification matrix itself (triggers, recipients, channels, template text, timing per notification). It explains the columns of the "Notification Final" tab of a Product Requirements spreadsheet, which is not in this group. It links to `KeyDemand Daily Summary.pdf` (ID `1UBbIFk4jDgHOXmAXl3gvS9RjfiPsW452`, PDF, modified 2026-06-11), which was not assigned and not read.
 
 #### Content
@@ -21339,3 +21341,4 @@ A strict "Separation of Concerns" is enforced between business operations and pl
 | 2026-10-23 | Read the Delivery Plan, its 53 readable linked docs and the in-scope "All Assets for V2" folder docs. One linked doc was unreadable (`1q8mVbidN6Bp0VlofoRNtwx5Z62BcbSke`, "Requested entity was not found"). |
 | 2026-10-24 | Scope narrowed to the core business-rule groups (CRs, clarifications, requirements, master sheet, fields, relevancy, pages/journeys, Keydemand Team, Control Panel/admin, roles/notifications). Only current docs are included; older versions are listed by name only. |
 | 2026-10-24 | Coverage check: each of the 46 current docs was re-fetched from Drive and its source text compared line by line with the KB (`kb/coverage.py`). The only gap was "Agent Complete Journey", which had its "Agent Specific Home Page" snapshot summarised. It is now added word for word, along with BR-PG1-278 to 284. Every other remaining difference was checked by hand and is formatting only (wide sheet rows split into tables, `<br>` line breaks, header cells glued together in the export). |
+| 2026-11-01 | Change check after the 2026-10-24 build. The PDF export (`KEYDEMAND_V2_BUSINESS_RULES.pdf`, 2026-10-29) was compared word for word with this file: same content, render differences only. Drive was searched for source docs modified after 2026-10-24. **Notifications Breakdown** (`1HkwJ-9ZHhL9snZmncJVg0iWImGh_L5lBKWdkgYDAZPo`) is now titled "Rough 2" with an empty body (2026-10-30); its last-known content is kept and flagged for confirmation. **Version 2.0 Control Panel V2.1 -0 .docx** was re-saved 2026-10-29; the text was re-checked and is unchanged. **Delivery Plan.xlsx** (2026-10-30, outside the built groups) gained a "Phase 2.1 Important Links" block and one more UAT admin login; both are added to `kb/sections/01-delivery.md`. Two of the new links are unreadable. No other in-scope doc changed. |
