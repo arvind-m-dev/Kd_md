@@ -4,6 +4,7 @@ import { AlertTriangle, ArrowDownAZ, Check, ChevronDown, ChevronsDownUp, Chevron
 import { useId, useMemo, useState } from "react";
 import { NOT_SPECIFIED, REQUIRED_LABEL } from "@/lib/answer/markdown";
 import type { RequiredState, RequirementGroup, RequirementRow } from "@/lib/answer/schema";
+import { downloadFile } from "@/lib/library";
 import { cn } from "@/lib/utils";
 import { Cites, Prose } from "./cite";
 
@@ -105,9 +106,7 @@ export function RequirementTable({ groups, anchor }: { groups: RequirementGroup[
       ["Group", "Field / Requirement", "Required?", "Required note", "Business rule", "Validation / Allowed values", "Sources"].map(csv).join(","),
       ...all.map(({ g, row }) => [groups[g].name, row.field, REQUIRED_LABEL[row.required], row.requiredNote, row.rule, row.validation, row.cites.join(" ")].map(csv).join(",")),
     ];
-    const url = URL.createObjectURL(new Blob([lines.join("\n")], { type: "text/csv" }));
-    Object.assign(document.createElement("a"), { href: url, download: "requirements.csv" }).click();
-    URL.revokeObjectURL(url);
+    downloadFile("requirements.csv", lines.join("\n"), "text/csv");
   };
 
   const toggleState = (s: RequiredState) =>
@@ -131,7 +130,10 @@ export function RequirementTable({ groups, anchor }: { groups: RequirementGroup[
             <Search className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-muted-foreground" />
             <input
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setClosed(new Set()); // a new search shows every group that has matches
+              }}
               placeholder={`Search ${all.length} requirements…`}
               className="h-8 w-full rounded-lg border bg-card pr-8 pl-8 text-sm outline-none focus:ring-3 focus:ring-ring/40"
             />
@@ -200,7 +202,7 @@ export function RequirementTable({ groups, anchor }: { groups: RequirementGroup[
       {/* Groups */}
       {groups.map((grp, g) => {
         const rows = rowsOf(g);
-        const open = !closed.has(g) || (!!q && rows.length > 0);
+        const open = !closed.has(g);
         const panel = `${uid}-g${g}`;
         return (
           <section key={g} className="overflow-hidden rounded-xl border bg-card/80">

@@ -12,8 +12,9 @@ import { StatusBadge } from "@/components/kd/status";
 import { BookmarkButton } from "@/components/library/bookmark-button";
 import { Button } from "@/components/ui/button";
 import { answerToMarkdown } from "@/lib/answer/markdown";
-import { parsePartialJson } from "@/lib/answer/partial-json";
+import { jsonPart, parsePartialJson } from "@/lib/answer/partial-json";
 import { citedLabels, sectionTexts, validateAnswer, type Answer } from "@/lib/answer/schema";
+import { downloadFile } from "@/lib/library";
 import { cn } from "@/lib/utils";
 import { AnswerMarkdown } from "./answer-markdown";
 import { SourcePanel } from "./source-panel";
@@ -30,13 +31,32 @@ const load = (): Turn[] => {
     return [];
   }
 };
+/** What is worth keeping of a turn: passages without the neighbouring text, and no raw JSON once it is parsed. */
+const compact = (t: Turn): Turn => ({
+  ...t,
+  answer: t.structured ? "" : t.answer,
+  passages: t.passages.map((p) => ({ ...p, before: "", after: "" })),
+});
 const save = (turns: Turn[]) => {
-  try {
-    localStorage.setItem(STORE, JSON.stringify(turns.slice(-20)));
-  } catch {
-    /* storage full or blocked: the thread just isn't remembered */
+  // If the browser's storage is full, keep a compact and then shorter thread rather than an older one.
+  const tries = [turns.slice(-20), ...[20, 10, 5, 1].map((n) => turns.slice(-n).map(compact)), []];
+  for (const t of tries) {
+    try {
+      localStorage.setItem(STORE, JSON.stringify(t));
+      return;
+    } catch {
+      /* storage full or blocked: try a smaller thread */
+    }
   }
 };
+
+/** A safe answer from whatever JSON has arrived so far (streaming, stopped or cut off). */
+function partialAnswer(raw: string, passages: PassageView[]): Answer | null {
+  if (!jsonPart(raw)) return null;
+  const parsed = parsePartialJson(raw);
+  if (!parsed || typeof parsed !== "object") return null;
+  return validateAnswer(parsed, { passages: new Map(passages.map((p) => [p.label, p.text])), sections: sectionTexts(passages) }).answer;
+}
 
 /** Answer text without the model's leading "STATUS: …" line (also while it is still streaming in). */
 const visibleAnswer = (raw: string) => raw.replace(/^\s*STATUS:[^\n]*(\n|$)/, "").replace(/^\s*S(T(A(T(U(S(:[^\n]*)?)?)?)?)?)?$/, "");
@@ -97,10 +117,7 @@ function answerBookmark(t: Turn) {
 
 function download(turns: Turn[]) {
   const md = `# Keydemand rules — questions and answers\n\n${turns.filter((t) => t.status !== "streaming").map(turnMarkdown).join("\n")}`;
-  const url = URL.createObjectURL(new Blob([md], { type: "text/markdown" }));
-  const a = Object.assign(document.createElement("a"), { href: url, download: "keydemand-answers.md" });
-  a.click();
-  URL.revokeObjectURL(url);
+  downloadFile("keydemand-answers.md", md, "text/markdown");
 }
 
 function Sources({ turn, onOpen }: { turn: Turn; onOpen: (p: PassageView) => void }) {
@@ -135,19 +152,23 @@ function Sources({ turn, onOpen }: { turn: Turn; onOpen: (p: PassageView) => voi
 function useLiveAnswer(turn: Turn): Answer | null {
   const raw = useDeferredValue(turn.answer);
   const streaming = turn.status === "streaming";
-  return useMemo(() => {
-    if (turn.structured) return turn.structured;
-    if (!streaming || !raw.trimStart().startsWith("{")) return null;
-    const parsed = parsePartialJson(raw);
-    if (!parsed || typeof parsed !== "object") return null;
-    return validateAnswer(parsed, { passages: new Map(turn.passages.map((p) => [p.label, p.text])), sections: sectionTexts(turn.passages) }).answer;
-  }, [turn.structured, streaming, raw, turn.passages]);
+  return useMemo(() => (turn.structured ? turn.structured : streaming ? partialAnswer(raw, turn.passages) : null), [turn.structured, streaming, raw, turn.passages]);
+}
+
+/** Ends a turn that didn't finish: keeps what had arrived (marked incomplete) instead of discarding it. */
+function keepPartial(t: Turn, error: string): Partial<Turn> {
+  const partial = t.structured ?? partialAnswer(t.answer, t.passages);
+  if (partial && (partial.summary || partial.blocks.length)) {
+    return { status: "needs-clarity", structured: { ...partial, status: "needs-clarity", statusNote: "Incomplete: the answer stopped early" }, cited: citedLabels(partial), note: "Stopped early", error, truncated: true };
+  }
+  if (t.answer && !jsonPart(t.answer)) return { status: "needs-clarity", note: "Stopped early", error, truncated: true };
+  return { status: "error", error };
 }
 
 function TurnView({ turn, onOpen, onAsk }: { turn: Turn; onOpen: (p: PassageView) => void; onAsk: (q: string) => void }) {
   const live = useLiveAnswer(turn);
   // Old answers (and models that ignore the format mid-stream) are Markdown text.
-  const answer = live || turn.answer.trimStart().startsWith("{") ? "" : visibleAnswer(turn.answer);
+  const answer = live || jsonPart(turn.answer) ? "" : visibleAnswer(turn.answer);
   const byLabel = (label: string) => {
     const p = turn.passages.find((x) => x.label === label);
     if (p) onOpen(p);
@@ -168,7 +189,7 @@ function TurnView({ turn, onOpen, onAsk }: { turn: Turn; onOpen: (p: PassageView
           {turn.status === "streaming" ? (
             <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
               <Loader2 className="size-3.5 animate-spin" />
-              {answer || live ? "Writing the answer…" : turn.meta?.sections.length ? `Reading ${turn.meta.sections.length} sections (${turn.passages.length} passages)…` : `Reading ${turn.passages.length || "the"} passages…`}
+              {answer || live ? "Writing the answer…" : turn.thinking ? `Thinking it through (${turn.passages.length} passages)…` : turn.meta?.sections.length ? `Reading ${turn.meta.sections.length} sections (${turn.passages.length} passages)…` : `Reading ${turn.passages.length || "the"} passages…`}
             </span>
           ) : turn.status === "error" ? (
             <span className="inline-flex items-center gap-1.5 text-xs font-medium text-destructive">
@@ -270,24 +291,31 @@ export function AskChat({ suggestions }: { suggestions: string[] }) {
         let buf = "";
         for (;;) {
           const { value, done } = await reader.read();
-          if (done) break;
-          buf += value;
+          if (done) buf += "\n"; // handle a last line without a trailing newline
+          else buf += value;
           const lines = buf.split("\n");
           buf = lines.pop() ?? "";
           for (const line of lines.filter(Boolean)) {
-            const e = JSON.parse(line);
+            let e;
+            try {
+              e = JSON.parse(line);
+            } catch {
+              continue;
+            }
             if (e.type === "meta") patch(id, () => ({ meta: { analysis: e.analysis, sections: e.sections, omitted: e.omitted } }));
             else if (e.type === "passages") patch(id, () => ({ passages: e.passages }));
+            else if (e.type === "thinking") patch(id, () => ({ thinking: true }));
             else if (e.type === "text") patch(id, (t) => ({ answer: t.answer + e.text }));
             else if (e.type === "answer") patch(id, () => ({ structured: e.answer, report: e.report, fallback: e.fallback, cited: citedLabels(e.answer) }));
             else if (e.type === "done") patch(id, () => ({ status: e.status, note: e.note, cited: e.cited, truncated: e.truncated, model: e.model }));
             else if (e.type === "error") patch(id, () => ({ status: "error", error: e.message }));
           }
+          if (done) break;
         }
-        patch(id, (t) => (t.status === "streaming" ? { status: "error", error: "The answer stopped early. Try again." } : {}));
+        patch(id, (t) => (t.status === "streaming" ? keepPartial(t, "The answer stopped early. Try again.") : {}));
       } catch (err) {
         const stopped = err instanceof DOMException && err.name === "AbortError";
-        patch(id, (t) => ({ status: stopped && t.answer ? "needs-clarity" : "error", error: stopped ? "Stopped." : (err as Error).message, note: stopped ? "Stopped early" : "" }));
+        patch(id, (t) => keepPartial(t, stopped ? "Stopped." : (err as Error).message));
       }
     },
     [patch],

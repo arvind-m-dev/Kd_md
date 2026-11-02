@@ -31,6 +31,14 @@ export const isExtraRule = (r: { group: string; doc: string | null }) => isExtra
 /** Passages outside any document (group notes, the conflicts chapter, the source register) are meta, so extra too. */
 export const isExtraPassage = (p: { group: string | null; doc: string | null }) => !p.group || !p.doc || isExtraDoc(p.doc, p.group);
 
+/** Whether an in-app link (a reading history entry, bookmark or highlight) points at a working note. */
+export function isExtraHref(href: string): boolean {
+  const path = href.split(/[?#]/)[0];
+  if ([...EXTRA_PAGES].some((p) => path === p || path.startsWith(`${p}/`))) return true;
+  const m = path.match(/^\/read\/(\d{2})(?:\/([\w-]+))?/);
+  return !!m && isExtraDoc(m[2] ?? null, m[1]);
+}
+
 /** Sets <html data-scope> from the cookie before first paint, so pages don't flash hidden parts. Inlined in <head>. */
 export const SCOPE_SCRIPT = `try{if(document.cookie.split(/;\\s*/).includes("${SCOPE_COOKIE}=all"))document.documentElement.dataset.scope="all"}catch(e){}`;
 

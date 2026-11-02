@@ -25,6 +25,7 @@ const tree: IndexGroup[] = kd.groups.map((g) => ({
       url: d.url,
       type: d.type,
       ruleCount: d.ruleCount,
+      needsClarity: kd.rules.filter((r) => r.doc === d.id && r.status === "needs-clarity").length,
       extra: isExtraDoc(d.id, d.group),
       sections: toc(docMarkdown(d.id) ?? "", 6),
     })),

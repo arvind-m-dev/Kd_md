@@ -91,6 +91,11 @@ export function extractScope(text: string): Scope {
       if (!scope.assetClass.length) delete scope.assetClass;
     }
   }
+  // "Managed Office" also contains "office": keep plain Office only if it is named on its own too.
+  if (scope.assetClass?.includes("Managed Office") && scope.assetClass.includes("Office")) {
+    const rest = text.replace(/\bmanaged[\s-]+(office|space)s?\b/gi, "");
+    if (!VOCAB.assetClass.find((t) => t.value === "Office")!.ask.test(rest)) scope.assetClass = scope.assetClass.filter((v) => v !== "Office");
+  }
   // "Managed Space Operator/Occupier" is a role, not by itself the Managed Office asset class... but it implies it.
   if (scope.role?.includes("Office Tenant") && scope.assetClass?.includes("Office") && /office[\s-]+tenant/i.test(text)) {
     const rest = text.replace(/office[\s-]+tenants?/gi, "");
@@ -100,7 +105,7 @@ export function extractScope(text: string): Scope {
   return scope;
 }
 
-const COMPARE = /\b(compare|comparison|compared|difference|differences|differ|versus|vs\.?)\b/i;
+const COMPARE = /\b(compare|comparison|compared|difference|differences|differ|differs|versus|vs\.?)\b/i;
 const REQUIREMENTS =
   /\b(requirements?|all (the )?fields|fields? (for|of|in|on|when)|input fields|form fields|mandatory|required fields|which fields|what fields|validations?|specs?|specifications|what (do|does) .* (need|fill|enter|provide))\b/i;
 const WORKFLOW =
@@ -122,11 +127,26 @@ export function detectIntent(q: string, scope: Scope, ruleIds: string[]): Intent
 /** Splits "compare A with B" / "A vs B" / "difference between A and B" into the two sides' text. */
 export function compareSides(q: string): [string, string] | null {
   const body = q
-    .replace(/^\s*(please\s+)?(compare|what('s| is| are)? the differences? between|difference between|how (does|do)|what differs between)\s*/i, "")
+    .replace(/^\s*(please\s+)?(compare|what('s| is| are)? the differences? between|difference between|how (does|do|is|are)|what differs between)\s*/i, "")
     .replace(/\?+\s*$/, "");
-  const parts = body.split(/\s+(?:vs\.?|versus|with|against|and|to)\s+/i);
-  if (parts.length < 2) return null;
-  return [parts[0], parts.slice(1).join(" ")];
+  // Strongest separator first, so "the steps to post an office lease vs a retail lease" splits on "vs".
+  const separators = [
+    /\s+(?:vs\.?|versus)\s+/i,
+    /\s+differs?\s+from\s+/i,
+    /\s+compared\s+(?:to|with)\s+/i,
+    /\s+(?:with|against)\s+/i,
+    /\s+and\s+/i,
+    /\s+from\s+/i,
+    /\s+to\s+/i,
+  ];
+  for (const sep of separators) {
+    const m = body.match(sep);
+    if (!m || m.index === undefined) continue;
+    const a = body.slice(0, m.index).trim();
+    const b = body.slice(m.index + m[0].length).trim();
+    if (a && b) return [a, b];
+  }
+  return null;
 }
 
 export function analyzeQuestion(question: string, previous?: string): Analysis {
@@ -141,7 +161,11 @@ export function analyzeQuestion(question: string, previous?: string): Analysis {
   if (previous) {
     const prev = extractScope(previous);
     const ownDims = Object.keys(own) as Dimension[];
-    const followUp = ownDims.length === 0 || /\b(it|this|that|these|those|them|same|also|other|another|instead|then|there)\b/i.test(question);
+    // Only real follow-ups inherit: no scope of its own, an opening like "And…" / "What about…", or a short
+    // question that points back ("Which of these are mandatory?"). "…property that agents upload" is not one.
+    const opener = /^\s*(and|also|then|now|what about|how about|same for|the same|for the same|instead)\b/i.test(question);
+    const pointsBack = /\b(these|those|them|it|the same|same one|instead)\b/i.test(question) && question.trim().split(/\s+/).length <= 10;
+    const followUp = ownDims.length === 0 || opener || pointsBack;
     if (followUp) {
       for (const dim of Object.keys(prev) as Dimension[]) {
         if (!scope[dim]) {

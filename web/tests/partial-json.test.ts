@@ -18,3 +18,7 @@ test("recovers what has streamed so far", () => {
 test("ignores text after the JSON object", () => {
   expect(parsePartialJson('{"a":1} trailing words')).toEqual({ a: 1 });
 });
+
+test("``` inside a string doesn't cut a fenced answer short", () => {
+  expect(parsePartialJson('```json\n{"summary":"use ```code``` here","blocks":[1]}\n```')).toEqual({ summary: "use ```code``` here", blocks: [1] });
+});

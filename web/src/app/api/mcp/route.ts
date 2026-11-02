@@ -28,11 +28,15 @@ const ok = (id: RpcRequest["id"], result: unknown) => ({ jsonrpc: "2.0", id, res
 const fail = (id: RpcRequest["id"], code: number, message: string) => ({ jsonrpc: "2.0", id: id ?? null, error: { code, message } });
 
 function handle(msg: RpcRequest, origin: string): object | null {
+  // A JSON-RPC response from the client (to a server request; this server sends none) is accepted silently.
+  if (msg && typeof msg === "object" && msg.jsonrpc === "2.0" && msg.method === undefined && ("result" in msg || "error" in msg)) return null;
   if (!msg || typeof msg !== "object" || msg.jsonrpc !== "2.0" || typeof msg.method !== "string") {
     return fail(msg?.id, -32600, "Invalid JSON-RPC request.");
   }
   // Notifications (no id) get no reply.
   if (msg.id === undefined) return null;
+  // MCP request ids are strings or numbers, never null.
+  if (msg.id === null || (typeof msg.id !== "string" && typeof msg.id !== "number")) return fail(null, -32600, "Request id must be a string or number.");
   const params = msg.params ?? {};
   switch (msg.method) {
     case "initialize": {
@@ -81,6 +85,11 @@ function handle(msg: RpcRequest, origin: string): object | null {
 const json = (body: unknown, status = 200) => Response.json(body, { status, headers: CORS });
 
 export async function POST(req: Request) {
+  // A client may only state a protocol version this server speaks (MCP Streamable HTTP).
+  const version = req.headers.get("mcp-protocol-version");
+  if (version && !VERSIONS.includes(version)) {
+    return json(fail(null, -32600, `Unsupported MCP-Protocol-Version ${version}. Supported: ${VERSIONS.join(", ")}.`), 400);
+  }
   const token = process.env.KD_MCP_TOKEN;
   if (token && req.headers.get("authorization") !== `Bearer ${token}`) {
     return json(fail(null, -32001, "Unauthorized: send Authorization: Bearer <KD_MCP_TOKEN>."), 401);
@@ -93,6 +102,7 @@ export async function POST(req: Request) {
   }
   const origin = new URL(req.url).origin;
   if (Array.isArray(body)) {
+    if (!body.length) return json(fail(null, -32600, "Empty batch."), 400);
     const replies = body.map((m) => handle(m, origin)).filter((r) => r !== null);
     return replies.length ? json(replies) : new Response(null, { status: 202, headers: CORS });
   }

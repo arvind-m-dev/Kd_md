@@ -3,8 +3,9 @@
 - `KEYDEMAND_V2_BUSINESS_RULES.md` is the consolidated business rules, requirements, relevancy, user journeys and admin rules. Every rule has an ID and a source.
 - `app/` is a local web page where you ask questions about that file. Every answer comes with the source document link, its section, the line range in the .md, and the paragraphs before and after.
 - `kb/` holds the build sources: one file per document group, the build script and the change log.
+- `web/` is the main app (Next.js, deployed on Vercel): Index, reader with highlights and notes, Library, Ask with structured answers, and an MCP server for AI tools. See [web/README.md](web/README.md).
 
-## Run the Ask page
+## Run the local Ask page (Python)
 
 1. **Credentials, once.** The app uses the Claude API. Either:
    ```bash

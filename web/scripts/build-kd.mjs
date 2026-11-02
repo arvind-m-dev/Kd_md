@@ -3,6 +3,7 @@
 //   src/generated/kd-data.json  groups, docs, rules, decisions, conflicts,
 //                               placeholders, glossary, outline, stats
 //   src/generated/passages.json search passages (text chunks with line ranges)
+//   src/generated/route-ids.json valid rule / group / document IDs (for src/proxy.ts)
 // Run: npm run kd   (also runs automatically before `next build` / `next dev`)
 import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -330,4 +331,9 @@ if (problems.length) { console.error("build-kd failed:\n- " + problems.join("\n-
 mkdirSync(dirname(OUT), { recursive: true });
 writeFileSync(OUT, JSON.stringify({ stats, groups, docs, register, rules, decisions, conflicts, placeholders, glossary, changelog, outline }));
 writeFileSync(OUT_PASSAGES, JSON.stringify(passages));
+// Just the IDs, for src/proxy.ts to answer unknown /rules/… and /read/… URLs with a real 404.
+writeFileSync(
+  join(WEB, "src", "generated", "route-ids.json"),
+  JSON.stringify({ rules: rules.map((r) => r.id), groups: groups.map((g) => g.id), docs: docs.map((d) => `${d.group}/${d.id}`) }),
+);
 console.log(`build-kd: ${passages.length} passages · ${rules.length} rules · ${docs.length} docs · ${groups.length} groups · ${decisions.length} decisions · ${conflicts.length} conflicts · ${glossary.length} glossary terms · ${stats.needsClarity} rules need clarity`);

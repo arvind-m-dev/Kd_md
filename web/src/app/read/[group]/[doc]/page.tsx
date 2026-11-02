@@ -26,6 +26,39 @@ export async function generateMetadata({ params }: PageProps<"/read/[group]/[doc
   return d ? { title: d.title } : {};
 }
 
+type DocRef = (typeof kd.docs)[number];
+
+/** Previous / next document in the topic. `scope` shows it only with working notes hidden or shown. */
+function DocNav({ groupId, prev, next, scope }: { groupId: string; prev?: DocRef; next?: DocRef; scope?: "core-only" | "extra" }) {
+  if (!prev && !next) return null;
+  const attrs = scope === "core-only" ? { "data-core-only": true } : scope === "extra" ? { "data-extra": true } : {};
+  const link = (d: DocRef, dir: "prev" | "next") => (
+    <Link
+      href={`/read/${groupId}/${d.id}`}
+      className={`rounded-xl border p-4 hover:bg-accent ${dir === "next" ? "text-right sm:col-start-2" : ""}`}
+    >
+      <span className={`flex items-center gap-1 text-xs text-muted-foreground ${dir === "next" ? "justify-end" : ""}`}>
+        {dir === "prev" ? (
+          <>
+            <ArrowLeft className="size-3" /> Previous
+          </>
+        ) : (
+          <>
+            Next <ArrowRight className="size-3" />
+          </>
+        )}
+      </span>
+      <span className="mt-1 block text-sm font-medium">{d.title}</span>
+    </Link>
+  );
+  return (
+    <nav {...attrs} className="mt-12 grid gap-3 border-t pt-6 sm:grid-cols-2" aria-label="Other documents in this topic">
+      {prev && link(prev, "prev")}
+      {next && link(next, "next")}
+    </nav>
+  );
+}
+
 async function DocContent({ params }: { params: PageProps<"/read/[group]/[doc]">["params"] }) {
   const { group: groupId, doc: docId } = await params;
   const doc = getDoc(docId);
@@ -33,10 +66,15 @@ async function DocContent({ params }: { params: PageProps<"/read/[group]/[doc]">
   const group = getGroup(groupId)!;
   const md = docMarkdown(doc.id)!;
   const entries = toc(md, 5);
+  // Neighbours with working notes shown, and (for a core doc) the nearest core neighbours when they're hidden.
   const siblings = kd.docs.filter((d) => d.group === groupId);
-  const i = siblings.indexOf(doc);
-  const prev = siblings[i - 1];
-  const next = siblings[i + 1];
+  const neighbours = (list: typeof siblings) => {
+    const i = list.indexOf(doc);
+    return { prev: list[i - 1], next: list[i + 1] };
+  };
+  const all = neighbours(siblings);
+  const core = isExtraDoc(doc.id, doc.group) ? all : neighbours(siblings.filter((d) => !isExtraDoc(d.id, d.group)));
+  const sameNav = all.prev === core.prev && all.next === core.next;
   const href = `/read/${groupId}/${doc.id}`;
 
   const page = (
@@ -75,26 +113,14 @@ async function DocContent({ params }: { params: PageProps<"/read/[group]/[doc]">
             {md}
           </Markdown>
         </HighlightScope>
-        <nav className="mt-12 grid gap-3 border-t pt-6 sm:grid-cols-2" aria-label="Other documents in this topic">
-          {prev ? (
-            <Link href={`/read/${groupId}/${prev.id}`} data-extra={isExtraDoc(prev.id, prev.group) || undefined} className="rounded-xl border p-4 hover:bg-accent">
-              <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                <ArrowLeft className="size-3" /> Previous
-              </span>
-              <span className="mt-1 block text-sm font-medium">{prev.title}</span>
-            </Link>
-          ) : (
-            <span />
-          )}
-          {next && (
-            <Link href={`/read/${groupId}/${next.id}`} data-extra={isExtraDoc(next.id, next.group) || undefined} className="rounded-xl border p-4 text-right hover:bg-accent">
-              <span className="flex items-center justify-end gap-1 text-xs text-muted-foreground">
-                Next <ArrowRight className="size-3" />
-              </span>
-              <span className="mt-1 block text-sm font-medium">{next.title}</span>
-            </Link>
-          )}
-        </nav>
+        {sameNav ? (
+          <DocNav groupId={groupId} prev={all.prev} next={all.next} />
+        ) : (
+          <>
+            <DocNav groupId={groupId} prev={core.prev} next={core.next} scope="core-only" />
+            <DocNav groupId={groupId} prev={all.prev} next={all.next} scope="extra" />
+          </>
+        )}
       </article>
       <Toc entries={entries} />
     </div>

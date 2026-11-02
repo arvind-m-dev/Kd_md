@@ -38,9 +38,16 @@ Ask returns structured answers: tables for requirements, timelines for workflows
 ## Tests
 
 ```bash
+npm run typecheck                 # works on a fresh clone (generates data and route types first)
 npm test                          # unit tests on the real knowledge base (Vitest)
 npm run build && npm run test:e2e # browser test of Ask with a stand-in model (needs Playwright + Chromium)
 ```
+
+## Deploy on Vercel
+
+- Set the project's **Root Directory** to `web`. Node.js 20.9 or later.
+- Add the Ask variables from `.env.example` (for example `KD_AI_PROVIDER`, `KD_MODEL` and `KD_AI_API_KEY`). Optional: `KD_CONTEXT_CHARS` / `KD_MAX_TOKENS` for small or free models, and `KD_SITE_URL` (defaults to the production URL) sent to OpenRouter as the referring site.
+- `content/kd.md` is committed, so the build doesn't need the master file one folder up.
 
 ## Connect an AI tool (MCP)
 

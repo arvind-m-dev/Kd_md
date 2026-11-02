@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
   },
   partialPrefetching: true,
   turbopack: {
-    // A stray package-lock.json in the home folder would otherwise be picked as the root.
+    // The app lives in web/; pin the root so a package-lock.json higher up (the repo root has one) isn't picked instead.
     root: dirname(fileURLToPath(import.meta.url)),
     rules: {
       "*.css": {

@@ -3,9 +3,9 @@
 
 /** The JSON part of a model's text: drops reasoning tags, code fences and any text before the first "{". */
 export function jsonPart(text: string): string {
-  let t = text.replace(/<think>[\s\S]*?(<\/think>|$)/gi, "");
-  const fence = t.match(/```(?:json)?\s*([\s\S]*?)(```|$)/i);
-  if (fence && fence[1].includes("{")) t = fence[1];
+  // From the first "{": the parser below stops at the end of that value, so a closing ``` fence (or any
+  // ``` inside a string) doesn't cut it short.
+  const t = text.replace(/<think>[\s\S]*?(<\/think>|$)/gi, "");
   const start = t.indexOf("{");
   return start < 0 ? "" : t.slice(start);
 }

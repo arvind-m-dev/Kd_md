@@ -16,7 +16,7 @@ export function anthropicProvider(): AiProvider {
     configured: true,
     setupHint: "Set ANTHROPIC_API_KEY on the server.",
 
-    async stream(req, onText) {
+    async stream(req, onText, onThinking) {
       const system: Anthropic.Beta.BetaTextBlockParam[] = [{ type: "text", text: req.system }];
       // Identical on every request, so it is cached.
       if (req.cachedSystem) system.push({ type: "text", text: req.cachedSystem, cache_control: { type: "ephemeral" } });
@@ -37,12 +37,12 @@ export function anthropicProvider(): AiProvider {
       );
       for await (const event of run) {
         if (event.type === "content_block_delta" && event.delta.type === "text_delta") onText(event.delta.text);
+        else if (event.type === "content_block_start" && event.content_block.type === "thinking") onThinking?.();
       }
       const msg = await run.finalMessage();
       return {
         stop: msg.stop_reason === "refusal" ? "refusal" : msg.stop_reason === "max_tokens" ? "max_tokens" : "end",
         model: msg.model,
-        enforcedJson: !!req.json,
       };
     },
 

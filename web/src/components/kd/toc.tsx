@@ -1,7 +1,7 @@
 "use client";
 
 import { List } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import type { TocEntry } from "@/lib/reader";
@@ -49,7 +49,9 @@ function TocList({ entries, active, onPick }: { entries: TocEntry[]; active: str
 /** Desktop: sticky contents column. Phone/tablet: a "Contents" button that opens a sheet. */
 export function Toc({ entries }: { entries: TocEntry[] }) {
   const [open, setOpen] = useState(false);
-  const active = useActiveHeading(entries.map((e) => e.slug));
+  // Stable while the entries are, so the observer isn't rebuilt on every render.
+  const slugs = useMemo(() => entries.map((e) => e.slug), [entries]);
+  const active = useActiveHeading(slugs);
   if (!entries.length) return null;
   return (
     <>

@@ -5,6 +5,7 @@
 import { useSyncExternalStore } from "react";
 
 export type BookmarkKind = "doc" | "group" | "section" | "rule" | "answer";
+export const BOOKMARK_KINDS: BookmarkKind[] = ["doc", "group", "section", "rule", "answer"];
 export type HighlightColor = "yellow" | "green" | "blue" | "pink" | "orange";
 export const HIGHLIGHT_COLORS: HighlightColor[] = ["yellow", "green", "pink", "blue", "orange"];
 
@@ -127,7 +128,8 @@ export function useLibrary(): Library {
   return useSyncExternalStore(subscribe, getSnapshot, () => EMPTY);
 }
 
-export const newId = () => (crypto.randomUUID?.() ?? `${Date.now()}-${Math.random()}`).slice(0, 12);
+/** A short unique id. crypto.randomUUID is missing on plain-http pages, so fall back to random digits (not the clock). */
+export const newId = () => (crypto.randomUUID?.() ?? `${Math.random().toString(36).slice(2)}${Math.random().toString(36).slice(2)}`).replace(/-/g, "").slice(0, 16);
 
 // ── Bookmarks ──
 
@@ -184,14 +186,33 @@ export function importJson(text: string): number {
   if (!v || typeof v !== "object" || (!Array.isArray(v.bookmarks) && !Array.isArray(v.highlights))) {
     throw new Error("This file isn't a Keydemand library backup.");
   }
+  // Only well-formed items: a file from another version (or edited by hand) must not break the Library page.
+  const str = (x: unknown) => typeof x === "string" && x.length > 0;
+  const okBookmark = (b: Bookmark) =>
+    !!b && str(b.key) && str(b.title) && str(b.href) && b.href.startsWith("/") && BOOKMARK_KINDS.includes(b.kind) && (b.kind !== "answer" || !!b.answer);
+  const okHighlight = (h: Highlight) => !!h && str(h.id) && str(h.scope) && str(h.exact) && str(h.href) && h.href.startsWith("/") && HIGHLIGHT_COLORS.includes(h.color);
   let added = 0;
   update((s) => {
     const keys = new Set(s.bookmarks.map((b) => b.key));
     const ids = new Set(s.highlights.map((h) => h.id));
-    const bookmarks = (v.bookmarks ?? []).filter((b) => b?.key && b.href && !keys.has(b.key));
-    const highlights = (v.highlights ?? []).filter((h) => h?.id && h.scope && h.exact && !ids.has(h.id));
+    const hrefs = new Set(s.recents.map((r) => r.href));
+    const bookmarks = (Array.isArray(v.bookmarks) ? v.bookmarks : [])
+      .filter(okBookmark)
+      .filter((b) => !keys.has(b.key) && (keys.add(b.key), true))
+      .map((b) => ({ ...b, subtitle: typeof b.subtitle === "string" ? b.subtitle : "", createdAt: Number(b.createdAt) || Date.now() }));
+    const highlights = (Array.isArray(v.highlights) ? v.highlights : [])
+      .filter(okHighlight)
+      .filter((h) => !ids.has(h.id) && (ids.add(h.id), true))
+      .map((h) => ({ ...h, prefix: String(h.prefix ?? ""), suffix: String(h.suffix ?? ""), note: String(h.note ?? ""), scopeTitle: String(h.scopeTitle ?? h.href) }));
+    const recents = (Array.isArray(v.recents) ? v.recents : [])
+      .filter((r) => r && str(r.href) && r.href.startsWith("/") && str(r.title) && !hrefs.has(r.href) && (hrefs.add(r.href), true))
+      .map((r) => ({ href: r.href, title: r.title, subtitle: String(r.subtitle ?? ""), at: Number(r.at) || 0, progress: Math.min(1, Math.max(0, Number(r.progress) || 0)) }));
     added = bookmarks.length + highlights.length;
-    return { bookmarks: [...s.bookmarks, ...bookmarks], highlights: [...s.highlights, ...highlights] };
+    return {
+      bookmarks: [...s.bookmarks, ...bookmarks],
+      highlights: [...s.highlights, ...highlights],
+      recents: [...s.recents, ...recents].sort((a, b) => b.at - a.at).slice(0, MAX_RECENTS),
+    };
   });
   return added;
 }
@@ -217,9 +238,12 @@ export function notesMarkdown(lib: Library, origin: string): string {
   return out.join("\n");
 }
 
+/** Saves text as a file. The object URL is released a little later: revoking it at once can cancel the download. */
 export function downloadFile(name: string, body: string, type: string) {
   const url = URL.createObjectURL(new Blob([body], { type }));
   const a = Object.assign(document.createElement("a"), { href: url, download: name });
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 30_000);
 }

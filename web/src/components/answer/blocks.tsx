@@ -35,7 +35,7 @@ export function Points({ heading, style, items }: { heading: string; style: "bul
                 type="button"
                 role="checkbox"
                 aria-checked={done.has(i)}
-                aria-label="Mark as checked"
+                aria-label={`Checked: ${it.text.replace(/\[P\d+\]/g, "").slice(0, 120)}`}
                 onClick={() =>
                   setDone((d) => {
                     const n = new Set(d);
@@ -70,14 +70,14 @@ const KIND = {
   outcome: { icon: Flag, label: "Outcome" },
 };
 
-function Step({ step, n, last }: { step: WorkflowStep; n: number; last: boolean }) {
+function Step({ step, n, last, first }: { step: WorkflowStep; n: number; last: boolean; first: boolean }) {
   const id = useId();
   const details = [
     ["Before this step", step.prerequisites],
     ["Checks and validation", step.validation],
     ["Other paths and exceptions", step.alternatives],
   ].filter(([, v]) => v) as [string, string][];
-  const [open, setOpen] = useState(n === 1);
+  const [open, setOpen] = useState(first);
   const K = KIND[step.kind];
   return (
     <li className="relative flex gap-3 pb-5 last:pb-0">
@@ -128,7 +128,7 @@ export function Workflow({ heading, steps }: { heading: string; steps: WorkflowS
       <Heading>{heading}</Heading>
       <ol className="flex flex-col">
         {steps.map((st, i) => (
-          <Step key={i} step={st} n={steps.slice(0, i + 1).filter((x) => x.kind === "step").length} last={i === steps.length - 1} />
+          <Step key={i} step={st} n={steps.slice(0, i + 1).filter((x) => x.kind === "step").length} first={i === 0} last={i === steps.length - 1} />
         ))}
       </ol>
     </section>

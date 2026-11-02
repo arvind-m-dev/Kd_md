@@ -34,6 +34,8 @@ import {
   type BookmarkKind,
   type Highlight,
 } from "@/lib/library";
+import { useShowAll } from "@/components/shell/scope-toggle";
+import { isExtraHref } from "@/lib/scope";
 import { cn } from "@/lib/utils";
 
 type Tab = "highlights" | "bookmarks" | "answers" | "history";
@@ -205,20 +207,29 @@ export function LibraryView() {
   const file = useRef<HTMLInputElement>(null);
   const q = query.trim().toLowerCase();
 
-  const highlights = lib.highlights.filter((h) => has(q, h.exact, h.note, h.scopeTitle));
-  const bookmarks = lib.bookmarks.filter((b) => b.kind !== "answer" && has(q, b.title, b.subtitle));
-  const answers = lib.bookmarks.filter((b) => b.kind === "answer" && b.answer && has(q, b.answer.question, b.answer.answer));
-  const recents = lib.recents.filter((r) => has(q, r.title, r.subtitle));
+  // Items from working notes follow the "Working notes" switch, like the pages they point to (lib/scope.ts).
+  const showAll = useShowAll();
+  const inScope = (href: string) => showAll || !isExtraHref(href);
+  const allHighlights = lib.highlights.filter((h) => inScope(h.href));
+  const allBookmarks = lib.bookmarks.filter((b) => b.kind !== "answer" && inScope(b.href));
+  const allAnswers = lib.bookmarks.filter((b) => b.kind === "answer" && b.answer);
+  const allRecents = lib.recents.filter((r) => inScope(r.href));
+  const hiddenCount = lib.highlights.length - allHighlights.length + (lib.bookmarks.length - allAnswers.length - allBookmarks.length) + (lib.recents.length - allRecents.length);
+
+  const highlights = allHighlights.filter((h) => has(q, h.exact, h.note, h.scopeTitle));
+  const bookmarks = allBookmarks.filter((b) => has(q, b.title, b.subtitle));
+  const answers = allAnswers.filter((b) => has(q, b.answer!.question, b.answer!.answer));
+  const recents = allRecents.filter((r) => has(q, r.title, r.subtitle));
 
   // Highlights grouped by the page they were made on.
   const byPage = new Map<string, Highlight[]>();
   for (const h of highlights) byPage.set(h.scope, [...(byPage.get(h.scope) ?? []), h]);
 
   const tabs: { id: Tab; label: string; icon: React.ComponentType<{ className?: string }>; count: number }[] = [
-    { id: "highlights", label: "Highlights & notes", icon: Highlighter, count: lib.highlights.length },
-    { id: "bookmarks", label: "Bookmarks", icon: Bookmark, count: lib.bookmarks.filter((b) => b.kind !== "answer").length },
-    { id: "answers", label: "Saved answers", icon: MessageCircleQuestion, count: lib.bookmarks.filter((b) => b.kind === "answer").length },
-    { id: "history", label: "History", icon: BookOpenText, count: lib.recents.length },
+    { id: "highlights", label: "Highlights & notes", icon: Highlighter, count: allHighlights.length },
+    { id: "bookmarks", label: "Bookmarks", icon: Bookmark, count: allBookmarks.length },
+    { id: "answers", label: "Saved answers", icon: MessageCircleQuestion, count: allAnswers.length },
+    { id: "history", label: "History", icon: BookOpenText, count: allRecents.length },
   ];
   const total = lib.highlights.length + lib.bookmarks.length;
 
@@ -270,6 +281,11 @@ export function LibraryView() {
           />
         </div>
       </div>
+      {hiddenCount > 0 && (
+        <p className="mt-2 text-xs text-muted-foreground">
+          {hiddenCount} saved {hiddenCount === 1 ? "item is" : "items are"} from working notes and hidden. Turn on “Working notes” in the sidebar to see {hiddenCount === 1 ? "it" : "them"}.
+        </p>
+      )}
       {msg && (
         <p role="status" className="mt-2 text-sm text-primary">
           {msg}

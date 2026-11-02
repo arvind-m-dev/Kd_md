@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
 import { useLibrary } from "@/lib/library";
 import { findQuote, flashText, unwrapAll, wrapRange } from "@/lib/text-anchor";
@@ -35,11 +36,18 @@ export function HighlightScope({
     for (const h of mine) {
       const hit = findQuote(root, h.exact, h.prefix, h.suffix);
       if (!hit) continue;
+      let first = true;
       wrapRange(root, hit.start, hit.end, () => {
         const m = document.createElement("mark");
+        // The first piece carries the id, so #hl-<id> links scroll here like any anchor (also on the same page).
+        if (first) m.id = `hl-${h.id}`;
+        first = false;
         m.dataset.hl = h.id;
         m.className = cn("kd-hl", `kd-hl-${h.color}`, h.note && "kd-hl-noted");
-        if (h.note) m.title = h.note;
+        // Reachable from the keyboard: Tab to it, Enter or Space opens its toolbar (selection-toolbar.tsx).
+        // A title, not aria-label, so screen readers still read the highlighted text itself.
+        m.tabIndex = 0;
+        m.title = `${h.note ? `${h.note}\n` : ""}Highlight: press Enter for options`;
         return m;
       });
     }
@@ -55,13 +63,31 @@ export function HighlightScope({
     }
   }, [mine]);
 
+  // Re-runs when only the query changes (e.g. "Show in document" for the document already open).
+  const find = useSearchParams().get("find");
   useEffect(() => {
     const root = ref.current;
-    const find = new URLSearchParams(location.search).get("find");
     if (!root || !find) return;
     // After the browser's own scroll restoration.
     const t = setTimeout(() => flashText(root, find), 150);
     return () => clearTimeout(t);
+  }, [find]);
+
+  // Pulse a highlight when a #hl- link to it is followed on this page.
+  useEffect(() => {
+    const onHash = () => {
+      const id = location.hash.startsWith("#hl-") ? location.hash.slice(4) : "";
+      if (!id || !ref.current) return;
+      const marks = ref.current.querySelectorAll(`mark[data-hl="${CSS.escape(id)}"]`);
+      marks[0]?.scrollIntoView({ behavior: "smooth", block: "center" });
+      marks.forEach((m) => {
+        m.classList.remove("kd-hl-pulse");
+        void (m as HTMLElement).offsetWidth; // restart the animation
+        m.classList.add("kd-hl-pulse");
+      });
+    };
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
   return (

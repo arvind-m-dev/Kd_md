@@ -56,3 +56,22 @@ describe("follow-ups keep their topic", () => {
     expect(a.scope).toEqual({ role: ["Agent"] });
   });
 });
+
+describe("review fixes", () => {
+  test("a new full question is not treated as a follow-up just because it says 'that'", () => {
+    const a = analyzeQuestion("Which fields are required for an office sale property that agents upload?", "What are the requirements for a Mall project lease?");
+    expect(a.scope.projectType).toBeUndefined();
+    expect(a.inherited).toEqual([]);
+  });
+  test("'Managed office' does not also mean the plain Office asset class", () => {
+    expect(extractScope("managed office lease requirements").assetClass).toEqual(["Managed Office"]);
+    expect(extractScope("managed office and office lease").assetClass?.sort()).toEqual(["Managed Office", "Office"]);
+  });
+  test("comparisons split on the strongest separator", () => {
+    const a = analyzeQuestion("How does an office lease differ from a retail lease?");
+    expect(a.intent).toBe("compare");
+    expect(a.sides.map((s) => s.assetClass)).toEqual([["Office"], ["Retail"]]);
+    const b = analyzeQuestion("Compare the steps to post an office lease vs a retail lease");
+    expect(b.sides.map((s) => s.assetClass)).toEqual([["Office"], ["Retail"]]);
+  });
+});

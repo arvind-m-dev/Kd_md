@@ -260,14 +260,27 @@ export function validateAnswer(raw: unknown, { passages, question = "", sections
     if (!c.length) report.uncited++;
     return { ...item, cites: c, ...(c.length ? {} : { uncited: true }) };
   };
-  /** Inline [P#] markers in prose: keep only retrieved ones. */
+  /** Inline [P#] markers in prose (also grouped, "[P1, P4]"): keep only retrieved ones, as [P1][P4]. */
   const prose = (v: unknown, max = 6000) =>
-    s(v, max).replace(/\[(P\d+)\]/gi, (m, l: string) => {
-      const label = l.toUpperCase();
-      if (passages.has(label)) return `[${label}]`;
-      if (!report.unknownCites.includes(label)) report.unknownCites.push(label);
-      return "";
-    }).replace(/[ \t]+$/gm, "");
+    s(v, max)
+      .replace(/\[\s*(P\d+(?:\s*[,;&]\s*P\d+)*)\s*\]/gi, (_m, group: string) =>
+        group
+          .split(/[,;&]/)
+          .map((l) => l.trim().toUpperCase())
+          .filter((label) => {
+            if (passages.has(label)) return true;
+            if (!report.unknownCites.includes(label)) report.unknownCites.push(label);
+            return false;
+          })
+          .map((l) => `[${l}]`)
+          .join(""),
+      )
+      .replace(/[ \t]+$/gm, "");
+  /** Substantial prose with no citation at all counts as an unsourced item. */
+  const proseCited = (text: string) => {
+    if (text.length > 40 && !/\[P\d+\]/.test(text)) report.uncited++;
+    return text;
+  };
 
   const citedText = (c: string[]) => c.map((l) => passages.get(l) ?? "").join("\n");
 
@@ -276,11 +289,19 @@ export function validateAnswer(raw: unknown, { passages, question = "", sections
     if (state !== "yes" && state !== "no") return state;
     const text = citedText(c);
     const name = normName(field);
-    // Table cells and list items that name the field, e.g. "| Carpet Area (sq. ft.)* |" or "Project Name*,".
-    const cells = text.split(/\n|\||,(?![^(]*\))|;/).filter((cell) => name && normName(cell).includes(name));
+    // Table cells and list items that START with the field's name, e.g. "| Carpet Area (sq. ft.)* |" for
+    // "Carpet Area", or "Project Name*," — but not "Project Name*" for a field called "Name".
+    const cells = text.split(/\n|\||,(?![^(]*\))|;/).filter((cell) => {
+      const n = normName(cell);
+      return !!name && (n === name || n.startsWith(`${name} `));
+    });
     const marked = cells.some((cell) => /\*/.test(cell));
-    const lines = text.split("\n").filter((l) => name && normName(l).includes(name));
-    const says = lines.some((l) => (state === "yes" ? /\b(mandatory|required|compulsory)\b/i : /\boptional\b/i).test(l));
+    const word = new RegExp(`(^| )${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}( |$)`);
+    const lines = text.split("\n").filter((l) => name && word.test(normName(l)));
+    const negated = /\b(not|non|isn't|is not|no longer)[\s-]+(mandatory|required|compulsory)\b|\boptional\b/i;
+    const says = lines.some((l) =>
+      state === "yes" ? /\b(mandatory|required|compulsory)\b/i.test(l) && !negated.test(l) : /\boptional\b|\b(not|non)[\s-]+(mandatory|required)\b/i.test(l),
+    );
     // "No" from silence needs a form that does use the * convention for other fields (anywhere in its section).
     const wide = c.map((l) => sections?.get(l) ?? passages.get(l) ?? "").join("\n");
     const convention = wide.split(/\n|\|/).some((cell) => /\*\s*$/.test(cell.trim()) && !normName(cell).includes(name));
@@ -293,7 +314,7 @@ export function validateAnswer(raw: unknown, { passages, question = "", sections
     const r = (b && typeof b === "object" ? b : {}) as Record<string, unknown>;
     switch (r.type) {
       case "text":
-        return { type: "text", heading: s(r.heading, 200), body: prose(r.body, 12000) };
+        return { type: "text", heading: s(r.heading, 200), body: proseCited(prose(r.body, 12000)) };
       case "points": {
         const items = arr(r.items).map((i) => {
           const x = (i ?? {}) as Record<string, unknown>;
@@ -410,7 +431,7 @@ export function validateAnswer(raw: unknown, { passages, question = "", sections
     status: oneOf(o.status, ["clear", "needs-clarity"] as const, "needs-clarity"),
     statusNote: s(o.statusNote, 400),
     scope: { searched: s(scopeRaw.searched, 600), assumptions: arr(scopeRaw.assumptions).map((x) => s(x, 400)).filter(Boolean).slice(0, 6) },
-    summary: prose(o.summary, 1500),
+    summary: proseCited(prose(o.summary, 1500)),
     clarification: s(o.clarification, 600),
     blocks,
     conflicts,
@@ -418,7 +439,16 @@ export function validateAnswer(raw: unknown, { passages, question = "", sections
     followUps: cleanFollowUps(o.followUps, question),
   };
   // Anything the checks found that the model didn't say keeps the answer from being "clear".
-  if (answer.status === "clear" && (report.downgradedRequired || report.unverifiedRows || conflicts.length)) answer.status = "needs-clarity";
+  if (answer.status === "clear" && (report.downgradedRequired || report.unverifiedRows || report.uncited || conflicts.length)) {
+    answer.status = "needs-clarity";
+    if (!answer.statusNote) {
+      answer.statusNote = conflicts.length
+        ? "The sources disagree on part of this"
+        : report.uncited
+          ? "Some statements have no cited source"
+          : "Some details couldn't be confirmed in the cited sources";
+    }
+  }
   return { answer, report };
 }
 

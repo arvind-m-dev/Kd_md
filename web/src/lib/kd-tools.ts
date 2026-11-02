@@ -32,6 +32,9 @@ const int = (v: unknown, def: number, min: number, max: number) => {
 };
 
 const READ_CHARS = 40_000;
+// Real IDs for the examples in tool descriptions (document IDs are numbered across the whole file).
+const EG_GROUP = kd.groups.find((g) => g.id === "07")?.id ?? kd.groups[0].id;
+const EG_DOC = kd.docs.find((d) => d.group === EG_GROUP)?.id ?? kd.docs[0].id;
 
 export const TOOLS: ToolDef[] = [
   {
@@ -98,8 +101,8 @@ export const TOOLS: ToolDef[] = [
       type: "object",
       properties: {
         words: { type: "string", description: "Words that must all appear. Empty lists every rule in the filter." },
-        group: { type: "string", description: "Topic group ID, e.g. '07' (see list_topics)." },
-        document: { type: "string", description: "Document ID, e.g. '07-1' (see list_topics)." },
+        group: { type: "string", description: `Topic group ID, e.g. '${EG_GROUP}' (see list_topics).` },
+        document: { type: "string", description: `Document ID, e.g. '${EG_DOC}' (see list_topics).` },
         status: { type: "string", enum: ["clear", "needs-clarity"] },
         limit: { type: "integer", minimum: 1, maximum: 200, default: 40 },
       },
@@ -148,11 +151,11 @@ export const TOOLS: ToolDef[] = [
     name: "read_document",
     title: "Read a document",
     description:
-      "The full text of one source document (e.g. '07-1') or a group's own notes (e.g. '07'), as Markdown, verbatim from the knowledge base. Long documents come in pages: pass the returned next offset to read on.",
+      `The full text of one source document (e.g. '${EG_DOC}') or a group's own notes (e.g. '${EG_GROUP}'), as Markdown, verbatim from the knowledge base. Long documents come in pages: pass the returned next offset to read on.`,
     inputSchema: {
       type: "object",
       properties: {
-        id: { type: "string", description: "Document ID like '07-1', or group ID like '07'." },
+        id: { type: "string", description: `Document ID like '${EG_DOC}', or group ID like '${EG_GROUP}' (see list_topics).` },
         offset: { type: "integer", minimum: 0, default: 0, description: "Character offset to start from." },
       },
       required: ["id"],

@@ -4,12 +4,13 @@ import { ALargeSmall } from "lucide-react";
 import { useEffect, useSyncExternalStore } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { buttonVariants } from "@/components/ui/button";
+import { READER_PREFS_KEY } from "@/lib/reader-prefs";
 import { cn } from "@/lib/utils";
 
 type Size = "sm" | "md" | "lg" | "xl";
 type Width = "normal" | "narrow";
 type Font = "sans" | "serif";
-const KEY = "kd-reader-prefs";
+const KEY = READER_PREFS_KEY;
 const SIZES: { id: Size; label: string }[] = [
   { id: "sm", label: "A" },
   { id: "md", label: "A" },
