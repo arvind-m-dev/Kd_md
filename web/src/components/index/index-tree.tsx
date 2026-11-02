@@ -21,6 +21,8 @@ export interface IndexDoc {
   url: string;
   type: string;
   ruleCount: number;
+  /** Rules in this document that need clarity. */
+  needsClarity: number;
   /** A working note (lib/scope.ts). */
   extra: boolean;
   sections: IndexSection[];
@@ -64,7 +66,8 @@ function Hl({ text, q }: { text: string; q: string }) {
 function DocRow({ g, d, q, open, onToggle }: { g: IndexGroup; d: IndexDoc; q: string; open: boolean; onToggle: () => void }) {
   const href = `/read/${g.id}/${d.id}`;
   const match = matcher(q);
-  const sections = q ? d.sections.filter((s) => match(s.title)) : d.sections;
+  // Listed because the topic or document title matched: all its sections; else the matching ones.
+  const sections = q && !match(`${g.id} ${g.title}`) && !match(d.title) ? d.sections.filter((s) => match(s.title)) : d.sections;
   const min = Math.min(...d.sections.map((s) => s.level), 9);
   return (
     <li className="rounded-xl border bg-background/70 transition-all hover:border-primary/40 hover:shadow-sm">
@@ -136,13 +139,22 @@ export function IndexTree({ groups: allGroups }: { groups: IndexGroup[] }) {
             .filter((g) => !g.extra)
             .map((g) => {
               const docs = g.docs.filter((d) => !d.extra);
-              return { ...g, docs, docCount: docs.length, ruleCount: docs.reduce((n, d) => n + d.ruleCount, 0) };
+              // The topic's totals minus its hidden documents (rules not tied to a document stay counted).
+              const hidden = g.docs.filter((d) => d.extra);
+              return {
+                ...g,
+                docs,
+                docCount: docs.length,
+                ruleCount: g.ruleCount - hidden.reduce((n, d) => n + d.ruleCount, 0),
+                needsClarity: g.needsClarity - hidden.reduce((n, d) => n + d.needsClarity, 0),
+              };
             }),
     [allGroups, showAll],
   );
   const [query, setQuery] = useState("");
   const q = useDeferredValue(query.trim());
-  const [openDocs, setOpenDocs] = useState<Set<string>>(new Set());
+  // Documents the reader opened or closed by hand; the rest follow the filter (matching sections open).
+  const [chosen, setChosen] = useState<Map<string, boolean>>(new Map());
 
   const filtered = useMemo(() => {
     if (!q) return groups;
@@ -157,17 +169,12 @@ export function IndexTree({ groups: allGroups }: { groups: IndexGroup[] }) {
 
   const sectionHits = q ? filtered.reduce((n, g) => n + g.docs.reduce((m, d) => m + d.sections.filter((s) => matcher(q)(s.title)).length, 0), 0) : 0;
   const allDocIds = filtered.flatMap((g) => g.docs.map((d) => d.id));
-  const allOpen = allDocIds.length > 0 && allDocIds.every((id) => openDocs.has(id));
-  // While filtering, documents with matching sections open by themselves.
-  const isOpen = (d: IndexDoc) => openDocs.has(d.id) || (!!q && d.sections.some((s) => matcher(q)(s.title)));
+  const byId = new Map(filtered.flatMap((g) => g.docs.map((d) => [d.id, d] as const)));
+  // While filtering, documents with matching sections open by themselves, unless closed by hand.
+  const isOpen = (d: IndexDoc) => chosen.get(d.id) ?? (!!q && d.sections.some((s) => matcher(q)(s.title)));
+  const allOpen = allDocIds.length > 0 && allDocIds.every((id) => isOpen(byId.get(id)!));
 
-  const toggle = (id: string) =>
-    setOpenDocs((s) => {
-      const n = new Set(s);
-      if (n.has(id)) n.delete(id);
-      else n.add(id);
-      return n;
-    });
+  const toggle = (d: IndexDoc) => setChosen((m) => new Map(m).set(d.id, !isOpen(d)));
 
   return (
     <div>
@@ -178,7 +185,10 @@ export function IndexTree({ groups: allGroups }: { groups: IndexGroup[] }) {
             <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
             <input
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setChosen(new Map()); // a new filter opens its own matches
+              }}
               placeholder="Filter topics, documents and sections… e.g. relevancy, subscription, notifications"
               className="h-11 w-full rounded-xl border bg-card pr-10 pl-9 text-sm shadow-sm outline-none focus:ring-3 focus:ring-ring/40"
             />
@@ -186,7 +196,10 @@ export function IndexTree({ groups: allGroups }: { groups: IndexGroup[] }) {
               <button
                 type="button"
                 aria-label="Clear filter"
-                onClick={() => setQuery("")}
+                onClick={() => {
+                  setQuery("");
+                  setChosen(new Map());
+                }}
                 className="absolute top-1/2 right-2 grid size-7 -translate-y-1/2 place-items-center rounded-md hover:bg-accent"
               >
                 <X className="size-4" />
@@ -195,7 +208,7 @@ export function IndexTree({ groups: allGroups }: { groups: IndexGroup[] }) {
           </label>
           <button
             type="button"
-            onClick={() => setOpenDocs(allOpen ? new Set() : new Set(allDocIds))}
+            onClick={() => setChosen(new Map(allDocIds.map((id) => [id, !allOpen])))}
             className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border bg-card px-4 text-sm font-medium hover:bg-accent"
           >
             {allOpen ? <ChevronsDownUp className="size-4" /> : <ChevronsUpDown className="size-4" />}
@@ -246,7 +259,7 @@ export function IndexTree({ groups: allGroups }: { groups: IndexGroup[] }) {
             </header>
             <ul className="mt-4 flex flex-col gap-2">
               {g.docs.map((d) => (
-                <DocRow key={d.id} g={g} d={d} q={q} open={isOpen(d)} onToggle={() => toggle(d.id)} />
+                <DocRow key={d.id} g={g} d={d} q={q} open={isOpen(d)} onToggle={() => toggle(d)} />
               ))}
             </ul>
             </SpotlightCard>

@@ -6,8 +6,10 @@ export async function GET(req: NextRequest) {
   const p = req.nextUrl.searchParams;
   const start = Number(p.get("start"));
   const end = Number(p.get("end")) || start;
-  const pad = Math.min(Number(p.get("pad") ?? 15) || 0, 200);
-  if (!start || end < start) return Response.json({ error: "start and end are required" }, { status: 400 });
+  const pad = Math.min(Math.max(Number(p.get("pad") ?? 15) || 0, 0), 200);
+  if (!Number.isInteger(start) || start < 1 || !Number.isInteger(end) || end < start) {
+    return Response.json({ error: "start and end are required: whole line numbers, 1 or more, end ≥ start" }, { status: 400 });
+  }
   const s = Math.max(1, start - pad);
   const e = Math.min(kdLines.length, end + pad, s + 2000);
   return Response.json({ start: s, end: e, hlStart: start, hlEnd: end, lines: kdLines.slice(s - 1, e) });

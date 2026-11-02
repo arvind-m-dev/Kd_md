@@ -80,7 +80,9 @@ export function SelectionToolbar() {
     const update = (e: Event) => {
       if (panel.current?.contains(e.target as Node)) return;
       // A saved highlight was clicked (and nothing new selected).
-      const mark = (e.target as Element | null)?.closest?.("mark[data-hl]") as HTMLElement | null;
+      // From the keyboard, a highlight opens with Enter or Space (not by tabbing onto it).
+      const key = e instanceof KeyboardEvent ? e.key : "";
+      const mark = key && key !== "Enter" && key !== " " ? null : ((e.target as Element | null)?.closest?.("mark[data-hl]") as HTMLElement | null);
       const s = window.getSelection();
       const text = s?.toString().trim() ?? "";
       if (mark && text.length < MIN_CHARS) {
@@ -106,9 +108,17 @@ export function SelectionToolbar() {
         ...place(range.getBoundingClientRect()),
       });
     };
-    const onUp = (e: Event) => setTimeout(() => update(e), 0);
+    const onUp = (e: Event) => {
+      // Escape closes the toolbar (below); its keyup must not reopen it for the same selection.
+      if (e instanceof KeyboardEvent && e.key === "Escape") return;
+      setTimeout(() => update(e), 0);
+    };
     const onScroll = () => !noteFor && setTarget(null);
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      if (!noteFor) window.getSelection()?.removeAllRanges();
+      close();
+    };
     document.addEventListener("mouseup", onUp);
     document.addEventListener("touchend", onUp);
     document.addEventListener("keyup", onUp);
@@ -147,7 +157,8 @@ export function SelectionToolbar() {
 
   const copy = async (what: "text" | "link") => {
     if (!target) return;
-    const value = what === "text" ? target.text : target.kind === "highlight" ? `${location.origin}${location.pathname}#hl-${target.id}` : `${location.origin}${location.pathname}?find=${encodeURIComponent(target.text.slice(0, 200))}`;
+    // A link anyone can open: the page plus the text to find (highlights live only in this browser).
+    const value = what === "text" ? target.text : `${location.origin}${location.pathname}?find=${encodeURIComponent(target.text.replace(/\s+/g, " ").trim().slice(0, 200))}`;
     await navigator.clipboard.writeText(value);
     setCopied(what);
     setTimeout(() => setCopied(null), 1400);

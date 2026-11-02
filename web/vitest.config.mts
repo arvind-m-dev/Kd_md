@@ -10,6 +10,6 @@ export default defineConfig({
     },
   },
   // The app's tsconfig keeps JSX for Next; tests render components with React's automatic runtime.
-  esbuild: { jsx: "automatic" },
+  oxc: { jsx: { runtime: "automatic" } },
   test: { testTimeout: 60_000, include: ["tests/**/*.test.{ts,tsx}"], environment: "node" },
 });

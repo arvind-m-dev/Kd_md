@@ -2,12 +2,15 @@
 
 import { BookOpenText } from "lucide-react";
 import Link from "next/link";
+import { useShowAll } from "@/components/shell/scope-toggle";
 import { useLibrary } from "@/lib/library";
+import { isExtraHref } from "@/lib/scope";
 import { cn } from "@/lib/utils";
 
 /** The last few pages read, with how far along; nothing until something has been read. */
 export function ContinueReading({ className, limit = 3 }: { className?: string; limit?: number }) {
-  const { recents } = useLibrary();
+  const showAll = useShowAll();
+  const recents = useLibrary().recents.filter((r) => showAll || !isExtraHref(r.href));
   if (!recents.length) return null;
   return (
     <section className={className} aria-label="Continue reading">

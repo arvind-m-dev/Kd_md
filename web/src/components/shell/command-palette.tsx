@@ -14,8 +14,9 @@ import {
 } from "@/components/ui/command";
 import { StatusDot } from "@/components/kd/status";
 import { useLibrary } from "@/lib/library";
-import { NAV } from "./nav";
+import { isExtraHref } from "@/lib/scope";
 import { useShowAll } from "./scope-toggle";
+import { NAV } from "./nav";
 
 interface RuleLite {
   id: string;
@@ -33,7 +34,14 @@ const PaletteContext = createContext<() => void>(() => {});
 export const useOpenPalette = () => useContext(PaletteContext);
 
 let indexPromise: Promise<Index> | null = null;
-const loadIndex = () => (indexPromise ??= fetch("/api/rules-index").then((r) => r.json()));
+// A failed load is forgotten, so the next opening of the palette tries again.
+const loadIndex = () =>
+  (indexPromise ??= fetch("/api/rules-index")
+    .then((r) => (r.ok ? (r.json() as Promise<Index>) : Promise.reject(new Error(`rules index ${r.status}`))))
+    .catch((err) => {
+      indexPromise = null;
+      throw err;
+    }));
 
 export function CommandPaletteProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -42,6 +50,7 @@ export function CommandPaletteProvider({ children }: { children: React.ReactNode
   const [index, setIndex] = useState<Index | null>(null);
   const lib = useLibrary();
   const showAll = useShowAll();
+  const visible = (href: string) => showAll || !isExtraHref(href);
 
   const openPalette = useCallback(() => setOpen(true), []);
 
@@ -57,7 +66,7 @@ export function CommandPaletteProvider({ children }: { children: React.ReactNode
   }, []);
 
   useEffect(() => {
-    if (open && !index) loadIndex().then(setIndex);
+    if (open && !index) loadIndex().then(setIndex, () => {});
   }, [open, index]);
 
   const q = query.trim().toLowerCase();
@@ -77,12 +86,12 @@ export function CommandPaletteProvider({ children }: { children: React.ReactNode
   // Your own things first: bookmarks and highlights that match, or recent reading when nothing is typed.
   const saved = q
     ? [
-        ...lib.bookmarks.filter((b) => `${b.title} ${b.subtitle}`.toLowerCase().includes(q)).map((b) => ({ key: b.key, href: b.href, title: b.title, hint: b.subtitle, icon: Bookmark })),
+        ...lib.bookmarks.filter((b) => visible(b.href) && `${b.title} ${b.subtitle}`.toLowerCase().includes(q)).map((b) => ({ key: b.key, href: b.href, title: b.title, hint: b.subtitle, icon: Bookmark })),
         ...lib.highlights
-          .filter((h) => `${h.exact} ${h.note}`.toLowerCase().includes(q))
+          .filter((h) => visible(h.href) && `${h.exact} ${h.note}`.toLowerCase().includes(q))
           .map((h) => ({ key: h.id, href: `${h.href}#hl-${h.id}`, title: h.exact.replace(/\s+/g, " ").slice(0, 90), hint: h.note || h.scopeTitle, icon: Highlighter })),
       ].slice(0, 6)
-    : lib.recents.slice(0, 3).map((r) => ({ key: r.href, href: `${r.href}?resume`, title: r.title, hint: `${Math.round(r.progress * 100)}% read`, icon: Clock }));
+    : lib.recents.filter((r) => visible(r.href)).slice(0, 3).map((r) => ({ key: r.href, href: `${r.href}?resume`, title: r.title, hint: `${Math.round(r.progress * 100)}% read`, icon: Clock }));
 
   const go = (href: string) => {
     setOpen(false);

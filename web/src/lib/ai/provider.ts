@@ -33,8 +33,6 @@ export interface StreamRequest {
 export interface StreamResult {
   stop: "end" | "max_tokens" | "refusal";
   model: string;
-  /** False when a JSON schema was asked for but the provider couldn't enforce it (output must be parsed tolerantly). */
-  enforcedJson?: boolean;
 }
 
 export interface AiProvider {
@@ -47,7 +45,8 @@ export interface AiProvider {
   configured: boolean;
   /** What to set when not configured. */
   setupHint: string;
-  stream(req: StreamRequest, onText: (text: string) => void): Promise<StreamResult>;
+  /** `onThinking` is called (repeatedly) while a reasoning model thinks before it writes. */
+  stream(req: StreamRequest, onText: (text: string) => void, onThinking?: () => void): Promise<StreamResult>;
   /** A plain-language message for an error thrown by `stream`. */
   errorMessage(err: unknown): string;
 }

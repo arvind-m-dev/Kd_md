@@ -51,4 +51,6 @@ export interface Turn {
   fallback?: boolean;
   meta?: AskMeta;
   model?: string;
+  /** The model is reasoning before it writes. */
+  thinking?: boolean;
 }

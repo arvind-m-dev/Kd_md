@@ -34,6 +34,8 @@ export function openAiCompatibleProvider(id: string): AiProvider {
   const apiKey = process.env.KD_AI_API_KEY || (preset.keyEnv ? process.env[preset.keyEnv] : "") || "";
   const model = process.env.KD_MODEL || preset.model;
   const needsKey = !!preset.keyEnv;
+  // OpenRouter attributes requests to the site that sends them (Vercel sets VERCEL_PROJECT_PRODUCTION_URL).
+  const siteUrl = process.env.KD_SITE_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "");
   const keyName = preset.keyEnv ? `KD_AI_API_KEY (or ${preset.keyEnv})` : "KD_AI_API_KEY";
 
   return {
@@ -47,7 +49,7 @@ export function openAiCompatibleProvider(id: string): AiProvider {
         ? "Set KD_MODEL to the model to use."
         : `Set ${keyName} on the server.`,
 
-    async stream(req, onText) {
+    async stream(req, onText, onThinking) {
       const maxTokens = Number(process.env.KD_MAX_TOKENS) || req.maxTokens;
       const send = (strict: boolean) =>
         fetch(`${baseUrl}/chat/completions`, {
@@ -56,7 +58,7 @@ export function openAiCompatibleProvider(id: string): AiProvider {
             "Content-Type": "application/json",
             ...(apiKey ? { Authorization: `Bearer ${apiKey}` } : {}),
             // OpenRouter shows these in its dashboard; other APIs ignore them.
-            ...(id === "openrouter" ? { "X-Title": "Keydemand Rules" } : {}),
+            ...(id === "openrouter" ? { "X-Title": "Keydemand Rules", ...(siteUrl ? { "HTTP-Referer": siteUrl } : {}) } : {}),
           },
           body: JSON.stringify({
             model,
@@ -72,11 +74,9 @@ export function openAiCompatibleProvider(id: string): AiProvider {
         });
       // Many models (free ones especially) reject response_format or a large max_tokens: retry once without.
       let res = await send(true);
-      let enforcedJson = !!req.json;
       if (res.status === 400 || res.status === 422 || (res.status === 404 && req.json)) {
         const first = await res.text().catch(() => "");
         res = await send(false);
-        enforcedJson = false;
         if (!res.ok) throw new HttpError(res.status, ((await res.text().catch(() => "")) || first).slice(0, 300));
       }
       if (!res.ok || !res.body) {
@@ -89,27 +89,40 @@ export function openAiCompatibleProvider(id: string): AiProvider {
       let buf = "";
       let finish = "";
       let served = model;
-      for (;;) {
-        const { value, done } = await reader.read();
-        if (done) break;
-        buf += value;
-        const lines = buf.split("\n");
-        buf = lines.pop() ?? "";
-        for (const line of lines) {
-          const data = line.startsWith("data:") ? line.slice(5).trim() : "";
-          if (!data || data === "[DONE]") continue;
-          try {
-            const chunk = JSON.parse(data);
-            if (chunk.model) served = chunk.model;
-            const choice = chunk.choices?.[0];
-            if (choice?.delta?.content) onText(choice.delta.content);
-            if (choice?.finish_reason) finish = choice.finish_reason;
-          } catch {
-            /* a keep-alive or partial line: skip it */
-          }
+      const handle = (line: string) => {
+        const data = line.startsWith("data:") ? line.slice(5).trim() : "";
+        if (!data || data === "[DONE]") return;
+        let chunk;
+        try {
+          chunk = JSON.parse(data);
+        } catch {
+          return; // a keep-alive or partial line
         }
+        // OpenRouter reports failures that happen after streaming started as an error chunk on a 200 response.
+        if (chunk.error || chunk.choices?.[0]?.finish_reason === "error") {
+          throw new HttpError(Number(chunk.error?.code) || 502, String(chunk.error?.message ?? "the model stopped with an error"));
+        }
+        if (chunk.model) served = chunk.model;
+        const choice = chunk.choices?.[0];
+        if (choice?.finish_reason) finish = choice.finish_reason;
+        // Outside any catch: if the reader has gone (onText throws), stop reading instead of burning tokens.
+        if (choice?.delta?.content) onText(choice.delta.content);
+        else if (choice?.delta?.reasoning || choice?.delta?.reasoning_content) onThinking?.();
+      };
+      try {
+        for (;;) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          buf += value;
+          const lines = buf.split("\n");
+          buf = lines.pop() ?? "";
+          for (const line of lines) handle(line);
+        }
+        if (buf) handle(buf); // a last line without a trailing newline
+      } finally {
+        reader.cancel().catch(() => {});
       }
-      return { stop: finish === "length" ? "max_tokens" : finish === "content_filter" ? "refusal" : "end", model: served, enforcedJson };
+      return { stop: finish === "length" ? "max_tokens" : finish === "content_filter" ? "refusal" : "end", model: served };
     },
 
     errorMessage(err) {

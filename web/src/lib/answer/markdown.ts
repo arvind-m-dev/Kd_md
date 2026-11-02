@@ -22,6 +22,10 @@ export function answerToMarkdown(a: Answer, opts: { sources?: { label: string; c
   if (a.summary) out.push(`**In short:** ${a.summary}`, "");
   if (a.clarification) out.push(`> ${a.clarification}`, "");
   if (opts.brief) {
+    // History for a follow-up: passage labels are renumbered on every request, so old [P3] would point
+    // at a different passage next time. Drop them.
+    const noLabels = (t: string) => t.replace(/\s*\[P\d+\]/g, "");
+    for (let i = 0; i < out.length; i++) out[i] = noLabels(out[i]);
     // For follow-up context: the shape of the answer, not every row.
     for (const b of a.blocks) {
       if (b.type === "requirements") out.push(`Requirement groups: ${b.groups.map((g) => `${g.name} (${g.rows.length})`).join(", ")}`);

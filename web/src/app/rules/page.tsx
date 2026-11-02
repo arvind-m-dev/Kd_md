@@ -21,10 +21,12 @@ async function Results({ searchParams }: { searchParams: PageProps<"/rules">["se
   // Working notes stay out unless the switch is on (lib/scope.ts).
   const all = (await cookies()).get(SCOPE_COOKIE)?.value === "all";
   const rules = filterRules(filter).filter((r) => all || !isExtraRule(r));
-  const limit = Math.max(Number(sp.limit) || PAGE, PAGE);
+  // "Show more" adds a page at a time; capped so one request can't render every rule at once.
+  const MAX = 300;
+  const limit = Math.min(Math.max(Number(sp.limit) || PAGE, PAGE), MAX);
   const shown = rules.slice(0, limit);
   const more = new URLSearchParams(Object.entries(sp).filter((e): e is [string, string] => typeof e[1] === "string"));
-  more.set("limit", String(limit + PAGE));
+  more.set("limit", String(Math.min(limit + PAGE, MAX)));
   const unclear = rules.filter((r) => r.status === "needs-clarity").length;
 
   return (

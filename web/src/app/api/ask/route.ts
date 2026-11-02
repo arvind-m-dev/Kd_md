@@ -9,6 +9,7 @@
 // Response: one JSON object per line —
 //   { type: "meta", analysis, sections, omitted }    how the question was read and what was searched
 //   { type: "passages", passages }                   the labelled passages [P1]… the answer may cite
+//   { type: "thinking" }                             the model is reasoning before it writes (sent once)
 //   { type: "text", text }                           raw answer text (JSON) as it is written
 //   { type: "answer", answer, report, fallback }     the validated answer
 //   { type: "done", status, note, cited, truncated, model, provider }
@@ -116,7 +117,13 @@ export async function POST(req: Request) {
   ];
 
   const encoder = new TextEncoder();
+  // Stops the model when the reader goes away (request aborted or response stream cancelled).
+  const upstream = new AbortController();
+  req.signal.addEventListener("abort", () => upstream.abort(), { once: true });
   const stream = new ReadableStream({
+    cancel() {
+      upstream.abort();
+    },
     async start(controller) {
       const send = (event: object) => controller.enqueue(encoder.encode(JSON.stringify(event) + "\n"));
       send({
@@ -133,6 +140,7 @@ export async function POST(req: Request) {
       }
       try {
         let text = "";
+        let thinking = false;
         const big = analysis.intent === "requirements" || analysis.intent === "compare";
         const result = await ai.stream(
           {
@@ -142,11 +150,15 @@ export async function POST(req: Request) {
             maxTokens: big ? 32000 : 16000,
             effort: big ? "high" : "medium",
             json: { name: "kd_answer", schema: ANSWER_JSON_SCHEMA },
-            signal: req.signal,
+            signal: upstream.signal,
           },
           (t) => {
             text += t;
             send({ type: "text", text: t });
+          },
+          () => {
+            if (!thinking) send({ type: "thinking" });
+            thinking = true;
           },
         );
         if (result.stop === "refusal") {
@@ -182,9 +194,13 @@ export async function POST(req: Request) {
           provider: ai.label,
         });
       } catch (err) {
-        send({ type: "error", message: ai.errorMessage(err) });
+        if (!upstream.signal.aborted) send({ type: "error", message: ai.errorMessage(err) });
       } finally {
-        controller.close();
+        try {
+          controller.close();
+        } catch {
+          /* already closed by a cancelled reader */
+        }
       }
     },
   });

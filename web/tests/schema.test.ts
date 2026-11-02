@@ -100,3 +100,31 @@ test("follow-ups: 3–6, no repeats of the question or each other", () => {
   );
   expect(out).toEqual(["What are the mandatory fields for Office lease?", "What validations apply to Office lease properties?", "Compare Office lease with Office sale?"]);
 });
+
+describe("review fixes", () => {
+  test("a field name only matches cells that start with it (Name ≠ Project Name*)", () => {
+    const p = new Map([["P1", "| 7 | Yes | 2 | 3 | Project Name* | Text |"]]);
+    const { answer } = validateAnswer(req([{ field: "Name", required: "yes", requiredNote: "", rule: "", validation: "", cites: ["P1"] }]), { passages: p });
+    expect(rowsOf(answer.blocks[0])[0].required).toBe("unspecified");
+  });
+
+  test('"not required" is not read as required', () => {
+    const p = new Map([["P1", "- Carpet area is not required for drafts."]]);
+    const { answer } = validateAnswer(req([{ field: "Carpet area", required: "yes", requiredNote: "", rule: "", validation: "", cites: ["P1"] }]), { passages: p });
+    expect(rowsOf(answer.blocks[0])[0].required).toBe("unspecified");
+  });
+
+  test("grouped citations are checked one by one", () => {
+    const { answer, report } = validateAnswer({ ...req([]), summary: "x [P1, P99] y" }, { passages });
+    expect(answer.summary).toBe("x [P1] y");
+    expect(report.unknownCites).toContain("P99");
+  });
+
+  test("unsourced prose keeps the answer from being Clear", () => {
+    const raw = { ...req([]), status: "clear", summary: "Everything on this form is mandatory, always, for every role.", blocks: [{ type: "text", heading: "", body: "All fields are mandatory and validated by the backend before submission." }] };
+    const { answer, report } = validateAnswer(raw, { passages });
+    expect(report.uncited).toBe(2);
+    expect(answer.status).toBe("needs-clarity");
+    expect(answer.statusNote).toMatch(/no cited source/);
+  });
+});
