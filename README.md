@@ -1,7 +1,10 @@
 # Keydemand V2 knowledge base + Ask
 
 - `KEYDEMAND_V2_BUSINESS_RULES.md` is the consolidated business rules, requirements, relevancy, user journeys and admin rules. Every rule has an ID and a source.
+  - Groups 02–12 are the requirement documents (what was decided).
+  - Group 16 is the product documentation as built (what the product does today): the product overview, persona journeys checked on SIT, the Admin Control Panel docs and the list of places where the app differs from the docs. It never overrides a requirement; differences are listed in the conflicts chapter.
 - `app/` is a local web page where you ask questions about that file. Every answer comes with the source document link, its section, the line range in the .md, and the paragraphs before and after.
+- `web/` is the Next.js version of the same thing (index, reader, Ask, Markdown endpoints and an MCP server). It is the one deployed on Vercel. See `web/README.md`.
 - `kb/` holds the build sources: one file per document group, the build script and the change log.
 - `web/` is the main app (Next.js, deployed on Vercel): Index, reader with highlights and notes, Library, Ask with structured answers, and an MCP server for AI tools. See [web/README.md](web/README.md).
 
@@ -46,6 +49,15 @@ You can change the model or port with the `KD_MODEL` and `PORT` environment vari
 
 Add or edit group files in `kb/sections/`, then run:
 ```bash
-python3 kb/build.py
+python3 kb/build.py          # rebuilds KEYDEMAND_V2_BUSINESS_RULES.md
+(cd web && npm run kd)       # copies it to web/content/kd.md and rebuilds the web app's data
 ```
-The Ask server notices the new .md and re-indexes it on the next request. No restart is needed.
+The local Ask server (`app/`) notices the new .md and re-indexes it on the next request. No restart is needed. The web app needs `npm run kd` (it also runs before `npm run dev` and `npm run build`); commit `web/content/kd.md`, because Vercel builds from that copy.
+
+To re-check the sources for changes:
+1. Search Drive for files modified or created since the last date in `kb/changelog.md`, and list the "Phase 1 - Keydemanand Important documents" folder.
+2. For each changed doc already in the knowledge base, fetch it and run `kb/coverage.py` against its section (see `kb/_verify.md`). Update only what changed and note the change at the top of the doc's Content.
+3. For each new doc, follow `kb/_brief.md`. Add it to the matching group file, or to a new group file listed in `INCLUDE` in `kb/build.py`.
+4. Add new clashes to `kb/sections/00-core-cross-doc.md`, add a row to `kb/changelog.md`, update the "As of" date in `kb/00-header.md`, then rebuild.
+
+Google Drive is read-only for this work: nothing in Drive is edited, commented on or shared.

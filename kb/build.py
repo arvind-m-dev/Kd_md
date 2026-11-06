@@ -10,7 +10,7 @@ Output (project root):
   KEYDEMAND_V2_BUSINESS_RULES.md
 
 Scope (user decision 2026-10-24): core business-rule groups only, authoritative
-docs only. HISTORY / NON-AUTHORITATIVE doc blocks are stripped; they stay listed
+docs only. Group 16 (product documentation as built) was added on 2026-11-06. HISTORY / NON-AUTHORITATIVE doc blocks are stripped; they stay listed
 by name in the source register.
 
 Re-run after adding or editing any section: python3 kb/build.py
@@ -36,6 +36,7 @@ INCLUDE = [
     "10-keydemand-team.md",
     "11-control-panel-admin.md",
     "12-roles-notifications.md",
+    "16-product-documentation.md",
 ]
 
 BR_RE = re.compile(r"^\s*- \*\*(BR-[A-Z0-9]+-\d+)\*\*")

@@ -99,6 +99,44 @@ for (const line of linesOf(chapter("Source register"))) {
 const regById = new Map(register.map((d) => [d.driveId, d]));
 
 // ---------- groups, docs, rules ----------
+// A document's number must stay the same when other documents are added: reader links, bookmarks,
+// highlights and lib/scope.ts all refer to a document by its ID ("07-27"). scripts/doc-ids.json maps
+// Drive ID -> number. A document that is not in the map gets the next free number, and the file is
+// rewritten so the new number can be committed.
+const DOC_IDS_FILE = join(WEB, "scripts", "doc-ids.json");
+const docNums = existsSync(DOC_IDS_FILE) ? JSON.parse(readFileSync(DOC_IDS_FILE, "utf8")) : {};
+const docNumByLine = new Map();
+{
+  const found = [];
+  let inGroup = false;
+  let pending = null;
+  lines.forEach((line, i) => {
+    if (line.startsWith("## ")) { inGroup = GROUP_RE.test(line); pending = null; return; }
+    if (!inGroup) return;
+    if (line.startsWith("### ")) {
+      pending = DOC_HEAD_RE.test(line) ? { line: i + 1, driveId: null } : null;
+      if (pending) found.push(pending);
+      return;
+    }
+    if (pending && !pending.driveId) { const m = line.match(ID_RE); if (m) pending.driveId = m[1]; }
+  });
+  let next = Math.max(0, ...Object.values(docNums)) + 1;
+  let added = false;
+  const used = new Set();
+  for (const d of found) {
+    // A Drive file transcribed in two places gets a second key, so both blocks keep their own number.
+    let key = d.driveId ?? `no-drive-id@${d.line}`;
+    for (let k = 2; used.has(key); k++) key = `${d.driveId}#${k}`;
+    used.add(key);
+    if (docNums[key] == null) { docNums[key] = next++; added = d.driveId ? true : added; }
+    docNumByLine.set(d.line, docNums[key]);
+  }
+  if (added) {
+    const stable = Object.fromEntries(Object.entries(docNums).filter(([k]) => !k.startsWith("no-drive-id@")));
+    writeFileSync(DOC_IDS_FILE, JSON.stringify(stable, null, 2) + "\n");
+  }
+}
+
 const groups = [];
 const docs = [];
 const rules = [];
@@ -122,7 +160,7 @@ lines.forEach((line, i) => {
     const level = h[1].length;
     const d = line.match(DOC_HEAD_RE);
     if (level === 3) {
-      doc = d ? { id: `${group.id}-${docs.length + 1}`, group: group.id, title: d[1].trim(), status: d[2], note: d[3] ?? "", line: n, slug: slugify(stripMd(h[2])) } : null;
+      doc = d ? { id: `${group.id}-${docNumByLine.get(n)}`, group: group.id, title: d[1].trim(), status: d[2], note: d[3] ?? "", line: n, slug: slugify(stripMd(h[2])) } : null;
       if (doc) docs.push(doc);
       path = doc ? [] : [stripMd(h[2])];
     } else {
@@ -322,9 +360,12 @@ const passages = [];
 const problems = [];
 const ids = new Set();
 for (const r of rules) { if (ids.has(r.id)) problems.push(`duplicate ${r.id}`); ids.add(r.id); }
-if (groups.length !== 11) problems.push(`expected 11 groups, got ${groups.length}`);
+// Groups 02–12 (requirements) plus 16 (product documentation as built). Update when kb/build.py INCLUDE changes.
+const EXPECTED_GROUPS = 12;
+if (groups.length !== EXPECTED_GROUPS) problems.push(`expected ${EXPECTED_GROUPS} groups, got ${groups.length}`);
 if (rules.length !== (md.match(/^- \*\*BR-[A-Z0-9]+-\d+\*\* — /gm) ?? []).length) problems.push("rule count mismatch");
 if (rules.some((r) => !r.doc)) problems.push(`${rules.filter((r) => !r.doc).length} rules outside a document section`);
+if (new Set(docs.map((d) => d.id.split("-")[1])).size !== docs.length) problems.push("duplicate document numbers (check scripts/doc-ids.json)");
 if (docs.some((d) => !d.driveId)) problems.push(`docs without Drive ID: ${docs.filter((d) => !d.driveId).map((d) => d.title).join("; ")}`);
 if (problems.length) { console.error("build-kd failed:\n- " + problems.join("\n- ")); process.exit(1); }
 

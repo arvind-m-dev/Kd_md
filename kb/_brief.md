@@ -4,8 +4,9 @@ Project: Keydemand V2 Phase 1, a real-estate platform for property, demand and p
 
 ## HARD RULE: READ ONLY
 Never create, edit, copy, move, share, trash, comment on or change permissions of any Drive file. Use only read tools:
-- `get_file_metadata`, `read_file_content` and `download_file_content` from the Drive MCP (prefix `mcp__8b71493d-...`). Load them with ToolSearch: `select:mcp__8b71493d-5327-4235-bf9a-9247be2c8f27__read_file_content,mcp__8b71493d-5327-4235-bf9a-9247be2c8f27__get_file_metadata,mcp__8b71493d-5327-4235-bf9a-9247be2c8f27__download_file_content,mcp__8b71493d-5327-4235-bf9a-9247be2c8f27__search_files`
-- For Google Sheets with several tabs, also use `get_spreadsheet` (fields `sheets.properties.title`) plus `get_values` per tab. Load them with `select:mcp__e79ea2fc-41a8-4d5f-9df3-e86ba48b6c4d__get_spreadsheet,mcp__e79ea2fc-41a8-4d5f-9df3-e86ba48b6c4d__get_values`
+- `get_file_metadata`, `read_file_content`, `download_file_content` and `search_files` from the Google Drive connector. Load them with ToolSearch: `select:mcp__claude_ai_Google_Drive__read_file_content,mcp__claude_ai_Google_Drive__get_file_metadata,mcp__claude_ai_Google_Drive__download_file_content,mcp__claude_ai_Google_Drive__search_files`
+- For Google Sheets with several tabs, also use `get_spreadsheet` (fields `sheets.properties.title`) plus `get_values` per tab. Load them with `select:mcp__claude_ai_Google_Sheets__get_spreadsheet,mcp__claude_ai_Google_Sheets__get_values`
+- Markdown (.md) and other plain files on Drive: use `download_file_content`, then base64-decode the saved result (`jq -r .content FILE | base64 -d > out.md`) and check the byte count against the Drive file size. `read_file_content` returns escaped text for these, so it is not a faithful copy. Copy such files into the section with a script, never by retyping.
 - Some results are too big and get saved to a file. Read those files FULLY in chunks with jq/python (e.g. `jq -r .fileContent FILE > out.txt`, then read out.txt with offset/limit until 100% is read). Never stop partway.
 - Write ONLY your one assigned output file under `kb/sections/`. Don't write anywhere else except the scratchpad.
 

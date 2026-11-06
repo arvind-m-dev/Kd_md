@@ -10,9 +10,11 @@
 | 5 | Recent enhancements | Google Doc | `1ayBF6ywdSTdCRePAJD7dchfFGOMFSbj9l3FcWAHREso` | pradeepa.pv@futuristglobal.com | 2026-06-30 08:48 UTC | AUTHORITATIVE (for 30 Jun 2026; several items later changed — see Conflicts) |
 | 6 | Phase 1 - CR's and New Business Rule additions - July 9th | Google Sheet (1 tab) | `1oim_dW0m5wSOUKhM9W2wgHCCLX810uKdA6VbGgKNAIk` | pradeepa.pv@futuristglobal.com | 2026-07-12 18:14 UTC | HISTORY (superseded by Phase 1 - CRs and New Business - Final) |
 | 7 | Rough 2- My Drafts | Google Doc | `1f1LOJkqKIrq3kgC42h9E6tPlKREqseVBiPj_eicY1ps` | pradeepa.pv@futuristglobal.com | 2026-10-22 09:24 UTC | NON-AUTHORITATIVE (personal draft; document body is empty) |
+| 8 | Business Rules Template for Keydemand CR's and Enhancements - Post Production | Google Sheet (2 tabs) | `1H1wcmKdc2_rJCkoabISuv02j70ii5y48AEqPKzT59hM` | pradeepa.pv@futuristglobal.com | 2026-11-04 | AUTHORITATIVE (post-production CR register, November 2026 sprint; latest dated decisions in this group) |
 
 **Conventions used in this section**
 - BR numbering: BR-CR-001…205 are the rows of the Final sheet (authoritative register). BR-CR-206 onward are rules found in the other docs that are **not** already stated identically in the Final sheet (new rules, extra detail, or a different value). Where a doc repeats a Final-sheet rule word-for-word or near-verbatim, it is cross-referenced ("also stated: BR-CR-xxx") instead of being re-numbered.
+- BR-CR-376…409 are the post-production change requests of the November 2026 sprint sheet (added 2026-11-06). That sheet has its own local Rule IDs (BR-001…BR-016); they are quoted as "sheet BR-0NN".
 - Comments in Google Docs are shown inline as `⟦comment <id> start⟧ … ⟦comment <id> end — <author> (<date>, <status>): "<text>"⟧`.
 - Struck-through text in the source is shown as `~~text~~ *(struck through in source)*`.
 - No passwords, OTPs, keys or tokens appear in any of these documents; nothing was redacted.
@@ -1585,12 +1587,214 @@ To support internal sales and BD staff (who may not be tech-savvy), the portal u
 **Source:** Google Doc · ID `1f1LOJkqKIrq3kgC42h9E6tPlKREqseVBiPj_eicY1ps` · owner pradeepa.pv@futuristglobal.com · created 2026-10-16, modified 2026-10-22 · read coverage: 100% — the document body is **empty** (read_file_content returned no text; Drive size 1,024 bytes). No rules extracted.
 
 ---
+## Business Rules Template for Keydemand CR's and Enhancements - Post Production  [AUTHORITATIVE]
+**Source:** Google Sheet · ID `1H1wcmKdc2_rJCkoabISuv02j70ii5y48AEqPKzT59hM` · owner pradeepa.pv@futuristglobal.com · created 2026-10-30, modified 2026-11-04 · tabs read: Business Rule Changes-November 2026 Sprint (A1:AA999, 16 populated rows), Keydemand Product Backlog & Traceability Matrix (A1:W1000, 78 populated rows) · read coverage: 100% of cell values in both tabs · linked from the Delivery Plan, tab "Phase 2.1 Important Links", as "Final Business Rules Excel Copy" · unreadable on 2026-11-01, readable since 2026-11-06.
+
+### Content
+
+#### Tab "Business Rule Changes-November 2026 Sprint" (post-production CR register, rows 1–16)
+Columns: Rule ID · Feature / Area · JIRA -Id · Type of Request · Current Behavior (As-Is) · New Business Rule (To-Be) · Questions to Confirm · Edge Cases · Business Comments · Status · Business Rule confirmed on.
+Notes on the source layout:
+- The sheet's own Rule IDs (BR-001 … BR-016) are local to this sheet. They are not the `BR-CR-…` IDs of this knowledge base. There is no BR-008.
+- Every row has Type of Request = "Change Request" and Status = "Approved".
+- Seven rows carry a placeholder sentence in the JIRA -Id column instead of an ID.
+
+| Rule ID | Feature / Area | JIRA -Id | Type of Request | Current Behavior (As-Is) | New Business Rule (To-Be) | Questions to Confirm | Edge Cases | Business Comments | Status | Business Rule confirmed on |
+|---|---|---|---|---|---|---|---|---|---|---|
+| BR-001 | FG-01: Global Field Rules (PDF Export) | Not enough information to determine the JIRA ID. Please provide the JIRA ticket details. | Change Request | PDF design is based on old V1 format | PDF must use new design with folds, requiring new UI template. Must be exandable as per need. It can mirror the current V2, watermark and a scanner with android app | fold layout the same for web and mobile downloads? | Long descriptions or many images that don't fit the fold; missing fields/images in the PDF;-how to tackle it |  | Approved | Nov 3 |
+| BR-002 | FG-13: Admin & Enterprise Brand – Manage Formats | Not enough information to determine the JIRA ID. Please provide the JIRA ticket details. | Change Request | Only 10 cities can be added currently | Keep maximum limit as 1000 | What is the upper limit (e.g. 500 / unlimited)? Is upload via bulk CSV or one-by-one? |  |  | Approved | Nov 3 |
+| BR-003 | FG-05: Subscriptions – Billing Cycle | Not enough information to determine the JIRA ID. Please provide the JIRA ticket details. | Change Request | Single combined invoice sent for multiple subscriptions | A separate invoice must be generated for each individual subscription transaction. (Dont combine the next payment and keep invoices separate) | Is it one invoice per subscription, per payment, or per renewal? Does invoice numbering need a separate GST series? Will past combined invoices be regenerated? | Single payment covering multiple subscriptions; mid-cycle upgrade/downgrade; refunds and credit notes; failed payments. | Similar to Swiggy per-order invoicing | Approved | Nov 3 |
+| BR-004 | FG-06 / FG-08 / Relevancy Engine: Match Alerts & KD Dashboard | PPBL-16 | Change Request | No email or WhatsApp notifications sent for relevancy matches | System must send email and WhatsApp notifications when a demand matches a property-Enterprise will only receive lead via Whatsapp and web notification. Keydemand POC will get these email and whatsapp alerts. | Real-time or daily digest? Who receives it: demand owner, property owner, or both? Which WhatsApp template/provider? | One property matching many demands (alert flooding); user opted out of WhatsApp; invalid email; duplicate alerts for the same match. |  | Approved | Nov 3 |
+| BR-005 | FG-05: Subscription Checkout & GST Invoicing | Not enough information to determine the JIRA ID. | Change Request | GSTIN and Business Name fields are missing | Add 'GSTIN Number' and 'Business Name' to profile form; auto-populate on subscription form and invoice. Not mandatory fields(Can be edited). Must be shown on payment page then only invoice must have this field. This info must be asked on payment page. It must be in correct format(Name,number and alphanumeric -total 16 characters) | Are GSTIN and Business Name mandatory? Should GSTIN be validated (format / GST portal)? Can it be edited after an invoice is issued? | Individuals without GSTIN; invalid GSTIN format; profile edited after invoice generation. | User can edit in profile | Approved | Nov 3 |
+| BR-006 | FG-01: Global Field Rules | Not enough information to determine the JIRA ID. | Change Request | Allows selecting backdated months for 'under construction' | Only future dates allowed; system must auto-update status to 'available immediately' when date is reached. Month wise | Month-level or exact-date precision? Will status update run as a daily job? Should the owner be notified on auto-update? | Existing listings with past dates; project delayed and date needs extending; time-zone issues at month rollover. |  | Approved | Nov 3 |
+| BR-007 | FG-06 / FG-08 / Relevancy Engine: Match Alerts & KD Dashboard | Not enough information to determine the JIRA ID. | Change Request | Identifying new leads and relevancy matches across listings requires manual searching, making prompt tracking and action difficult. | Prominently highlight new leads/relevancy matches across listings (e.g., visual badge/red dot) and temporarily move them to top until viewed. Add a filter or align it inpromptu when new listing is coming up. Can be added under Listing management, Enterprise and User Management and Keydemand User Management |  |  | Requires visual indicators (red dot/badge) and temporary top-sorting until opened | Approved | Nov 3 |
+| BR-009 | FG-05: Subscriptions & GST Invoicing | Not enough information to determine the JIRA ID. | Change Request | Downloaded subscription invoice uses the current system format | Downloaded invoice must follow the reference invoice format shared by the client |  |  | Reference format shared on WhatsApp / Drive. Related to BR-003 and BR-005. Priority: P1 - High | Approved | Nov 3 |
+| BR-010 | FG-10 / FG-11: Asset-Class Posting & Managed Space | PPBL-15 | Change Request | Keydemand team account can post Managed Office Space as a single property | Remove the option for the Keydemand team to post Managed Office Space as a property; managed offices must be added as Projects only. We get whole project and not single units. Remove post a property-managed space from Keydemand team flow. |  |  | Managed offices will be projects going forward, not single properties. \ | Approved | Nov 3 |
+| BR-011 | FG-06: Team Notifications & Enterprise CRM | PPBL-16 | Change Request | KD team members get no notifications for relevancy matches, leads or project leads on their assigned Enterprise accounts | Turn on Email, WhatsApp and in-app notifications for KD team members for all relevancy matches, leads and project leads of their assigned Enterprise accounts and listings |  |  | Related to BR-004. Priority: P1 - High | Approved | Nov 3 |
+| BR-012 | FG-06 / FG-12: Enquiry Notifications (Marketing Leads) | PPBL-17 | Change Request | Admin receives no email when a new lead or marketing lead is generated on production (V2 sent these emails) | Send one email per marketing enquiry as soon as it appears on the control panel, with all submitted form details, for Developer, Operator, Enterprise and Project enquiries (Project: project name, developer name, interested person, mobile number, expected outcome) | Which admin email addresses receive these, and is the list configurable? One email per enquiry or batched? | Spam/test enquiries; duplicate submissions; email delivery failure - is retry/logging needed? | Behaviour existed in V2. Priority: P1 - High | Approved | Nov 3 |
+| BR-013 | FG-15: Compliance & Acquisition Attribution | PPBL-20 | Change Request | User acquisition source is not captured or shown in the control panel | Capture each user's onboarding source (Facebook, Instagram, LinkedIn, WhatsApp, Google, Organic) and show it in the control panel. User acquisition sources (e.g., Organic vs. Paid) is being tracked using the user's phone number as the primary source of truth and must be integrated | Captured via UTM, referral link, or self-declared? Phase 1 or Phase 2 (see note)? How are existing users tagged? | Multiple touchpoints (first vs last touch); unknown source defaulting to Organic; source tampering. | Shown in the first Claude design of the control panel. | Approved | Nov 3 |
+| BR-014 | FG-06 / FG-12: Control Panel Navigation & Outcomes | PPBL-21 | Change Request | Outcome counts on the control panel are static and not clickable | Each outcome count must be clickable and open its section with the new entries shown (e.g. New Demands: 4 opens Demands with those 4 new demands). Do add redirection for ease use | Does the dev concern (extra API calls) block this? Should 'new' reset after the count is clicked? Are filters kept when navigating back? | Count is 0; count changes between viewing and clicking; user lacks permission for the target section. | Dev comment: no re-routing from the dashboard to avoid unnecessary API calls - needs decision. Related to BR-007 | Approved | Nov 3 |
+| BR-015 | FG-06 / FG-08 / FG-12: Automated Lead Routing | PPBL-25 | Change Request | New leads are assigned manually to users from the control panel | Auto-assign new leads from the backend: Agent leads go to Karan Kajalkar. Retail, F&B, Office and Managed (incomplete) leads go to Shamli. Since they are incomplete, Shamli will co-ordinate with them and  fix them. | Assign to named people or roles (to handle leave/attrition)? What field decides the lead category? Who handles uncategorised leads? | Assignee on leave; lead fits multiple categories; manual override/reassignment needed. | To be discussed with the Dev team. Priority: P2 - High | Approved | Nov 3 |
+| BR-016 | FG-01: Global Field Rules (Filters) | PPBL-26 | Change Request | Filters slider limits for properties and demands | Filter<br>Max and Min<br>Carpet area<br>50 to 1,00,0000<br>Built-up area<br>70 to 1,50,00,000<br>Rent per month<br>5,000 to 50,00,00,000<br>Ceiling height<br>8 to 60<br>Frontage<br>50 to 2000<br>Car parking<br>0 to 10,000<br>Bike parking<br>0 to 25,000<br>Lease tenure<br>1 to 99<br>Lock-in period<br>0 to 240 |  |  |  | Approved | Nov 4 |
+
+BR-016 filter limits, restated as a table (same values as the cell above):
+
+| Filter | Min | Max |
+|---|---|---|
+| Carpet area | 50 | 1,00,0000 |
+| Built-up area | 70 | 1,50,00,000 |
+| Rent per month | 5,000 | 50,00,00,000 |
+| Ceiling height | 8 | 60 |
+| Frontage | 50 | 2000 |
+| Car parking | 0 | 10,000 |
+| Bike parking | 0 | 25,000 |
+| Lease tenure | 1 | 99 |
+| Lock-in period | 0 | 240 |
+
+#### Tab "Keydemand Product Backlog & Traceability Matrix" (rows 1–78)
+**Title (R2):** Keydemand Product Backlog & Traceability Matrix
+**Subtitle (R3):** Comprehensive Epics, User Stories, Priority Tracking & Architectural Feature Group Traceability
+**Totals (R4–R5):** TOTAL EPICS 20 · TOTAL STORIES 67
+
+The tab holds two lists side by side. Columns B–F are the backlog (one row per story). Columns H–I are a separate lookup list of the 15 Feature Groups. The Feature Group on a row is NOT the feature group of the story on that row; the two lists only share row numbers. Column G is empty. Rows 1 and 6 are empty.
+
+Backlog (columns B–F, rows 8–78):
+
+| Row | Epic ID | Epic Name | Story ID | User Story Title | Persona / Domain |
+|---|---|---|---|---|---|
+| 8 | EP-001 | Authentication & Access Control | US-001 | User Login | All Users |
+| 9 | EP-001 | Authentication & Access Control | US-002 | User Sign-Up | All Users |
+| 10 | EP-001 | Authentication & Access Control | US-003 | OTP Verification | All Users |
+| 11 | EP-001 | Authentication & Access Control | US-004 | User Logout | All Users |
+| 12 | EP-001 | Authentication & Access Control | US-005 | Role-Based Access Enforcement | Platform / Security |
+| 13 | EP-001 | Authentication & Access Control | US-065 | Brand Onboarding: Post First Space Requirement (Retail & F&B) | Brand / Tenant |
+| 14 | EP-001 | Authentication & Access Control | XC-001 | Auth Middleware Shared Plugin | Platform / DevOps |
+| 15 | EP-002 | User Profile Management | US-006 | View My Profile | All Users |
+| 16 | EP-002 | User Profile Management | US-007 | Edit My Profile | All Users |
+| 17 | EP-003 | Asset Class Framework | US-008 | Asset Class Data Model & Configuration | Architecture |
+| 18 | EP-003 | Asset Class Framework | US-009 | Asset Class Selection in UI | All Users |
+| 19 | EP-004 | Subscription & Plan Management (Admin) | US-010A | Define Subscription Plans (Admin) | Admin |
+| 20 | EP-004 | Subscription & Plan Management (Admin) | US-058 | Subscription Management (Admin) | Admin |
+| 21 | EP-004U | Subscription (End-User) | US-010 | View Subscription Plans | Brand / Agent / Developer |
+| 22 | EP-004U | Subscription (End-User) | US-011 | Activate Subscription | Brand / Agent / Developer |
+| 23 | EP-004U | Subscription (End-User) | US-012 | Subscription Renewal & Expiry | Brand / Agent / Developer |
+| 24 | EP-004U | Subscription (End-User) | US-013 | Feature Access Based on Plan | Platform / Entitlements |
+| 25 | EP-005 | Property Listing Management | US-014 | Add a Property | Developer / Agent |
+| 26 | EP-005 | Property Listing Management | US-015 | View Property Listing (Detail Page) | All Users |
+| 27 | EP-005 | Property Listing Management | US-015S | View My Properties (Self View) | Developer / Agent |
+| 28 | EP-005 | Property Listing Management | US-016 | Edit a Property | Developer / Agent |
+| 29 | EP-005 | Property Listing Management | US-017 | Delete a Property | Developer / Agent |
+| 30 | EP-005 | Property Listing Management | US-018 | Property Status Management | Developer / Agent / Admin |
+| 31 | EP-006 | Demand Listing Management | US-019 | Add a Demand | Brand / Occupier |
+| 32 | EP-006 | Demand Listing Management | US-020 | View Demand Listing (Detail Page) | All Users |
+| 33 | EP-006 | Demand Listing Management | US-020S | View My Demands (Self View) | Brand / Occupier |
+| 34 | EP-006 | Demand Listing Management | US-021 | Edit a Demand | Brand / Occupier |
+| 35 | EP-006 | Demand Listing Management | US-022 | Delete a Demand | Brand / Occupier |
+| 36 | EP-006 | Demand Listing Management | US-023 | Demand Status Management (Open / Fulfilled) | Brand / Occupier / Admin |
+| 37 | EP-007 | Project Module | US-024 | Create a Project | Developer / Admin |
+| 38 | EP-007 | Project Module | US-025 | View Project Page (Self and User View) | All Users |
+| 39 | EP-008 | Property Discovery & Marketplace | US-026 | Explore Properties Listing Page | All Users |
+| 40 | EP-008 | Property Discovery & Marketplace | US-027 | Filter Properties | All Users |
+| 41 | EP-008 | Property Discovery & Marketplace | US-028 | Compare Properties | Brand / Buyer |
+| 42 | EP-009 | Demand Discovery & Marketplace | US-029 | Explore Demands Listing Page | Developer / Agent |
+| 43 | EP-009 | Demand Discovery & Marketplace | US-030 | Filter Demands | Developer / Agent |
+| 44 | EP-010 | Search & Filters | US-031 | Keyword Search | All Users |
+| 45 | EP-010 | Search & Filters | US-032 | City-Based Search | All Users |
+| 46 | EP-010 | Search & Filters | US-033 | Asset-Class-Based Search | All Users |
+| 47 | EP-010 | Search & Filters | US-034 | Project-Based Search | All Users |
+| 48 | EP-011 | Enquiry System | US-035 | Enquire on a Property (Brand/Buyer) | Brand / Occupier |
+| 49 | EP-011 | Enquiry System | US-036 | Enquire on a Demand (Developer/Agent) | Developer / Agent |
+| 50 | EP-011 | Enquiry System | US-037 | View My Enquiries | All Users |
+| 51 | EP-012 | Contact Unlocking | US-038 | View Mobile Number (Property) | Brand / Buyer |
+| 52 | EP-012 | Contact Unlocking | US-039 | View Mobile Number (Demand) | Developer / Agent |
+| 53 | EP-013 | Relevancy Matching Engine | US-040 | Rule-Based Property-to-Demand Matching | System / HVL Engine |
+| 54 | EP-014 | Role-Specific Dashboards (End-User) | US-041 | Brand/Occupier Dashboard | Brand / Occupier |
+| 55 | EP-014 | Role-Specific Dashboards (End-User) | US-042 | Developer Dashboard | Developer |
+| 56 | EP-014 | Role-Specific Dashboards (End-User) | US-043 | Agent Dashboard | Agent / Broker |
+| 57 | EP-014 | Role-Specific Dashboards (End-User) | US-066 | Brand Persona Home & Navbar | Brand / Occupier |
+| 58 | EP-015 | Discovery Boosters (Featured & Exclusives) | US-045 | Featured Properties & Demands | Marketing / Sales |
+| 59 | EP-015 | Discovery Boosters (Featured & Exclusives) | US-046 | Exclusive Properties & Demands | Marketing / Sales |
+| 60 | EP-016 | Notifications & Engagement | US-047 | In-App Notifications | All Users |
+| 61 | EP-016 | Notifications & Engagement | US-048 | WhatsApp Notifications | All Users |
+| 62 | EP-017 | Usability & Utilities | US-049 | Save / Bookmark Property | All Users |
+| 63 | EP-017 | Usability & Utilities | US-050 | Save / Bookmark Demand | All Users |
+| 64 | EP-017 | Usability & Utilities | US-051 | Recently Viewed | All Users |
+| 65 | EP-017 | Usability & Utilities | US-052 | Report Incorrect Listing | All Users |
+| 66 | EP-017 | Usability & Utilities | US-053 | Help / Support Page | All Users |
+| 67 | EP-018 | Keydemand Admin Console | US-044 | Keydemand Team Dashboard | Keydemand Internal Team |
+| 68 | EP-018 | Keydemand Admin Console | US-054 | User Management (Admin) | Admin |
+| 69 | EP-018 | Keydemand Admin Console | US-055 | Listing Moderation (Approve / Reject) | Admin |
+| 70 | EP-018 | Keydemand Admin Console | US-056 | Edit Any Listing (Admin) | Admin |
+| 71 | EP-018 | Keydemand Admin Console | US-057 | Feature / Unfeature Listings (Admin) | Admin |
+| 72 | EP-018 | Keydemand Admin Console | US-058 | Subscription Management (Admin) | Admin |
+| 73 | EP-018 | Keydemand Admin Console | US-059 | Analytics Overview (Admin) | Admin / Executive |
+| 74 | EP-019 | DevOps & CI/CD Infrastructure | US-060 | AWS Infrastructure Setup (VPC, Networking, IAM) | DevOps / Infrastructure |
+| 75 | EP-019 | DevOps & CI/CD Infrastructure | US-061 | CI/CD Pipeline (GitHub Actions, ECR, OIDC) | DevOps / Infrastructure |
+| 76 | EP-019 | DevOps & CI/CD Infrastructure | US-062 | ECS Cluster & First Service Deployment | DevOps / Infrastructure |
+| 77 | EP-019 | DevOps & CI/CD Infrastructure | US-063 | Monitoring, Secrets & Operational Readiness | DevOps / Infrastructure |
+| 78 | EP-019 | DevOps & CI/CD Infrastructure | US-064 | Deploy All Services to ECS (v2-mock, v1-mock, service-bridge) | DevOps / Infrastructure |
+
+Feature Group lookup (columns H–I, rows 8–22):
+
+| Row | Feature Group ID | Architectural Domain & Scope |
+|---|---|---|
+| 8 | FG-01 | Global Terminology & Field Rules |
+| 9 | FG-02 | Auth, Registration & Login |
+| 10 | FG-03 | Landing Page & Discovery |
+| 11 | FG-04 | Agent Flow, Dashboard & Subscription |
+| 12 | FG-05 | Subscription & Pricing (cross-app) |
+| 13 | FG-06 | Keydemand Team (User-Portal persona) |
+| 14 | FG-07 | Broker Relationship Manager (BRM) |
+| 15 | FG-08 | High Value Leads (HVL) Engine |
+| 16 | FG-09 | Brand / Tenant / Enterprise User Flows |
+| 17 | FG-10 | Asset-Class Access & Posting |
+| 18 | FG-11 | Managed Space as Project Asset Class |
+| 19 | FG-12 | Admin Control Panel - Core |
+| 20 | FG-13 | Admin - Enterprise Brand & Manage Formats |
+| 21 | FG-14 | Notifications & Mobile Infrastructure |
+| 22 | FG-15 | Compliance, Legal & Attribution |
+
+### Business rules extracted
+All rules below are post-production change requests with Status "Approved". They are dated 3 Nov 2026 except the filter limits (4 Nov 2026). "Sheet BR-0NN" is the sheet's own Rule ID.
+- **BR-CR-376** — [PDF Export] The listing PDF must use a new design with folds, which needs a new UI template; today's PDF design is based on the old V1 format. _(§ November 2026 Sprint › sheet BR-001)_
+- **BR-CR-377** — [PDF Export] The new PDF must be expandable as per need; it can mirror the current V2, with a watermark and a scanner with the Android app. _(§ November 2026 Sprint › sheet BR-001)_
+- **BR-CR-378** — [Manage Formats] The maximum number of cities that can be added is 1000; only 10 cities can be added currently. _(§ November 2026 Sprint › sheet BR-002)_
+- **BR-CR-379** — [Subscription billing] A separate invoice must be generated for each individual subscription transaction; do not combine the next payment, keep invoices separate (today a single combined invoice is sent for multiple subscriptions). _(§ November 2026 Sprint › sheet BR-003)_
+- **BR-CR-380** — [Match alerts] The system must send email and WhatsApp notifications when a demand matches a property; today no email or WhatsApp is sent for relevancy matches. _(§ November 2026 Sprint › sheet BR-004, JIRA PPBL-16)_
+- **BR-CR-381** — [Match alerts] Enterprise will only receive the lead via WhatsApp and web notification; the Keydemand POC will get the email and WhatsApp alerts. _(§ November 2026 Sprint › sheet BR-004, JIRA PPBL-16)_
+- **BR-CR-382** — [GST invoicing] Add "GSTIN Number" and "Business Name" to the profile form and auto-populate them on the subscription form and the invoice. _(§ November 2026 Sprint › sheet BR-005)_
+- **BR-CR-383** — [GST invoicing] GSTIN Number and Business Name are not mandatory and can be edited; the user can edit them in the profile. _(§ November 2026 Sprint › sheet BR-005, Business Comments)_
+- **BR-CR-384** — [GST invoicing] GSTIN and Business Name must be asked and shown on the payment page; only then must the invoice carry them. _(§ November 2026 Sprint › sheet BR-005)_
+- **BR-CR-385** — [GST invoicing] The GSTIN / Business Name input must be in the correct format: "Name, number and alphanumeric - total 16 characters". _(§ November 2026 Sprint › sheet BR-005)_
+- **BR-CR-386** — [Under construction date] Only future dates are allowed, month wise; backdated months can no longer be selected for "under construction". _(§ November 2026 Sprint › sheet BR-006)_
+- **BR-CR-387** — [Under construction date] The system must auto-update the status to "available immediately" when the date is reached. _(§ November 2026 Sprint › sheet BR-006)_
+- **BR-CR-388** — [New leads and matches] Prominently highlight new leads and relevancy matches across listings (for example a visual badge or red dot) and temporarily move them to the top until viewed / opened. _(§ November 2026 Sprint › sheet BR-007)_
+- **BR-CR-389** — [New leads and matches] Add a filter, or align it "inpromptu" when a new listing is coming up; this can be added under Listing management, Enterprise and User Management, and Keydemand User Management. _(§ November 2026 Sprint › sheet BR-007)_
+- **BR-CR-390** — [Invoice format] The downloaded subscription invoice must follow the reference invoice format shared by the client (shared on WhatsApp / Drive); priority P1 - High. _(§ November 2026 Sprint › sheet BR-009)_
+- **BR-CR-391** — [Managed Space] Remove the option for the Keydemand team to post Managed Office Space as a property ("Post a property - managed space" is removed from the Keydemand team flow); managed offices must be added as Projects only, because whole projects are received and not single units. _(§ November 2026 Sprint › sheet BR-010, JIRA PPBL-15)_
+- **BR-CR-392** — [KD team notifications] Turn on Email, WhatsApp and in-app notifications for KD team members for all relevancy matches, leads and project leads of their assigned Enterprise accounts and listings; priority P1 - High. _(§ November 2026 Sprint › sheet BR-011, JIRA PPBL-16)_
+- **BR-CR-393** — [Marketing enquiry emails] Send one email per marketing enquiry as soon as it appears on the Control Panel, with all submitted form details, for Developer, Operator, Enterprise and Project enquiries; this behaviour existed in V2; priority P1 - High. _(§ November 2026 Sprint › sheet BR-012, JIRA PPBL-17)_
+- **BR-CR-394** — [Marketing enquiry emails] A Project enquiry email carries: project name, developer name, interested person, mobile number, expected outcome. _(§ November 2026 Sprint › sheet BR-012, JIRA PPBL-17)_
+- **BR-CR-395** — [Acquisition source] Capture each user's onboarding source (Facebook, Instagram, LinkedIn, WhatsApp, Google, Organic) and show it in the Control Panel. _(§ November 2026 Sprint › sheet BR-013, JIRA PPBL-20)_
+- **BR-CR-396** — [Acquisition source] User acquisition source (e.g. Organic vs. Paid) is tracked using the user's phone number as the primary source of truth, and this must be integrated. _(§ November 2026 Sprint › sheet BR-013, JIRA PPBL-20)_
+- **BR-CR-397** — [Control Panel outcomes] Each outcome count must be clickable and open its section with the new entries shown (e.g. "New Demands: 4" opens Demands with those 4 new demands); add redirection for ease of use. _(§ November 2026 Sprint › sheet BR-014, JIRA PPBL-21)_
+- **BR-CR-398** — [Lead routing] New leads are auto-assigned from the backend instead of manually from the Control Panel: Agent leads go to Karan Kajalkar. _(§ November 2026 Sprint › sheet BR-015, JIRA PPBL-25)_
+- **BR-CR-399** — [Lead routing] Retail, F&B, Office and Managed (incomplete) leads go to Shamli, who co-ordinates with them and fixes them because they are incomplete; priority "P2 - High". _(§ November 2026 Sprint › sheet BR-015, JIRA PPBL-25)_
+- **BR-CR-400** — [Filter limits] Carpet area filter slider: min 50, max "1,00,0000" (as written in the source). _(§ November 2026 Sprint › sheet BR-016, JIRA PPBL-26)_
+- **BR-CR-401** — [Filter limits] Built-up area filter slider: min 70, max 1,50,00,000. _(§ November 2026 Sprint › sheet BR-016, JIRA PPBL-26)_
+- **BR-CR-402** — [Filter limits] Rent per month filter slider: min 5,000, max 50,00,00,000. _(§ November 2026 Sprint › sheet BR-016, JIRA PPBL-26)_
+- **BR-CR-403** — [Filter limits] Ceiling height filter slider: min 8, max 60. _(§ November 2026 Sprint › sheet BR-016, JIRA PPBL-26)_
+- **BR-CR-404** — [Filter limits] Frontage filter slider: min 50, max 2000. _(§ November 2026 Sprint › sheet BR-016, JIRA PPBL-26)_
+- **BR-CR-405** — [Filter limits] Car parking filter slider: min 0, max 10,000. _(§ November 2026 Sprint › sheet BR-016, JIRA PPBL-26)_
+- **BR-CR-406** — [Filter limits] Bike parking filter slider: min 0, max 25,000. _(§ November 2026 Sprint › sheet BR-016, JIRA PPBL-26)_
+- **BR-CR-407** — [Filter limits] Lease tenure filter slider: min 1, max 99. _(§ November 2026 Sprint › sheet BR-016, JIRA PPBL-26)_
+- **BR-CR-408** — [Filter limits] Lock-in period filter slider: min 0, max 240. _(§ November 2026 Sprint › sheet BR-016, JIRA PPBL-26)_
+- **BR-CR-409** — [Traceability] Post-production CRs are tagged to one of 15 Feature Groups, FG-01 … FG-15 (names in the Feature Group lookup table above), and the backlog is organised as 20 epics (EP-001 … EP-019 plus EP-004U). _(§ Keydemand Product Backlog & Traceability Matrix R4–R22)_
+
+### Open questions / ambiguities in this doc
+- **Questions still listed on Approved rules.** The "Questions to Confirm" and "Edge Cases" columns are filled on 10 of the 15 rules although every Status is "Approved". None of the questions has a recorded answer in the sheet, except where the To-Be text answers it (BR-002 limit = 1000; BR-005 fields not mandatory; BR-006 month wise).
+- **BR-005 GSTIN length.** The sheet says "total 16 characters". A standard Indian GSTIN has 15 characters. Needs confirmation before the validation is built. It is also unclear whether "Name, number and alphanumeric" describes one field or the two fields (Business Name, GSTIN Number).
+- **BR-016 carpet area maximum.** "1,00,0000" is not a valid digit grouping; it may mean 10,00,000 or 1,00,00,000. Units are not given for any filter (sq.ft, ₹, ft, months or years).
+- **BR-014 clickable counts.** The Business Comments column records a developer objection ("no re-routing from the dashboard to avoid unnecessary API calls - needs decision"), yet the rule is Approved.
+- **BR-015 lead routing.** Leads are routed to named people (Karan Kajalkar, Shamli), not roles; the comment says "To be discussed with the Dev team"; the priority label "P2 - High" mixes two levels.
+- **BR-013 acquisition source.** The question "Phase 1 or Phase 2 (see note)?" is open; the note it refers to is not in the sheet.
+- **BR-004 and BR-011** share JIRA ID PPBL-16. BR-004 says the Keydemand POC gets email and WhatsApp alerts; BR-011 adds in-app notifications for KD team members.
+- **BR-007 wording.** "align it inpromptu when new listing is coming up" is unclear.
+- **BR-009 reference invoice.** The reference invoice format ("shared on WhatsApp / Drive") is not linked from the sheet.
+- **JIRA IDs missing** on sheet BR-001, 002, 003, 005, 006, 007 and 009 (the cell holds the placeholder "Not enough information to determine the JIRA ID…").
+- **Rule ID gap.** There is no BR-008.
+- **BR-010 Business Comments** ends with a stray "\\".
+- **Backlog totals.** The tab states TOTAL STORIES 67, but it lists 71 rows with 70 distinct IDs (US-058 "Subscription Management (Admin)" appears under both EP-004 and EP-018; XC-001 is not a US story). There is no US-044 under EP-014 (it sits under EP-018), and US-065 (Brand Onboarding) sits under EP-001.
+- **Title vs use.** The file is titled "Business Rules Template…", but the Delivery Plan calls it the "Final Business Rules Excel Copy".
+
+---
 ## Group-level notes
 ### Version history
 - **July 9th sheet → Final sheet:** same CR register (identical structure and almost all rows). Final has a later created date (14 Jul vs 8 Jul) and modified date (3 Aug vs 12 Jul), adds columns and new sections, and changes 5 rules. Final is AUTHORITATIVE; July 9th is HISTORY.
 - **CR Doc (Phase 1 - CR's and New Business Rule additions):** running log created 30 Jun, last modified 27 Sep; contains dated additions (7 Jul, 13 Jul, 14 Jul, 16 Jul, 29 Jul). Its July 29 section is a verbatim copy of the July 29 doc. The undated base content is the source for the July 9th/Final sheet rows (the sheets restate it per row).
 - **June docs (Changes told…, Recent enhancements, both 30 Jun):** earliest decisions; authoritative for their date, superseded where later docs changed a rule.
 - **Rough 2:** empty personal draft.
+- **Business Rules Template … Post Production (created 30 Oct, last modified 4 Nov 2026):** the post-production CR register. Its "November 2026 Sprint" tab holds 15 approved change requests confirmed on 3–4 Nov 2026. These are the latest dated decisions in the group, so they override any earlier rule on the same point. The chronology below continues: … → Final sheet (3 Aug) → **November 2026 sprint sheet (3–4 Nov)**.
 - Chronology applied for "latest dated decision wins": 25 Jun → 30 Jun → 7 Jul → 9 Jul sheet → 13/14/16 Jul → 29 Jul → Final sheet (3 Aug, 11:20 UTC) ≈ July 29 doc last edit (3 Aug, 12:11 UTC). Final sheet rows inherited from the base CR list carry the date of the sheet, but where a rule is clearly older text copied forward and a dated meeting note changed it later (e.g., July 13 Office registration), this is flagged rather than silently resolved.
 
 ### Conflicts across docs in this group
@@ -1619,3 +1823,7 @@ To support internal sales and BD staff (who may not be tech-savvy), the portal u
 23. **Chatbot phase** — July 9 sheet said "for the Phase 2 launch" (typo); Final: not built for Phase 1.
 24. **Who explores demands** — consistent: only Keydemand (CR Doc, Final, July 29); Managed Space demands KD-only.
 25. **Field editability** — "modify all fields except City and Location" (30 Jun, Final) vs "Asset Class, Transaction Type, City, Location permanently locked" (CR Doc, Final) — Final contains both; lock list is the stricter, later-detailed rule.
+26. **Keydemand team posting Managed Office Space** — Keydemand Team page (group 10, BR-KDT-012): the team can post Office, Retail, F&B and Managed space properties and demands; **November 2026 sprint (3 Nov, BR-CR-391): the option to post Managed Office Space as a property is removed; managed offices are Projects only** → the November rule wins.
+27. **GST invoices** — Final (BR-CR-077) and group 08 (BR-PG1-176): GST invoices are provided automatically after a subscription; **November 2026 sprint: one separate invoice per subscription transaction (BR-CR-379), in the client's reference format (BR-CR-390), with optional GSTIN and Business Name (BR-CR-382…385)** → the November rules add to the earlier one; the invoice format and numbering questions are open.
+28. **Relevancy match alerts** — earlier docs define no email or WhatsApp alert for relevancy matches; **November 2026 sprint (BR-CR-380, 381, 392): email and WhatsApp on a match, WhatsApp and web only for Enterprise, email/WhatsApp/in-app for the assigned KD team** → new rules; recipients and timing (real-time or digest) are open questions in the sheet.
+29. **Acquisition source** — Final (BR-CR-036): tracked by phone number as the source of truth; **November 2026 sprint (BR-CR-395, 396): also capture the onboarding source (Facebook, Instagram, LinkedIn, WhatsApp, Google, Organic) and show it in the Control Panel** → consistent; the November rule adds the Control Panel display.

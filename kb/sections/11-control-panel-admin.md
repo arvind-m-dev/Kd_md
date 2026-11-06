@@ -12,7 +12,7 @@
 ## Documents in this group
 | # | Title | Type | Drive ID | Owner | Modified | Status |
 |---|---|---|---|---|---|---|
-| 1 | Version 2.0 Control Panel V2.1 -0 .docx | docx | `1Kv7FiKdeRP53F0vYiV8THEdMNrlvgSM4` | pradeepa.pv@futuristglobal.com | 2026-10-09 | AUTHORITATIVE |
+| 1 | Version 2.0 Control Panel V2.1 -0 .docx | docx | `1Kv7FiKdeRP53F0vYiV8THEdMNrlvgSM4` | pradeepa.pv@futuristglobal.com | 2026-10-29 (re-checked 2026-11-01: text unchanged from the 2026-10-09 version) | AUTHORITATIVE |
 | 2 | Version 1.0 Control Panel V2.1 -0.docx | docx | `1TzelTFc-ie1E1pp1zFwMXDEAI8RGhvEA` | pradeepa.pv@futuristglobal.com | 2026-10-04 | HISTORY (superseded by Version 2.0 Control Panel V2.1 -0) — note: content is actually the Phase 1 platform BRD (EP-001…EP-019), not a Control Panel spec |
 | 3 | Control Panel V2.1 -0 Keydemand.docx | docx | `1CcjZcH6RU1G48AW47ZqjrcsoGfPOhlyy` | pradeepa.pv@futuristglobal.com | 2026-10-14 | HISTORY (superseded by Version 2.0 Control Panel V2.1 -0). **VERSION CONFLICT, user to confirm** (see top) |
 | 4 | Super Admin, Normal Admin what they can do | gdoc | `1qh1Uh-T8MWhGs2WumwpJY8mzXv3v9UhEVE2N4vp2cak` | pradeepa.pv@futuristglobal.com | 2026-08-27 | AUTHORITATIVE |
@@ -22,7 +22,7 @@
 
 ---
 ## Version 2.0 Control Panel V2.1 -0 .docx  [AUTHORITATIVE]
-**Source:** docx · ID `1Kv7FiKdeRP53F0vYiV8THEdMNrlvgSM4` · pradeepa.pv@futuristglobal.com · modified 2026-10-09 · sections read: Business Rules; KD Control Panel nav; Home; 1. Management (1.1 User Management, 1.2 Enterprise, 1.3 Listing Management incl. Bulk Uploads, 1.4 Subscription Mgmt, 1.5 HVL); 2. Administration (Control Panel Users, Enquiries); 3. Insights (Dashboard, Analytics, Site Down) · read coverage: 100% of the extracted text. Embedded images and screenshots are not visible in the text export (the file is 793 KB). Docx comments are not available through the read tool.
+**Source:** docx · ID `1Kv7FiKdeRP53F0vYiV8THEdMNrlvgSM4` · pradeepa.pv@futuristglobal.com · modified 2026-10-09 (re-saved 2026-10-29; re-checked 2026-11-01, text unchanged) · sections read: Business Rules; KD Control Panel nav; Home; 1. Management (1.1 User Management, 1.2 Enterprise, 1.3 Listing Management incl. Bulk Uploads, 1.4 Subscription Mgmt, 1.5 HVL); 2. Administration (Control Panel Users, Enquiries); 3. Insights (Dashboard, Analytics, Site Down) · read coverage: 100% of the extracted text. Embedded images and screenshots are not visible in the text export (the file is 793 KB). Docx comments are not available through the read tool.
 
 ### Content
 

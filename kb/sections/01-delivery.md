@@ -3,7 +3,7 @@
 ## Documents in this group
 | # | Title | Type | Drive ID | Owner | Modified | Status |
 |---|---|---|---|---|---|---|
-| 1 | Keydemand V2 Phase 1 - Delivery Plan.xlsx | xlsx (6 tabs, 1 hidden) | 1LvPiNQFNLQu-IYuu-1VNS47Y952OaR6L | pradeepa.pv@futuristglobal.com | 2026-10-22 | AUTHORITATIVE (hidden tab "DEV - Ongoing plus CRs & New Fe" is HISTORY, superseded by tab "Ongoing plus CRs & New Features") |
+| 1 | Keydemand V2 Phase 1 - Delivery Plan.xlsx | xlsx (7 tabs, 1 hidden) | 1LvPiNQFNLQu-IYuu-1VNS47Y952OaR6L | pradeepa.pv@futuristglobal.com | 2026-11-04 | AUTHORITATIVE (hidden tab "DEV - Ongoing plus CRs & New Fe" is HISTORY, superseded by tab "Ongoing plus CRs & New Features") |
 | 2 | Keydemand V2 - Phase 1 Tracker | Google Sheet (3 tabs) | 1HDjVsQGcavd2uamI4rmVeCTemFJczg6eRN0RJdbyHvM | pradeepa.pv@futuristglobal.com | 2026-07-30 | HISTORY (superseded by Keydemand V2 Phase 1 - Delivery Plan.xlsx; the Delivery Plan's link register labels it "Old tracker") |
 | 3 | Production_OnCall_Sheet.xlsx | xlsx (6 tabs, 1 hidden) | 1Kye-tYrvHv4dz9cTCTEdRhkImVJ_Xh_p | pradeepa.pv@futuristglobal.com | 2026-10-23 | AUTHORITATIVE |
 | 4 | V2 SIT Environment Details.docx | docx | 1XuokGE1CoAUqBltFl9fhQh8MHhMJJ849 | pradeepa.pv@futuristglobal.com | 2026-10-14 | AUTHORITATIVE |
@@ -13,7 +13,7 @@
 
 ---
 ## Keydemand V2 Phase 1 - Delivery Plan.xlsx  [AUTHORITATIVE]
-**Source:** xlsx · ID `1LvPiNQFNLQu-IYuu-1VNS47Y952OaR6L` · owner pradeepa.pv@futuristglobal.com · created 2026-07-20, modified 2026-10-22 · tabs read: Delivery Tracker; Effort Summary by App; Ongoing plus CRs & New Features; UAT Links; Phase 1- Important Links to all; DEV - Ongoing plus CRs & New Fe (hidden tab) · read coverage: 100% (all 6 sheets parsed cell by cell from the raw xlsx; the drawing parts attached to each sheet contain no images or shapes; no cell comments in the file).
+**Source:** xlsx · ID `1LvPiNQFNLQu-IYuu-1VNS47Y952OaR6L` · owner pradeepa.pv@futuristglobal.com · created 2026-07-20, modified 2026-11-04 (re-checked 2026-11-06) · tabs read: Delivery Tracker; Effort Summary by App; Ongoing plus CRs & New Features; UAT Links; Phase 2- Important Links to all (named "Phase 1- Important Links to all" until the 2026-11-04 revision); Phase 2.1 Important Links (a separate tab since the 2026-11-04 revision); DEV - Ongoing plus CRs & New Fe (hidden tab) · read coverage: 100% (all 7 sheets parsed cell by cell from the raw xlsx; the drawing parts attached to each sheet contain no images or shapes; no cell comments in the file).
 
 Notes on transcription: "Row" = the Excel row number. "Milestone Date Cutoff" values are stored as Excel serial dates and are shown converted (46241 = 07-Aug-2026, 46262 = 28-Aug-2026, 46276 = 11-Sep-2026, 46290 = 25-Sep-2026, 46297 = 02-Oct-2026). `<br>` marks a line break inside a cell. Blank cells are kept blank (the source does not repeat Feature Group / Feature on every row; a blank means "same as the row above").
 
@@ -345,6 +345,7 @@ Status dropdowns (data validation on Developer Status / SIT/QA Status): `To Do, 
 | k.iyer@keydemand.in | [REDACTED-credential] |
 | himanshu@keydemand.in | [REDACTED-credential] |
 | pradeepa.pv@futuristglobal.com | [REDACTED-credential] |
+| tech@keydemand.in | [REDACTED-credential] |
 
 **R30:** SIT Details
 
@@ -376,7 +377,9 @@ R34: https://docs.google.com/document/d/1XuokGE1CoAUqBltFl9fhQh8MHhMJJ849/edit (
 | API direct ALB (debug): | http://keydemand-v2-dev-alb-2033088979.ap-south-1.elb.amazonaws.com |
 | (R54, API docs) | https://d1brddgvaviw9r.cloudfront.net/api/v2/docs |
 
-#### Tab 5 — Phase 1- Important Links to all
+#### Tab 5 — Phase 2- Important Links to all (was "Phase 1- Important Links to all")
+Re-check 2026-11-06: the tab was renamed in the 2026-11-04 revision. Its 70 rows are unchanged.
+
 Rows 11, 33 and 58 have no URL in the source ("Keydemand Team Specific Page - Registered" repeats its own name in the Link cell; row 33 "Version 2 of all pages- After Client Changes" is a sub-heading; row 58 "Keydemand daily summary" has no link). Row 45 has a link with no asset name.
 
 |  Row | Name of the Asset | Link |
@@ -449,6 +452,36 @@ Rows 11, 33 and 58 have no URL in the source ("Keydemand Team Specific Page - Re
 | 69 | Sathish Buglist | https://docs.google.com/spreadsheets/d/189jFuMLjDTcDKrli9su8uIMLnSGXnKBD0YMFzSRXT5w/edit?gid=0#gid=0 |
 | 70 | Development Bug list | https://docs.google.com/spreadsheets/d/1BfQ5JB9x8pYJNJoQP4kJsfVak2FIbeY-zPPwQM9oI4s/edit?gid=1608696293#gid=1608696293 |
 | 72 | Production_OnCall_Sheet | https://docs.google.com/spreadsheets/d/1Kye-tYrvHv4dz9cTCTEdRhkImVJ_Xh_p/edit?gid=577554112#gid=577554112 |
+| — | Post Production Dev Bug List | https://docs.google.com/spreadsheets/d/1X8ooRFUxrkcq-jSA6S6aaHv_iCHgE8-7f23Kpe-0JUw/edit?pli=1&gid=170781657#gid=170781657 |
+
+#### Tab 6 — Phase 2.1 Important Links
+Added in the 2026-10-30 revision inside Tab 5; a separate tab since the 2026-11-04 revision. Table below is the 2026-11-04 state (10 rows).
+
+|  Row | Name of the Asset | Link | What is the sheet for |
+|---|---|---|---|
+| 2 | Process for Bug Triaging | https://docs.google.com/document/d/1A9LQ9CG2JTk_uqmV9_Qf-tZZFWHwm1P2vCBwdEeFgB8/edit?tab=t.0 |  |
+| 3 | Resolved Bugs- to be pushed to JIRA- last one month sprint | https://docs.google.com/spreadsheets/d/1l34NXxz5qKEyO3Mg9vj-eAwuVrn0kOndXDV_SpmS2qs/edit?gid=2000538407#gid=2000538407 | JIRA FIRST SET OF RESOLVED BUGS |
+| 4 | Post Production Dev Bug List | https://docs.google.com/spreadsheets/d/1X8ooRFUxrkcq-jSA6S6aaHv_iCHgE8-7f23Kpe-0JUw/edit?pli=1&gid=454540197#gid=454540197 | Main copy for PP bugs that will be put to JIRA |
+| 5 | Phase 2 - Keydemanand Important documents | https://drive.google.com/drive/folders/10w9bCTRPiwayAGPj97lzsORdkm90apk6?usp=drive_link | Has all the product documents generated. |
+| 6 | Business Rules Template for Keydemand CR's and Enhancements - Post Production | https://docs.google.com/presentation/d/1nebRWxt11eJPjPKz9FVQUZfQ-R3V7G_Y/edit?slide=id.h8988cf040d95507_0_60#slide=id.h8988cf040d95507_0_60 | Final Business Rules Excel Copy |
+| 7 | KeyDemand From Launch to Scale | https://docs.google.com/presentation/d/1nebRWxt11eJPjPKz9FVQUZfQ-R3V7G_Y/edit?slide=id.h6f514a4cdef42f60_0_0#slide=id.h6f514a4cdef42f60_0_0 | Final PPT copy |
+| 8 | Epic number and stories-Jsut names | https://docs.google.com/document/d/1ZT1o-hOZgTBfLCG2WaHRHZES55V8FOmrgOhpsBzxDN4/edit?tab=t.0 | Final copy for checking future bugs |
+| 9 | Phase 1 - Keydemanand Important documents | https://drive.google.com/drive/folders/10w9bCTRPiwayAGPj97lzsORdkm90apk6 | Link containing all product documentation |
+| 10 | RAM folder for How to-s | https://drive.google.com/drive/folders/1sCRTstHMzMKTMZUKOp1_03sAk1jAYjnY |  |
+
+Changes in the 2026-11-04 revision (re-checked 2026-11-06, raw xlsx compared row by row with this file):
+- Row 3 "Resolved Bugs…" now links to a new sheet, "Resolved Bugs-Before Production- Development Bug list" (`1l34NXxz5qKEyO3Mg9vj-eAwuVrn0kOndXDV_SpmS2qs`). It linked to a tab of the Development Bug list (`1BfQ5JB9x8pYJNJoQP4kJsfVak2FIbeY-zPPwQM9oI4s`) before.
+- Row 5 was named "Phase 1 - Keydemanand Important documents"; it is now "Phase 2 - …". Rows 5 and 9 point to the same folder.
+- Row 6 "Business Rules Template…" now carries the presentation link of row 7 (slide `h8988cf040d95507_0_60`). It linked to the sheet `1H1wcmKdc2_rJCkoabISuv02j70ii5y48AEqPKzT59hM` before. This looks like a paste error in the source; the sheet itself is transcribed in group 02.
+- Row 7 "KeyDemand From Launch to Scale" points to a different slide of the same deck (`h6f514a4cdef42f60_0_0`).
+- Rows 9 and 10 are new.
+- Every other tab is unchanged: Delivery Tracker (22 rows), Effort Summary by App (26), Ongoing plus CRs & New Features (234, statuses included), UAT Links (39) and Tab 5 (70).
+
+What the linked folders hold (listed 2026-11-06):
+- **Phase 1 - Keydemanand Important documents** (`10w9bCTRPiwayAGPj97lzsORdkm90apk6`) has five sub-folders: "Main docs" (the product documentation and persona journeys, transcribed in group 16), "Product Documentation- Contains persona wise and Admin Panel tbsorted" (earlier persona files and the admin-panel docs; the admin-panel docs are in group 16), "Admin related- Tbsorted" (FRD drafts and PDF exports), "docs- got it from github-made by Satish. just for reference" (developer docs copied from the code repository) and "Ram Folder".
+- **RAM folder for How to-s** (`1sCRTstHMzMKTMZUKOp1_03sAk1jAYjnY`) holds the persona journey PDFs with screenshots and the "Video - Dev Credentials and How to Ideas" doc.
+
+Still UNREADABLE on 2026-11-06: "Epic number and stories-Jsut names" (`1ZT1o-hOZgTBfLCG2WaHRHZES55V8FOmrgOhpsBzxDN4`, "Requested entity was not found"). "Business Rules Template … Post Production" (`1H1wcmKdc2_rJCkoabISuv02j70ii5y48AEqPKzT59hM`) is readable now and is transcribed in group 02.
 
 ### Business rules extracted
 Delivery Tracker / Effort Summary (plan-level rules):

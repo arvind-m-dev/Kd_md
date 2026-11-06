@@ -5,7 +5,7 @@
 |---|---|---|---|---|---|---|
 | 1 | Reference Guide to User Roles, CTA's, Dev Links, Tech Stack for Keydemand V2 Platform | Google Doc | `13IxQfdp4HhjqRNUp3K6rGDf1y454LstSLOE-z0CNkE4` | pradeepa.pv@futuristglobal.com | 2026-09-22 | AUTHORITATIVE (for Dev links, Tech stack, CTAs, Persona journeys; for role-journey text that overlaps doc 2, doc 2 is newer and wins — see Group notes) |
 | 2 | Reference Guide to User Roles on Keydemand Platform | Google Doc | `1v84nXG7_YORBZH2okgSiOfibYemXa7zZ3KK9KliOqcM` | pradeepa.pv@futuristglobal.com | 2026-10-06 | AUTHORITATIVE (complementary; newer revision of the role-journey/access sections) |
-| 3 | Notifications Breakdown | Google Doc | `1HkwJ-9ZHhL9snZmncJVg0iWImGh_L5lBKWdkgYDAZPo` | pradeepa.pv@futuristglobal.com | 2026-10-16 | AUTHORITATIVE (explainer of notification-matrix column semantics only; the matrix itself is not in this doc) |
+| 3 | Notifications Breakdown | Google Doc | `1HkwJ-9ZHhL9snZmncJVg0iWImGh_L5lBKWdkgYDAZPo` | pradeepa.pv@futuristglobal.com | 2026-10-16 (content as read); 2026-10-30 emptied and renamed "Rough 2" in Drive | AUTHORITATIVE, last-known content (explainer of notification-matrix column semantics only; the matrix itself is not in this doc) |
 | 4 | HTL workflow | Google Doc | `1eUnwSbr1CxBnc1VANFYdSp2h92QsTOeXAaGmcaZDtsQ` | pradeepa.pv@futuristglobal.com | 2026-06-30 | AUTHORITATIVE |
 
 ---
@@ -410,6 +410,8 @@ This doc covers only the role-journey and access sections. Its text is otherwise
 ---
 ## Notifications Breakdown  [AUTHORITATIVE]
 **Source:** Google Doc · ID `1HkwJ-9ZHhL9snZmncJVg0iWImGh_L5lBKWdkgYDAZPo` · pradeepa.pv@futuristglobal.com · modified 2026-10-16 (created 2026-01-02) · sections read: whole doc (Daily cap / daily digest / typical per day explainer; Toast vs Push; "Typical per day 0.02"; How are they calculated) · comments: none · read coverage: 100% of text. File size (35 KB) suggests embedded images (likely the spreadsheet screenshot referenced as "your screenshot") which are not returned by the reader.
+
+> **SOURCE CHANGED 2026-10-30 — user to confirm.** Re-checked 2026-11-01: this Drive file (same ID) is now titled **"Rough 2"** and its body is **empty** (modified 2026-10-30 18:53 UTC). No other doc named "Notifications Breakdown" was found in Drive. The content below is the last-known version (read 2026-10-24, doc modified 2026-10-16). Confirm whether this explainer was retired or moved before relying on it.
 
 **Important:** this doc does **not** contain the notification matrix itself (triggers, recipients, channels, template text, timing per notification). It explains the columns of the "Notification Final" tab of a Product Requirements spreadsheet, which is not in this group. It links to `KeyDemand Daily Summary.pdf` (ID `1UBbIFk4jDgHOXmAXl3gvS9RjfiPsW452`, PDF, modified 2026-06-11), which was not assigned and not read.
 

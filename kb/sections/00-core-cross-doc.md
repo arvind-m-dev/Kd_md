@@ -1,6 +1,6 @@
 # Cross-document conflicts, decisions needed & glossary
 
-Scope: core business-rule groups G02–G12, authoritative documents only.
+Scope: core business-rule groups G02–G12, authoritative documents only. From 2026-11-06 it also compares them with G16, the product documentation as built.
 
 **Scope.** This chapter is built from the "Group-level notes" and "Open questions" sections of groups 02–12, plus targeted searches of the BR lines across groups. It covers clashes **between different groups**. Clashes inside one group are already listed in that group's notes and are repeated here only when another group adds a further position.
 
@@ -8,6 +8,8 @@ Scope: core business-rule groups G02–G12, authoritative documents only.
 - "G04" means group file `04-requirements.md`, and so on.
 - Authority follows `kb/00-header.md`: within a document family, the highest "Version N.N" wins. Between authoritative documents, the later-dated CR or decision wins.
 - Key dates used below: CR "Final" sheet (G02, 2026-08-03); Product Requirements Oct 2 (G04, 2026-10-10); Version 1.0 Master Sheet (G05, 2026-10-08); Sep 16 field sheets (G06); Version 1.0 Landing (G08, 2026-10-15); Version 1.0 Enterprise and All User Journeys (G08, 2026-10-06); Version 1.1 Agent (G08, 2026-10-02); Version 1.0 occupier pages (G09, 2026-09-28 / 10-03); Version 2.0 KD Specific Page (G10, 2026-10-06); Version 2.0 Control Panel (G11, 2026-10-09); Roles guide doc 2 (G12, 2026-10-06).
+- **G16 (added 2026-11-06)** describes the product as built: product overview (status date 2026-10-28), persona journeys checked on SIT (2026-11-03 to 2026-11-05) and the Admin Control Panel documentation (2026-11-05). An as-built statement does not override a requirement. Lines starting "As built (G16)" under a decision, and register rows C-72 onward, show where the built product stands so that each difference can be decided: update the requirement, or fix the product.
+- The G02 "November 2026 sprint" sheet (approved 3–4 Nov 2026) holds the latest dated change requests; they override earlier rules on the same point.
 - No document status assigned in a group file is changed here. Where this chapter doubts a group's in-group resolution, it says so as "Doubt:".
 
 ---
@@ -18,6 +20,7 @@ Scope: core business-rule groups G02–G12, authoritative documents only.
 - Sources disagree: G05 V1.0 Master says brands have 4 working days, excluding Sat/Sun (BR-MS-180), and that requests auto-drop at exactly 72 h (BR-MS-181). G08 Agent V1.1 says the same pair (BR-PG1-145 vs BR-PG1-146). G09 Retail/F&B V1.0 says the same pair (BR-PG2-031/032, BR-PG2-105/106). G12 says 4 working days only (BR-ROL-006). G04 says 72 h only (BR-REQ-112, BR-REQ-167), as do G06 (BR-FLD-145), G08 Agent Complete Journey (BR-PG1-227, BR-PG1-241). G03 adds a 24-hour reminder (BR-DQ-105/106).
 - Current resolution under the authority rules: **unresolved.** Every latest authoritative doc states both values. 72 calendar hours always expires before 4 working days (G05 open question), so the 4-day window can never be reached.
 - Question to confirm: Is the window 72 calendar hours or 4 working days, and should the other value be deleted everywhere?
+- As built (G16): a contact request to a brand expires after 72 hours with no answer (BR-PD-0722), with a reminder at 48 hours and an "expired" notice to the requester at 72 hours (BR-PD-1722, BR-PD-1826). No as-built document mentions 4 working days.
 
 **D-02 — Agent subscription price structure (bundles, ROI, combined price, subscriber contact cap)**
 - Sources disagree:
@@ -32,6 +35,7 @@ Scope: core business-rule groups G02–G12, authoritative documents only.
 - Sources disagree: G02 Final (BR-CR-004) and G11 V2.0 (BR-ADM-004) give 3 roles: Super Admin / Admin / Ops User. G02 CR Doc (BR-CR-279) and G11 "Super Admin, Normal Admin" (BR-ADM-088) give 2 roles. G02 30 Jun lists Admin groups A/B/C (BR-CR-355).
 - Current resolution under the authority rules: 3 roles (V2.0, the highest version). However, "Ops User" has no defined permissions anywhere (G11 open question).
 - Question to confirm: Which permissions does "Ops User" hold?
+- As built (G16): the Control Panel has five built-in roles, Super Admin, Admin, Contributor, Business Viewer and Tech Viewer, plus custom roles (BR-PD-1598 to BR-PD-1603). There is no "Ops User". See C-79.
 
 **D-04 — HTL/HVL thresholds: values, units, cities, inclusivity**
 - Sources disagree:
@@ -127,6 +131,7 @@ Scope: core business-rule groups G02–G12, authoritative documents only.
   - Cancellations take effect next billing cycle: G12 (BR-ROL-040). G08 Journey: changes reflect on next month's bill (G08 note).
 - Current resolution under the authority rules: no refund on city cancellation (G05, G08). The effective date of cancellation (immediate vs next cycle) is **unresolved**.
 - Question to confirm: When an agent removes a city mid-cycle, does access end immediately or at cycle end?
+- As built (G16): removing coverage is queued for the next cycle; an agent cannot remove everything and must cancel instead (BR-PD-0487); the plan auto-renews with the queued adds and removals (BR-PD-0491).
 
 **D-16 — Media size limits**
 - Sources disagree:
@@ -136,6 +141,7 @@ Scope: core business-rule groups G02–G12, authoritative documents only.
   - PDF 2 MB vs 5 MB (BR-REQ-034, BR-FLD-065).
 - Current resolution under the authority rules: **unresolved.** G05 V1.0 (8 Oct) is later than the G06 sheets (16 Sep), but G04 Oct 2 (modified 10 Oct) agrees with G06.
 - Question to confirm: What are the final per-file limits for images, videos and PDFs (2/5/2 MB or 5/15/5 MB)?
+- As built (G16): photos JPG or PNG up to 5 MB each (BR-PD-0358), videos MP4 or MOV up to 20 MB (BR-PD-0360), documents PDF up to 10 MB (BR-PD-0359), profile photo up to 2 MB (BR-PD-0333). See C-83.
 
 **D-17 — OC Status values**
 - Sources disagree: **3 values** (Available / Not available / Under construction): G02 Final (BR-CR-020). **4 values** (Received / Applied / Not Available / Under Construction): G02 CR Doc (BR-CR-224), G04 Oct 2 (BR-REQ-028), G05 V1.0 (BR-MS-169), G06 Sep 16 (BR-FLD-056). G04 filters use "Received / Applied / Not Applicable" (G04 open question).
@@ -161,6 +167,7 @@ Scope: core business-rule groups G02–G12, authoritative documents only.
 - Sources disagree: the Managed Space demand form accepts "only more than 20 seats" (G04, BR-REQ-066; G06, BR-FLD-029), yet requests >20 seats are routed to the Enterprise funnel (G05, BR-MS-166; G12, BR-ROL-066; G08, BR-PG1-067).
 - Current resolution under the authority rules: **unresolved.** Taken together, these rules would make every individual Managed Space demand an Enterprise lead.
 - Question to confirm: What is the minimum seat count for an individual Managed Space demand, and above what seat count does it become an Enterprise lead?
+- As built (G16): the minimum is 20 seats ("Enter 20 or more seats") on every Managed Space demand, individual and enterprise (BR-PD-1077, BR-PD-1103, BR-PD-1110). See C-82.
 
 **D-22 — Agent free trial: 1 listing AND 1 demand, or 1 listing OR 1 demand**
 - Sources disagree:
@@ -179,6 +186,7 @@ Scope: core business-rule groups G02–G12, authoritative documents only.
 - Sources disagree: 4 digits (G08 Journey, BR-PG1-192; G04 STORIES US-003) vs "4 or 6" (G04, BR-REQ-149) vs 6 digits (G05 V1.0, BR-MS-061, BR-MS-051).
 - Current resolution under the authority rules: **6 digits** (G05 V1.0 is the latest).
 - Question to confirm: Confirm that the login OTP is 6 digits for all apps.
+- As built (G16): the one-time code is 6 digits, with resend after 30 seconds (BR-PD-0219, BR-PD-0266).
 
 ---
 
@@ -229,7 +237,7 @@ Scope: core business-rule groups G02–G12, authoritative documents only.
 | C-41 | Inventory on user deactivation | 3-month hibernation, then permanent removal (G05 US-007) | Paused/hidden; data preserved (G05 other sections; G09 shared rules) | Preserved (majority) | Needs decision |
 | C-42 | KD member deletion | Soft-delete, inventory retained (G05 BR-MS-049) | Handover to another KD user first (G10 BR-KDT-006; G11 BR-ADM-016/017) | Handover (V2.0) | Resolved-by-rule |
 | C-43 | KD relevancy scope | Brands and Tenants only (G02 BR-CR-130/266; G10 BR-KDT-132) | Also agents and KD members (G10 BR-KDT-041; G12 BR-ROL-071) | Unresolved (D-19) | Needs decision |
-| C-44 | Relevancy fields | Asset Class, Carpet Area, Location, Transaction only (G05 BR-MS-173) | Weighted fields incl. ceiling height, floor, possession, fit-outs (G07 BR-REL-001/003/006/009) | G07 xlsx (relevancy spec, 14 Oct) | Resolved-by-rule |
+| C-44 | Relevancy fields | Asset Class, Carpet Area, Location, Transaction only (G05 BR-MS-173) | Weighted fields incl. ceiling height, floor, possession, fit-outs (G07 BR-REL-001/003/006/009) | G07 xlsx (relevancy spec, 14 Oct), with field-level scoring in the G07 Business Approval sheet (29 Oct, revised 5 Nov; BR-REL-135–162) | Resolved-by-rule |
 | C-45 | Relevancy % display | Properties: % shown in KD drill-downs (G10 BR-KDT-097/158; G02 BR-CR-312) | Projects: no % (G05 BR-MS-148/173; G06 BR-FLD-167; G08 BR-PG1-247) | Consistent: % for property matches only | Resolved-by-rule |
 | C-46 | Media limits | Images <2 MB, video <5 MB (G04 BR-REQ-013; G06 BR-FLD-036) | 5 MB / 15 MB (G05 BR-MS-125); 5 MB ≥300 ppi / 20 MB (G06 persona; G08 BR-PG1-226) | Unresolved (D-16) | Needs decision |
 | C-47 | PDF limit | <2 MB (G04 BR-REQ-034; G06 BR-FLD-065) | <5 MB (Keydemand block, same BRs; floorplans G06 BR-FLD-085) | Unresolved | Needs decision |
@@ -257,6 +265,19 @@ Scope: core business-rule groups G02–G12, authoritative documents only.
 | C-69 | RM vs POC naming | "RM" publicly displayed (G02 29 Jul) | "POC" brand-side, "Account Handler" backend; "RM" internal only (G05 BR-MS-069; G08 BR-PG1-092; G10 BR-KDT-062) | POC (Oct docs) | Resolved-by-rule |
 | C-70 | BRM existence | "BRMs do not exist" (G02 29 Jul) | BRM persona (G02 BR-CR-198); BD broker monitoring (G10 BR-KDT-056; G12 BR-ROL-022) | BRM exists (G02 BR-CR-198; G10; G12) | Resolved-by-rule |
 | C-71 | Registration email/OTP for Office Occupier | Enquiry form for Office Occupiers (G08 Landing BR) | 1 free demand after OTP registration (G08 All User Journeys; G08 Enterprise V1.0; G05 BR-MS-055/056) | OTP registration | Resolved-by-rule |
+| C-72 | Keydemand team posting Managed Office Space as a property | Team can post Office, Retail, F&B and Managed space properties and demands (G10 BR-KDT-012) | Option removed; managed offices are added as Projects only (G02 November 2026 sprint, BR-CR-391, 3 Nov 2026) | November CR is the later decision | Resolved-by-rule |
+| C-73 | Subscription invoices | GST invoice provided automatically after subscribing (G02 BR-CR-077; G08 BR-PG1-176) | One separate invoice per subscription transaction, in the client's reference format, with optional GSTIN and Business Name asked on the payment page (G02 BR-CR-379, BR-CR-382 to BR-CR-385, BR-CR-390) | November CR adds to the earlier rule; reference format, GSTIN length ("16 characters") and invoice numbering are open | Needs decision |
+| C-74 | Image-request expiry | Approval/rejection status never expires; the 72-hour nullification does not apply (G05 BR-MS-033) | As built: an image request expires after 72 hours with no answer (G16 BR-PD-0397, BR-PD-0711, BR-PD-0961) | As built differs from the requirement | Needs decision |
+| C-75 | Phone-number reveal on tenant demands | Confirm/approve flow with a 24 h reminder and 72 h nullification (G03 BR-DQ-105/106; G04 BR-REQ-112) | As built: "View number" is instant for properties and non-brand demands; only brand demands need approval (G16 BR-PD-0070). The tenant notification text still says "Approve the request" (BR-PD-1051, BR-PD-1232) | As built agrees with C-03 (only Retail/F&B brands accept or reject); the leftover notification text needs a fix or a decision | Needs decision |
+| C-76 | Daily digest for agents | "In daily digest" rows go into a 6 pm summary (G04 BR-REQ-105); the as-built overview also has an 18:00 digest (G16 BR-PD-0061) | As built, Agent journey: no daily digest for agents; new matches are sent as they happen (G16 BR-PD-0553, BR-PD-0429) | The as-built documents disagree with each other and with G04 | Needs decision |
+| C-77 | Number of notification events | 27 events, IDs 1–27 (G04 BR-REQ-107) | As built: 31 defined events on four channels (G16 BR-PD-0086) | The requirement list is older than the build | Needs decision |
+| C-78 | Free-allowance alerts | In-app notification when free allowances hit 80% (G12 BR-NTF-003); journey documents also list an "exhausted all your listings" message (G16 BR-PD-0815, BR-PD-1047) | Observed on SIT: the "exhausted all your listings" message is not sent and its text is not in the code (G16 BR-PD-2379); no as-built document has an 80% alert | Not built as specified | Needs decision |
+| C-79 | Admin roles | 3 roles: Super Admin / Admin / Ops User (G02 BR-CR-004; G11 BR-ADM-004); 2 roles (G02 BR-CR-279; G11 BR-ADM-088) | As built: Super Admin, Admin, Contributor, Business Viewer, Tech Viewer, plus custom roles (G16 BR-PD-1598 to BR-PD-1603) | Unresolved (D-03) | Needs decision |
+| C-80 | Admin permission catalogue | Super Admin holds all 27 of 27 permissions and manages access across 22 roles (G11 BR-ADM-083/084) | As built: the permission table and appendix of the Admin Product Documentation list 33 permission keys, three of them reserved and not built (G16 BR-PD-1611 to BR-PD-1620) | Counts differ | Needs decision |
+| C-81 | High-value lead (HVL/HTL) cities and thresholds | Mumbai >5,000 sq ft, Bangalore/Hyderabad >10,000 (G02 BR-CR-261; G05 BR-MS-176; G10 BR-KDT-022); admin-editable per city (G12 BR-HTL-001) | As built: the check runs only for eight major cities, Bengaluru, Hyderabad, Chennai, Coimbatore, Pune, Mumbai, Gurgaon and Delhi (G16 BR-PD-0751, BR-PD-2003); each city carries its own size threshold in the Control Panel (BR-PD-1736); Managed Space is excluded (BR-PD-0971) | Unresolved (D-04) | Needs decision |
+| C-82 | Managed Space seat minimum | Form accepts only more than 20 seats (G04 BR-REQ-066; G06 BR-FLD-029) | As built: 20 or more seats (G16 BR-PD-1077, BR-PD-1103, BR-PD-1110) | Off by one; see C-64 and D-21 | Needs decision |
+| C-83 | Media size limits | Images <2 MB, video <5 MB (G04 BR-REQ-013; G06 BR-FLD-036) or images 5 MB, video 15 MB (G05 BR-MS-125) | As built: photo 5 MB, video 20 MB, PDF 10 MB, profile photo 2 MB (G16 BR-PD-0358, BR-PD-0360, BR-PD-0359, BR-PD-0333), the same as G08 Journey (BR-PG1-226) | Unresolved (D-16) | Needs decision |
+| C-84 | Journey documents versus the app on SIT | Documented behaviour in the persona journeys (G16 BR-PD-0145 to BR-PD-1573) | Observed behaviour, 270 checked rows (G16 "main Docs findings", BR-PD-2198 to BR-PD-2467) | Each row needs triage: correct the document or log a defect | Needs decision |
 
 ---
 
@@ -274,7 +295,7 @@ Scope: core business-rule groups G02–G12, authoritative documents only.
 | P-08 | Notification daily cap value | G04 BR-REQ-111; G12 BR-NTF-011 | Number |
 | P-09 | Daily digest send time and channel | G12 open question | Time, channel, recipients |
 | P-10 | Enterprise Solution Lead SLA ("45 min left") | G11 open question | SLA definition |
-| P-11 | Relevancy display threshold | G07 open question | Minimum % |
+| P-11 | Relevancy display threshold | G07 open question; G07 Business Approval sheet: Retail ↔ F&B cross-match cutoff not finalized, 50% temporary (BR-REL-142) | Minimum % |
 | P-12 | Property (non-project) size tolerance | G07 open question | ± % |
 | P-13 | Similar-properties criteria | G07 open question | Definition |
 | P-14 | Project relevancy weights | G07 open question (Project tab) | Weight columns empty |
@@ -291,6 +312,9 @@ Scope: core business-rule groups G02–G12, authoritative documents only.
 | P-25 | Delete-account Google Form name | G09 open question (Office) | Truncated |
 | P-26 | "Other Brands" in KD Enterprise view | G10 open question | Definition |
 | P-27 | "LEFT" column in CP enterprise table | G11 open question | Definition |
+| P-28 | Location distance calculation for relevance | G07 Business Approval sheet and tracker: business confirmed the distance bands (BR-REL-147); the backend advised against per-comparison distance calls; the 3 Nov 2026 proposal that the Backend filters, compares Location and computes distance before ML is not signed off (BR-REL-162, BR-REL-169) | Final method and sign-off |
+| P-29 | Filter slider limits | G02 November 2026 sprint: carpet area maximum is written "1,00,0000", and no filter has a unit (BR-CR-400 to BR-CR-408) | Correct maximum; units |
+| P-30 | GSTIN format | G02 November 2026 sprint: "total 16 characters" (BR-CR-385); a standard GSTIN has 15 characters | Field length and validation |
 
 ---
 
