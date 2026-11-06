@@ -1,6 +1,6 @@
 # Keydemand V2 Phase 1 — Business Rules & Requirements Knowledge Base
 
-**As of:** 2026-11-01 · **Entry point:** *Keydemand V2 Phase 1 - Delivery Plan.xlsx* (Drive `1LvPiNQFNLQu-IYuu-1VNS47Y952OaR6L`)
+**As of:** 2026-11-06 · **Entry point:** *Keydemand V2 Phase 1 - Delivery Plan.xlsx* (Drive `1LvPiNQFNLQu-IYuu-1VNS47Y952OaR6L`)
 
 ## What this file is
 
@@ -13,6 +13,8 @@ This file brings together the **core Keydemand V2 Phase 1 business documents**:
 - every page and user-journey document (Landing, Enterprise, Agent, Brand Retail/F&B, Office Tenant, Managed Space, Keydemand Team)
 - the Control Panel and admin
 - roles, notifications and the high-ticket lead (HTL) workflow
+- the post-production change requests of the November 2026 sprint (in the CR group)
+- the **product documentation as built** (group 16): the product overview, the persona journeys checked on SIT, the Admin Control Panel documentation, and the list of places where the app differs from those documents
 
 Every source was read line by line, and each current document is transcribed in full: headings, tables, field lists, options, limits, examples and comments.
 
@@ -24,6 +26,7 @@ Every atomic rule gets a stable ID, `BR-<AREA>-<NNN>`, with the source section c
 
 - **Only current (AUTHORITATIVE) documents are included.** That means the highest "Version N.N" in the title; if titles tie, the latest modified date.
 - **Older versions (HISTORY) and non-authoritative docs are listed by name only** in the Source register. Non-authoritative docs include the "Relevancy Business Guide — DO NOT TAKE" and the empty "Rough 2" draft.
+- **Group 16 describes the product as built, not what was decided.** It was written from the code and the running app after go-live. It never overrides a requirement on its own. Where it differs from a requirement, the difference is listed in the conflict register as "Needs decision": either the requirement is out of date or the product has a defect.
 - **When two current documents disagree,** a later-dated CR or decision overrides an earlier one. Every such clash is listed under **Cross-document conflicts & decisions needed**, so you can confirm it rather than have it silently resolved.
 
 ## Rule ID prefixes
@@ -35,7 +38,7 @@ Every atomic rule gets a stable ID, `BR-<AREA>-<NNN>`, with the source section c
 | REQ | PRD, requirements, stories, epics | KDT | Keydemand Team pages & dashboard |
 | MS | Master Sheet fields (story-wise) | ADM | Control Panel & admin |
 | FLD | Input fields, cards, bulk upload, listings | ROL / NTF / HTL | Roles · notifications · high-ticket-lead workflow |
-| REL | Relevancy / matching logic | | |
+| REL | Relevancy / matching logic | PD | Product documentation as built (overview, persona journeys, Control Panel, doc-vs-app findings) |
 
 Rule numbers can have gaps. Rules from superseded documents were removed, but the remaining IDs were never renumbered.
 
@@ -49,6 +52,7 @@ Rule numbers can have gaps. Rules from superseded documents were removed, but th
   - the client-discussion folders
 - **Excluded by decision (2026-10-23):** invoices, third-party pitch decks, media, bug lists and progress slides.
 - **FAQ (green, i.e. current, in the Delivery Plan link list):** Drive `1q8mVbidN6Bp0VlofoRNtwx5Z62BcbSke`. It's UNREADABLE ("Requested entity was not found"), so it was probably deleted or not shared. It needs a working link or a copy.
+- **Reference folders listed by name only (2026-11-06):** the FRD drafts and PDF exports in "Admin related- Tbsorted", the developer documents copied from the code repository ("docs- got it from github-made by Satish. just for reference"), the "How to" videos, meeting notes written by Gemini, weekly summaries and bug lists. Group 16's notes name the files.
 - **Outside Google Drive:** the Figma design, the SharePoint workbook, Teams and live app URLs. Connected tools can't open these.
 - **Images:** many could not be viewed. They are marked `[Image: …]`.
 - **Credentials:** replaced with `[REDACTED-credential]`.

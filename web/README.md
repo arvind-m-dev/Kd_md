@@ -12,7 +12,7 @@ npm install
 npm run dev                  # http://localhost:3000
 ```
 
-`npm run dev` and `npm run build` first run `scripts/build-kd.mjs`. It copies `../KEYDEMAND_V2_BUSINESS_RULES.md` to `content/kd.md` (the copy Vercel builds from) and writes `src/generated/*.json`. Run `npm run kd` on its own after changing the master file.
+`npm run dev` and `npm run build` first run `scripts/build-kd.mjs`. It copies `../KEYDEMAND_V2_BUSINESS_RULES.md` to `content/kd.md` (the copy Vercel builds from) and writes `src/generated/*.json`. Run `npm run kd` on its own after changing the master file. Document numbers (the `27` in `07-27`) are fixed in `scripts/doc-ids.json`, so links, bookmarks and highlights keep working when documents are added; a new document gets the next free number, and the updated file must be committed.
 
 ## Endpoints
 
@@ -20,7 +20,7 @@ npm run dev                  # http://localhost:3000
 |---|---|
 | `/llms.txt` | Entry point for AI tools; links every Markdown view |
 | `/kd.md` | The whole knowledge base |
-| `/md/02.md` … `/md/12.md` | One group, verbatim, with front matter |
+| `/md/02.md` … `/md/12.md`, `/md/16.md` | One group, verbatim, with front matter (16 = product documentation as built) |
 | `/md/conflicts.md`, `/md/sources.md` | Conflicts/decisions/glossary chapter; source register |
 | `/rules/BR-REL-001.md` | One rule: status, issues, source, original line |
 | `GET /api/search?q=&k=` | BM25 passages with source details (no AI) |

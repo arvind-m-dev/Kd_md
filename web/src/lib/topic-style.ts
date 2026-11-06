@@ -1,6 +1,7 @@
 // An icon and a hue per topic group, so every topic is recognisable at a glance.
 import {
   BellRing,
+  BookOpenCheck,
   Building2,
   ClipboardList,
   FileSpreadsheet,
@@ -35,6 +36,7 @@ const STYLES: Record<string, TopicStyle> = {
   "10": { icon: Users, hue: 180, short: "Keydemand team" },
   "11": { icon: ShieldCheck, hue: 285, short: "Control panel" },
   "12": { icon: BellRing, hue: 15, short: "Roles & alerts" },
+  "16": { icon: BookOpenCheck, hue: 110, short: "As built" },
 };
 
 export const topicStyle = (groupId: string | null | undefined): TopicStyle =>
